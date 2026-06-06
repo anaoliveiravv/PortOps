@@ -1,0 +1,133 @@
+import { berths, ships } from "@/data/mockData";
+import { Anchor, Wrench, Calendar, AlertTriangle, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { useLanguageCode } from "@/i18n/useT";
+import { ShipLink } from "@/components/ShipLink";
+
+const STATUS = {
+  livre:      { cls: "border-success/30 bg-success/5",      label: "Livre",       text: "text-success" },
+  ocupado:    { cls: "border-accent/30 bg-accent/5",        label: "Ocupado",     text: "text-accent" },
+  reservado:  { cls: "border-warning/30 bg-warning/5",      label: "Reservado",   text: "text-warning" },
+  manutencao: { cls: "border-destructive/30 bg-destructive/5", label: "Manutenção", text: "text-destructive" },
+};
+
+export default function Bercos() {
+  const language = useLanguageCode();
+  const statusLabels = {
+    livre: language === "pt" ? "Livre" : language === "en" ? "Free" : "空闲",
+    ocupado: language === "pt" ? "Ocupado" : language === "en" ? "Occupied" : "占用",
+    reservado: language === "pt" ? "Reservado" : language === "en" ? "Reserved" : "已预留",
+    manutencao: language === "pt" ? "Manutenção" : language === "en" ? "Maintenance" : "维护",
+  };
+  const livre = berths.filter((b) => b.status === "livre").length;
+  const ocupado = berths.filter((b) => b.status === "ocupado").length;
+  const manut = berths.filter((b) => b.status === "manutencao").length;
+  const reservado = berths.filter((b) => b.status === "reservado").length;
+  const conflicts = berths.filter((b) => b.conflict).length;
+
+  return (
+    <div className="p-6 animate-fade-in space-y-5">
+      <div>
+        <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-accent mb-1">{language === "pt" ? "Operação · Berços" : language === "en" ? "Operations · Berths" : "运营 · 泊位"}</div>
+        <h1 className="text-2xl font-bold tracking-tight">{language === "pt" ? "Gestão de Berços" : language === "en" ? "Berth Management" : "泊位管理"}</h1>
+        <p className="text-sm text-muted-foreground mt-0.5">{language === "pt" ? "Ocupação atual, próximas atracações, conflitos e taxa de utilização." : language === "en" ? "Current occupancy, next berthings, conflicts and utilization rate." : "当前占用、下一批靠泊、冲突和利用率。"}</p>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        {[
+          { label: language === "pt" ? "Livres" : language === "en" ? "Free" : "空闲", n: livre, color: "text-success" },
+          { label: language === "pt" ? "Ocupados" : language === "en" ? "Occupied" : "占用", n: ocupado, color: "text-accent" },
+          { label: language === "pt" ? "Reservados" : language === "en" ? "Reserved" : "已预留", n: reservado, color: "text-warning" },
+          { label: language === "pt" ? "Manutenção" : language === "en" ? "Maintenance" : "维护", n: manut, color: "text-destructive" },
+          { label: language === "pt" ? "Conflitos" : language === "en" ? "Conflicts" : "冲突", n: conflicts, color: "text-destructive" },
+        ].map((k) => (
+          <div key={k.label} className="card-flat p-4">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">{k.label}</div>
+            <div className={cn("text-2xl font-bold font-mono mt-1", k.color)}>{k.n}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+        {berths.map((b) => {
+          const ship = ships.find((s) => s.id === b.occupiedBy);
+          const next = ships.find((s) => s.id === b.nextShipId);
+          const st = { ...STATUS[b.status], label: statusLabels[b.status] };
+          return (
+            <div key={b.id} className={cn("card-flat overflow-hidden", b.conflict && "border-destructive/40")}>
+              <div className={cn("px-4 py-3 border-b border-border flex items-center justify-between", st.cls)}>
+                <div className="flex items-center gap-2">
+                  {b.status === "manutencao" ? <Wrench className={cn("h-4 w-4", st.text)} /> : <Anchor className={cn("h-4 w-4", st.text)} />}
+                  <div>
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">{b.id} · {b.zone}</div>
+                    <div className="font-semibold text-sm leading-tight">{b.name}</div>
+                  </div>
+                </div>
+                <span className={cn("text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded border", st.cls, st.text)}>● {st.label}</span>
+              </div>
+
+              <div className="p-4 space-y-3">
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <div><div className="text-[10px] text-muted-foreground font-mono uppercase">{language === "pt" ? "Compr." : language === "en" ? "Length" : "长度"}</div><div className="font-mono font-semibold">{b.length} m</div></div>
+                  <div><div className="text-[10px] text-muted-foreground font-mono uppercase">{language === "pt" ? "Calado" : language === "en" ? "Draft" : "吃水"}</div><div className="font-mono font-semibold">{b.draft} m</div></div>
+                  <div><div className="text-[10px] text-muted-foreground font-mono uppercase">{language === "pt" ? "Uso 7d" : language === "en" ? "7d use" : "7天利用率"}</div><div className="font-mono font-semibold">{b.utilization}%</div></div>
+                </div>
+
+                <div>
+                  <div className="h-1 rounded-full bg-muted overflow-hidden">
+                    <div className="h-full bg-accent" style={{ width: `${b.utilization}%` }} />
+                  </div>
+                </div>
+
+                {ship && (
+                  <div className="rounded border border-border bg-secondary/50 p-2.5">
+                    <div className="text-[10px] font-mono uppercase text-muted-foreground mb-0.5">{language === "pt" ? "Atracado agora" : language === "en" ? "Currently berthed" : "当前靠泊"}</div>
+                    <div className="text-sm font-medium">
+                      <ShipLink shipId={ship.id} className="font-medium text-foreground no-underline hover:text-primary">
+                        {ship.flag} {ship.name}
+                      </ShipLink>
+                    </div>
+                    <div className="text-[11px] text-muted-foreground font-mono mt-0.5 flex items-center gap-1">
+                      <Calendar className="h-3 w-3" /> ETS {new Date(ship.ets).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
+                    </div>
+                  </div>
+                )}
+
+                {next && (
+                  <div className="rounded border border-dashed border-border p-2.5">
+                    <div className="text-[10px] font-mono uppercase text-muted-foreground mb-0.5 flex items-center gap-1">
+                      <ArrowRight className="h-3 w-3" /> {language === "pt" ? "Próximo navio" : language === "en" ? "Next vessel" : "下一艘船"}
+                    </div>
+                    <div className="text-sm">
+                      <ShipLink shipId={next.id} className="text-foreground no-underline hover:text-primary">
+                        {next.flag} {next.name}
+                      </ShipLink>
+                    </div>
+                    <div className="text-[11px] text-muted-foreground font-mono mt-0.5">
+                      ETB {b.nextEtb && new Date(b.nextEtb).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
+                    </div>
+                  </div>
+                )}
+
+                {!ship && !next && (
+                  <div className="text-[11px] text-muted-foreground italic">{language === "pt" ? "Sem alocação programada" : language === "en" ? "No scheduled allocation" : "暂无排班"}</div>
+                )}
+
+                {b.conflict && (
+                  <Link to="/riscos" className="flex items-start gap-2 rounded border border-destructive/40 bg-destructive/5 p-2.5 text-xs hover:bg-destructive/10 transition-colors">
+                    <AlertTriangle className="h-3.5 w-3.5 text-destructive shrink-0 mt-0.5" />
+                    <div>
+                      <div className="text-[10px] font-mono uppercase text-destructive mb-0.5">{language === "pt" ? "Conflito previsto" : language === "en" ? "Predicted conflict" : "预计冲突"}</div>
+                      <div className="text-foreground">{b.conflict}</div>
+                    </div>
+                  </Link>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

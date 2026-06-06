@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* PortOps — institutional maritime operations system */
+    --background: 210 32% 97%;
+    --foreground: 214 53% 18%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 214 53% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 214 53% 18%;
+
+    --primary: 211 79% 28%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 208 82% 44%;
+
+    --secondary: 210 56% 96%;
+    --secondary-foreground: 214 53% 18%;
+
+    --muted: 210 30% 94%;
+    --muted-foreground: 215 15% 42%;
+
+    --accent: 207 86% 41%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 152 60% 36%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 35 92% 48%;
+    --warning-foreground: 214 72% 15%;
+
+    --info: 207 86% 41%;
+
+    --border: 212 29% 87%;
+    --input: 212 33% 91%;
+    --ring: 207 86% 41%;
+
+    --radius: 0.85rem;
+
+    /* Operational risk / status */
+    --status-anchored: 35 92% 48%;
+    --status-berthed: 211 81% 42%;
+    --status-operating: 152 60% 36%;
+    --status-transit: 211 81% 55%;
+    --status-blocked: 0 72% 48%;
+
+    --risk-low: 152 60% 36%;
+    --risk-medium: 35 92% 48%;
+    --risk-high: 18 88% 50%;
+    --risk-critical: 0 72% 48%;
+
+    --shadow-card: 0 10px 30px -20px hsl(212 55% 24% / 0.24), 0 2px 8px hsl(212 45% 26% / 0.05);
+    --shadow-panel: 0 24px 60px -34px hsl(212 58% 20% / 0.3);
+
+    --sidebar-background: 211 65% 16%;
+    --sidebar-foreground: 211 28% 84%;
+    --sidebar-primary: 207 86% 55%;
+    --sidebar-primary-foreground: 211 65% 16%;
+    --sidebar-accent: 211 46% 23%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 212 40% 26%;
+    --sidebar-ring: 207 86% 55%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  .maplibregl-popup,
+  .maplibregl-popup-content {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .maplibregl-popup-content {
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+  }
+  .maplibregl-popup-tip {
+    display: none !important;
+  }
+  html, body, #root { @apply h-full; }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-image:
+      radial-gradient(circle at top left, hsl(206 100% 95% / 0.65), transparent 36%),
+      linear-gradient(180deg, hsl(var(--background)), hsl(210 28% 96%));
+  }
+  .font-mono { font-family: 'Noto Sans', ui-sans-serif, system-ui; }
+}
+
+@layer utilities {
+  .card-flat {
+    @apply bg-card border border-border rounded-2xl;
+    box-shadow: var(--shadow-card);
+  }
+  .panel-shadow { box-shadow: var(--shadow-panel); }
+  .surface-glass {
+    @apply bg-white/80 backdrop-blur-xl border border-white/70;
+    box-shadow: var(--shadow-panel);
+  }
+  .navy-sheen {
+    background:
+      linear-gradient(180deg, hsl(212 72% 18%), hsl(211 62% 16%)),
+      radial-gradient(circle at top right, hsl(205 88% 45% / 0.22), transparent 32%);
+  }
+
+  .grid-bg {
+    background-color: hsl(var(--secondary));
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.7) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.7) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .water-bg {
+    background-color: hsl(206 68% 91%);
+    background-image:
+      radial-gradient(circle at 20% 30%, hsl(205 86% 76% / 0.38) 0, transparent 40%),
+      radial-gradient(circle at 70% 60%, hsl(206 88% 68% / 0.25) 0, transparent 35%),
+      linear-gradient(hsl(210 34% 76% / 0.28) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(210 34% 76% / 0.28) 1px, transparent 1px);
+    background-size: auto, auto, 32px 32px, 32px 32px;
+  }
+  .document-grid {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+  .pulse-ring::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 9999px;
+    border: 2px solid currentColor;
+    opacity: 0.6;
+    animation: ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes ring {
+    0% { transform: scale(0.7); opacity: 0.8; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+  @keyframes sweep {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+  @keyframes route-flow {
+    0% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -180; }
+  }
+  @keyframes harbor-drift {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -10px, 0); }
+  }
+  @keyframes ship-sail {
+    0% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(18px, -8px, 0); }
+    100% { transform: translate3d(38px, 4px, 0); }
+  }
+  @keyframes hero-photo-drift {
+    0% { transform: scale(1.02) translate3d(0, 0, 0); }
+    50% { transform: scale(1.045) translate3d(-10px, -6px, 0); }
+    100% { transform: scale(1.03) translate3d(8px, 4px, 0); }
+  }
+  @keyframes water-sheen {
+    0% { transform: translate3d(-6%, 0, 0); opacity: 0.18; }
+    50% { transform: translate3d(4%, -1%, 0); opacity: 0.26; }
+    100% { transform: translate3d(8%, 0, 0); opacity: 0.18; }
+  }
+  .route-flow {
+    stroke-dasharray: 10 12;
+    animation: route-flow 14s linear infinite;
+  }
+  .harbor-drift {
+    animation: harbor-drift 7s ease-in-out infinite;
+  }
+  .ship-sail {
+    animation: ship-sail 16s linear infinite alternate;
+  }
+  .hero-photo-drift {
+    animation: hero-photo-drift 22s ease-in-out infinite alternate;
+  }
+  .water-sheen {
+    animation: water-sheen 12s ease-in-out infinite alternate;
+  }
+}
