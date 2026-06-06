@@ -23,6 +23,7 @@ import { useProfile } from "@/store/profileStore";
 import { PROFILES } from "@/data/profiles";
 import { useLanguageCode } from "@/i18n/useT";
 import { ShipLink } from "@/components/ShipLink";
+import { DocumentStatusBadge } from "@/components/StatusBadges";
 
 type LocalDocument = DocumentItem & {
   source: "seed" | "upload";
@@ -32,12 +33,6 @@ type LocalDocument = DocumentItem & {
 };
 
 const DOC_TYPES: DocumentItem["type"][] = ["BL", "Manifesto", "Certificado Sanitário", "DI", "Lista de Tripulação"];
-
-const STATUS = {
-  validado: { icon: CheckCircle2, cls: "text-success", label: "Validado", surface: "border-success/30 bg-success/5" },
-  pendente: { icon: Clock, cls: "text-warning", label: "Pendente", surface: "border-warning/30 bg-warning/5" },
-  rejeitado: { icon: XCircle, cls: "text-destructive", label: "Rejeitado", surface: "border-destructive/30 bg-destructive/5" },
-} as const;
 
 function formatSize(bytes: number) {
   if (bytes >= 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
@@ -328,8 +323,6 @@ export default function Documentos() {
             <tbody>
               {documents.map((doc) => {
                 const ship = shipMap.get(doc.shipId);
-                const status = STATUS[doc.status];
-                const Icon = status.icon;
                 const restricted = isRestricted(doc);
 
                 return (
@@ -351,7 +344,12 @@ export default function Documentos() {
                       </button>
                     </td>
                     <td className="px-3 py-4 text-xs text-muted-foreground">
-                      {restricted ? <span className="rounded-full border border-destructive/30 bg-destructive/5 px-2 py-1 text-[10px] font-mono uppercase text-destructive">{language === "pt" ? "Restrito" : language === "en" ? "Restricted" : "受限"}</span> : doc.type}
+                      {restricted ? (
+                        <span className="inline-flex min-h-[1.75rem] items-center justify-center gap-1.5 rounded-[0.52rem] border border-red-200 bg-red-50/85 px-2.5 py-1 text-[0.72rem] font-semibold leading-none tracking-[-0.01em] text-red-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+                          <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
+                          {language === "pt" ? "Restrito" : language === "en" ? "Restricted" : "受限"}
+                        </span>
+                      ) : doc.type}
                     </td>
                     <td className="px-3 py-4 text-xs">
                       {ship ? (
@@ -362,9 +360,7 @@ export default function Documentos() {
                     </td>
                     <td className="px-3 py-4 text-xs text-muted-foreground">{doc.uploadedBy}</td>
                     <td className="px-3 py-4">
-                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-mono uppercase ${status.cls} ${status.surface}`}>
-                        <Icon className="h-3.5 w-3.5" /> {status.label}
-                      </span>
+                      <DocumentStatusBadge status={doc.status} compact />
                     </td>
                     <td className="px-3 py-4 text-right text-xs text-muted-foreground font-mono">{doc.size}</td>
                     <td className="px-5 py-4">
@@ -565,7 +561,9 @@ export default function Documentos() {
                     <div className="mt-4 space-y-4 text-sm">
                       <div>
                         <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground font-mono">{language === "pt" ? "Status" : language === "en" ? "Status" : "状态"}</div>
-                        <div className="mt-1 font-medium">{STATUS[selected.status].label}</div>
+                        <div className="mt-2">
+                          <DocumentStatusBadge status={selected.status} />
+                        </div>
                       </div>
                       <div>
                         <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground font-mono">{language === "pt" ? "Navio" : language === "en" ? "Vessel" : "船舶"}</div>

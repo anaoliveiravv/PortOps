@@ -103,7 +103,7 @@ const tooltipStyle = {
   border: "1px solid hsl(var(--border))",
   borderRadius: 8,
   fontSize: 12,
-  fontFamily: "Outfit",
+  fontFamily: "Noto Sans",
 };
 
 export default function Dashboard() {

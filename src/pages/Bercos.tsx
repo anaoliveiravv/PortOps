@@ -1,15 +1,15 @@
 import { berths, ships } from "@/data/mockData";
-import { Anchor, Wrench, Calendar, AlertTriangle, ArrowRight } from "lucide-react";
+import { Anchor, Wrench, Calendar, AlertTriangle, ArrowRight, CheckCircle2, Clock3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLanguageCode } from "@/i18n/useT";
 import { ShipLink } from "@/components/ShipLink";
 
 const STATUS = {
-  livre:      { cls: "border-success/30 bg-success/5",      label: "Livre",       text: "text-success" },
-  ocupado:    { cls: "border-accent/30 bg-accent/5",        label: "Ocupado",     text: "text-accent" },
-  reservado:  { cls: "border-warning/30 bg-warning/5",      label: "Reservado",   text: "text-warning" },
-  manutencao: { cls: "border-destructive/30 bg-destructive/5", label: "Manutenção", text: "text-destructive" },
+  livre:      { cls: "border-emerald-200 bg-emerald-50/80 text-emerald-700", label: "Livre",       text: "text-emerald-700", icon: CheckCircle2 },
+  ocupado:    { cls: "border-blue-200 bg-blue-50/80 text-blue-700",          label: "Ocupado",     text: "text-blue-700", icon: Anchor },
+  reservado:  { cls: "border-orange-200 bg-orange-50/80 text-orange-600",    label: "Reservado",   text: "text-orange-600", icon: Clock3 },
+  manutencao: { cls: "border-red-200 bg-red-50/85 text-red-600",             label: "Manutenção",  text: "text-red-600", icon: Wrench },
 };
 
 export default function Bercos() {
@@ -54,6 +54,7 @@ export default function Bercos() {
           const ship = ships.find((s) => s.id === b.occupiedBy);
           const next = ships.find((s) => s.id === b.nextShipId);
           const st = { ...STATUS[b.status], label: statusLabels[b.status] };
+          const StatusIcon = st.icon;
           return (
             <div key={b.id} className={cn("card-flat overflow-hidden", b.conflict && "border-destructive/40")}>
               <div className={cn("px-4 py-3 border-b border-border flex items-center justify-between", st.cls)}>
@@ -64,7 +65,10 @@ export default function Bercos() {
                     <div className="font-semibold text-sm leading-tight">{b.name}</div>
                   </div>
                 </div>
-                <span className={cn("text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded border", st.cls, st.text)}>● {st.label}</span>
+                <span className={cn("inline-flex min-h-[1.75rem] items-center justify-center gap-1.5 rounded-[0.52rem] border px-2.5 py-1 text-[0.72rem] font-semibold leading-none tracking-[-0.01em] shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]", st.cls)}>
+                  <StatusIcon className="h-3.5 w-3.5 shrink-0" />
+                  {st.label}
+                </span>
               </div>
 
               <div className="p-4 space-y-3">

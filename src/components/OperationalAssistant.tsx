@@ -37,10 +37,10 @@ const QUICK_PROMPTS = {
 } as const;
 
 const SEVERITY_STYLE: Record<NonNullable<ChatMessage["severity"]>, string> = {
-  normal: "border-border bg-card text-foreground",
-  attention: "border-warning/30 bg-warning/10 text-foreground",
-  moderate: "border-info/30 bg-info/10 text-foreground",
-  critical: "border-destructive/40 bg-destructive/10 text-foreground",
+  normal: "border-[#d5e2f1] bg-white text-foreground",
+  attention: "border-orange-200 bg-orange-50/80 text-foreground",
+  moderate: "border-blue-200 bg-blue-50/80 text-foreground",
+  critical: "border-red-200 bg-red-50/85 text-foreground",
 };
 
 function buildWelcomeMessage(language: "pt" | "en" | "zh", focusShipId: string | null) {

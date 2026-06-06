@@ -9,8 +9,8 @@ export default {
     container: { center: true, padding: "2rem", screens: { "2xl": "1400px" } },
     extend: {
       fontFamily: {
-        sans: ['Outfit', 'ui-sans-serif', 'system-ui'],
-        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        sans: ['Noto Sans', 'Inter', 'sans-serif'],
+        mono: ['Noto Sans', 'Inter', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -70,10 +70,10 @@ export default function Liberacoes() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-          { st: "aprovado", label: language === "pt" ? "Aprovados" : language === "en" ? "Approved" : "已批准", cls: "text-success border-success/30 bg-success/5" },
-          { st: "em_analise", label: language === "pt" ? "Em análise" : language === "en" ? "Under review" : "审核中", cls: "text-info border-info/30 bg-info/5" },
-          { st: "pendente", label: language === "pt" ? "Pendentes" : language === "en" ? "Pending" : "待处理", cls: "text-warning border-warning/30 bg-warning/5" },
-          { st: "bloqueado", label: language === "pt" ? "Bloqueados" : language === "en" ? "Blocked" : "已阻止", cls: "text-destructive border-destructive/30 bg-destructive/5" },
+          { st: "aprovado", label: language === "pt" ? "Aprovados" : language === "en" ? "Approved" : "已批准", cls: "text-emerald-700 border-emerald-200 bg-emerald-50/80" },
+          { st: "em_analise", label: language === "pt" ? "Em análise" : language === "en" ? "Under review" : "审核中", cls: "text-blue-700 border-blue-200 bg-blue-50/80" },
+          { st: "pendente", label: language === "pt" ? "Pendentes" : language === "en" ? "Pending" : "待处理", cls: "text-orange-600 border-orange-200 bg-orange-50/80" },
+          { st: "bloqueado", label: language === "pt" ? "Bloqueados" : language === "en" ? "Blocked" : "已阻止", cls: "text-red-600 border-red-200 bg-red-50/85" },
         ].map((x) => (
           <button key={x.st} onClick={() => openSummary(x.st as ClearanceStatus)}
             className={`card-flat text-left p-4 transition ${x.cls} ${filter === x.st ? "ring-2 ring-primary/50" : ""}`}>

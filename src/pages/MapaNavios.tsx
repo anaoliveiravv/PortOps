@@ -4,7 +4,7 @@ import {
   ships as initialShips,
   type Ship,
 } from "@/data/mockData";
-import { ShipStatusBadge, RiskBadge, RISK_HSL } from "@/components/StatusBadges";
+import { ClearanceBadge, ShipStatusBadge, RiskBadge, RISK_HSL } from "@/components/StatusBadges";
 import {
   Clock,
   FileText,
@@ -758,20 +758,7 @@ export default function MapaNavios() {
               {selectedShip.clearances.map((clearance) => (
                 <div key={clearance.agency} className="flex items-center justify-between text-xs">
                   <span>{clearance.agency}</span>
-                  <span
-                    className={cn(
-                      "rounded border px-1.5 py-0.5 text-[10px] font-mono uppercase",
-                      clearance.status === "aprovado"
-                        ? "border-success/30 bg-success/5 text-success"
-                        : clearance.status === "bloqueado"
-                          ? "border-destructive/30 bg-destructive/5 text-destructive"
-                          : clearance.status === "em_analise"
-                            ? "border-info/30 bg-info/5 text-info"
-                            : "border-warning/30 bg-warning/5 text-warning"
-                    )}
-                  >
-                    {clearance.status.replace("_", " ")}
-                  </span>
+                  <ClearanceBadge status={clearance.status} compact />
                 </div>
               ))}
             </div>
