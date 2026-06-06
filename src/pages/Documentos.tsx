@@ -259,7 +259,7 @@ export default function Documentos() {
   };
 
   return (
-    <div className="p-6 animate-fade-in space-y-6">
+    <div className="mx-auto max-w-[1440px] p-6 lg:p-8 animate-fade-in space-y-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <div className="text-[11px] font-mono uppercase tracking-[0.25em] text-primary mb-1">
@@ -276,7 +276,7 @@ export default function Documentos() {
         </div>
         <button
           onClick={() => setUploadOpen(true)}
-          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition hover:opacity-95"
+          className="primary-action inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold"
         >
           <Upload className="h-4 w-4" /> {language === "pt" ? "Enviar documento" : language === "en" ? "Upload document" : "上传文件"}
         </button>
@@ -302,16 +302,13 @@ export default function Documentos() {
         ))}
       </div>
 
-      <div className="card-flat overflow-hidden">
+      <div className="premium-panel overflow-hidden">
         <div className="flex items-center justify-between border-b border-border px-5 py-4">
           <div>
             <div className="text-sm font-semibold">{language === "pt" ? "Repositório operacional" : language === "en" ? "Operational repository" : "运营文档库"}</div>
             <div className="text-xs text-muted-foreground">
               {language === "pt" ? "Clique em um documento para visualizar ou baixar o arquivo." : language === "en" ? "Click a document to preview or download the file." : "点击文件可预览或下载。"}
             </div>
-          </div>
-          <div className="hidden rounded-full border border-border bg-secondary/70 px-3 py-1.5 text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground md:block">
-            {language === "pt" ? "Integração simulada com Porto Sem Papel" : language === "en" ? "Simulated Porto Sem Papel integration" : "模拟接入 Porto Sem Papel"}
           </div>
         </div>
 
@@ -458,7 +455,7 @@ export default function Documentos() {
                     type="file"
                     accept=".pdf,.xml,.png,.jpg,.jpeg,.webp"
                     onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-                    className="mt-4 block w-full text-sm text-muted-foreground file:mr-4 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-medium file:text-primary-foreground hover:file:opacity-95"
+                    className="mt-4 block w-full text-sm text-muted-foreground file:mr-4 file:rounded-full file:border-0 file:bg-[#0759ce] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:opacity-95"
                   />
                   {file && (
                     <div className="mt-3 rounded-2xl border border-border bg-white px-4 py-3 text-sm text-foreground">
@@ -492,7 +489,7 @@ export default function Documentos() {
               </button>
               <button
                 onClick={handleUpload}
-                className="rounded-2xl bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition hover:opacity-95"
+                className="primary-action rounded-2xl px-5 py-3 text-sm font-semibold"
               >
                 {language === "pt" ? "Confirmar envio" : language === "en" ? "Confirm upload" : "确认上传"}
               </button>

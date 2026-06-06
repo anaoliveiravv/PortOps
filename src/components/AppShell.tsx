@@ -1,10 +1,10 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { LayoutDashboard, Map, Anchor, Hourglass, ShieldCheck, FolderOpen, Bell, LogOut, Radio, Users, AlertTriangle, Bot } from "lucide-react";
+import { LayoutDashboard, Map, Anchor, Hourglass, ShieldCheck, FolderOpen, Bell, LogOut, Users, AlertTriangle, Bot, ChevronRight } from "lucide-react";
 import { useProfile } from "@/store/profileStore";
 import { PROFILES } from "@/data/profiles";
 import { cn } from "@/lib/utils";
 import { LanguageSelector } from "@/components/LanguageSelector";
-import { useT } from "@/i18n/useT";
+import { useLanguageCode, useT } from "@/i18n/useT";
 import { useAssistant } from "@/store/assistantStore";
 import { OperationalAssistant } from "@/components/OperationalAssistant";
 
@@ -25,6 +25,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const profile = current ? PROFILES[current] : null;
   const location = useLocation();
   const t = useT();
+  const language = useLanguageCode();
   const { openAssistant, open } = useAssistant();
 
   const visibleNav = NAV.filter((n) => profile?.permissions.includes(n.to));
@@ -32,37 +33,37 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const currentLabel = currentItem ? t(currentItem.labelKey) : t("app.title");
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
-      <aside className="navy-sheen w-72 shrink-0 text-sidebar-foreground flex flex-col border-r border-sidebar-border/80">
-        <div className="px-6 py-6 flex items-center gap-3 border-b border-sidebar-border/90">
-          <div className="h-11 w-11 rounded-2xl bg-white/8 border border-white/10 grid place-items-center shadow-lg">
-            <Anchor className="h-5 w-5 text-white" strokeWidth={2.4} />
+    <div className="flex h-[100dvh] overflow-hidden bg-background">
+      <aside className="navy-sheen relative w-[18.25rem] shrink-0 text-sidebar-foreground flex flex-col border-r border-[#236198]/35">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-[radial-gradient(circle_at_22%_20%,rgba(88,174,255,0.18),transparent_34%)]" />
+        <div className="relative px-5 py-6 flex items-center gap-3 border-b border-white/10">
+          <div className="h-12 w-12 rounded-[1.15rem] bg-[#0d4b95]/60 border border-white/[0.12] grid place-items-center shadow-[0_20px_42px_-28px_rgba(62,159,255,0.9)]">
+            <Anchor className="h-6 w-6 text-white" strokeWidth={2.1} />
           </div>
           <div>
-            <div className="font-bold tracking-tight text-white leading-none text-xl">PortOps</div>
-            <div className="text-[10px] uppercase tracking-[0.22em] text-sidebar-foreground/65 mt-1 font-mono">{t("app.integration")}</div>
+            <div className="font-bold tracking-[-0.03em] text-white leading-none text-2xl">PortOps</div>
           </div>
         </div>
 
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <nav className="relative flex-1 px-3 py-5 space-y-2 overflow-y-auto">
           {visibleNav.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-2xl text-[13px] transition-all group relative border",
+                  "flex items-center gap-3 px-4 py-3.5 rounded-[1.05rem] text-[0.95rem] transition-all duration-300 group relative border active:scale-[0.99]",
                   isActive
-                    ? "bg-white text-sidebar border-white/20 shadow-lg shadow-black/10"
-                    : "border-transparent text-sidebar-foreground hover:bg-white/7 hover:border-white/10 hover:text-white"
+                    ? "bg-[#0759ce] text-white border-[#4db5ff]/40 blue-glow"
+                    : "border-transparent text-sidebar-foreground/90 hover:bg-white/10 hover:border-white/10 hover:text-white"
                 )
               }
             >
               {({ isActive }) => (
                 <>
-                  {isActive && <span className="absolute left-0 top-3 bottom-3 w-1 rounded-r-full bg-accent" />}
-                  <item.icon className={cn("h-4 w-4", isActive ? "text-primary" : "text-sidebar-foreground/80")} />
-                  <span>{t(item.labelKey)}</span>
+                  {isActive && <span className="absolute -right-1 top-3 bottom-3 w-1 rounded-l-full bg-[#6ad4ff] shadow-[0_0_18px_rgba(106,212,255,0.85)]" />}
+                  <item.icon className={cn("h-5 w-5", isActive ? "text-white" : "text-sidebar-foreground/80 group-hover:text-white")} strokeWidth={1.85} />
+                  <span className="font-medium">{t(item.labelKey)}</span>
                 </>
               )}
             </NavLink>
@@ -70,11 +71,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </nav>
 
         {profile && (
-          <div className="p-4 border-t border-sidebar-border/90">
-            <div className="rounded-2xl border border-white/10 bg-white/6 p-4 mb-3">
+          <div className="relative p-4 border-t border-white/10">
+            <div className="rounded-[1.2rem] border border-white/10 bg-white/[0.055] p-4 mb-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_20px_48px_-36px_rgba(50,157,255,0.55)]">
               <div className="flex items-center gap-2 mb-1.5">
-                <profile.icon className="h-3.5 w-3.5 text-accent" />
+                <profile.icon className="h-4 w-4 text-[#4bb2ff]" />
                 <div className="text-xs font-semibold text-white truncate">{profile.name}</div>
+                <ChevronRight className="ml-auto h-4 w-4 text-white/70" />
               </div>
               <div className="text-[10px] text-sidebar-foreground/70 font-mono truncate">{profile.org}</div>
               {session && (
@@ -83,7 +85,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </div>
               )}
             </div>
-            <button onClick={logout} className="w-full flex items-center justify-center gap-2 text-xs text-sidebar-foreground/80 hover:text-white px-3 py-2.5 rounded-2xl border border-white/10 hover:bg-white/7 transition-colors">
+            <button onClick={logout} className="w-full flex items-center justify-center gap-2 text-xs text-sidebar-foreground/80 hover:text-white px-3 py-2.5 rounded-[1rem] border border-white/10 hover:bg-white/10 transition-all duration-200 active:scale-[0.98]">
               <LogOut className="h-3.5 w-3.5" /> {t("common.logout")}
             </button>
           </div>
@@ -91,26 +93,24 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <main className="flex-1 flex flex-col overflow-hidden">
-        <header className="h-16 border-b border-border/80 bg-white/85 backdrop-blur-sm px-6 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-3">
+        <header className="min-h-[4.35rem] border-b border-[#cbd9ea]/90 bg-white/90 backdrop-blur-xl px-6 py-3 flex items-center justify-between gap-5 shrink-0 shadow-[0_16px_38px_-34px_rgba(25,64,113,0.65)]">
+          <div className="flex min-w-0 items-center gap-5">
             <div>
-              <div className="text-[11px] font-mono uppercase tracking-[0.22em] text-muted-foreground">PortOps</div>
-              <h1 className="text-[15px] font-semibold tracking-wide text-foreground">{currentLabel}</h1>
+              <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground">PortOps</div>
+              <h1 className="text-[1rem] font-semibold tracking-[-0.01em] text-foreground">{currentLabel}</h1>
             </div>
-            <span className="hidden md:inline text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">/ {location.pathname.replace("/", "")}</span>
+            <span className="hidden md:inline text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground">/ {location.pathname.replace("/", "")}</span>
+            <LanguageSelector className="hidden shrink-0 md:inline-flex" />
           </div>
-          <div className="flex items-center gap-4 text-[11px] font-mono">
-            <LanguageSelector className="scale-[0.92] origin-right" />
-            <span className="inline-flex items-center gap-2 rounded-full border border-success/25 bg-success/10 px-3 py-1.5 text-success">
-              <span className="relative inline-block h-2 w-2 rounded-full bg-success">
-                <span className="absolute inset-0 rounded-full bg-success animate-ping opacity-75" />
-              </span>
-              {t("app.systemsOnline")}
-            </span>
-            <span className="text-muted-foreground hidden xl:flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5">
-              <Radio className="h-3 w-3" /> {t("app.integration")}
-            </span>
-            <span className="text-muted-foreground hidden md:inline">{new Date().toLocaleString("pt-BR")}</span>
+          <div className="flex shrink-0 items-center gap-3 text-[11px] font-mono">
+            <LanguageSelector className="md:hidden" />
+            <span className="text-muted-foreground hidden lg:inline whitespace-nowrap">{new Date().toLocaleString("pt-BR")}</span>
+            {profile && (
+              <div className="hidden min-w-[9.5rem] rounded-[0.9rem] border border-[#b9d2ef] bg-white/90 px-3 py-2 text-right shadow-[0_20px_42px_-30px_rgba(20,70,132,0.48)] sm:block">
+                <div className="text-[9px] font-mono uppercase tracking-[0.18em] text-muted-foreground">{language === "pt" ? "Sessão ativa" : language === "en" ? "Active session" : "当前会话"}</div>
+                <div className="mt-0.5 truncate text-sm font-semibold text-foreground">{profile.name}</div>
+              </div>
+            )}
           </div>
         </header>
         <div className="flex-1 overflow-auto bg-background">{children}</div>
@@ -118,7 +118,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <button
             type="button"
             onClick={() => openAssistant()}
-            className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 rounded-full border border-[#cfe0f3] bg-[#1351b4] px-4 py-3 text-sm font-semibold text-white shadow-[0_24px_60px_-30px_rgba(19,81,180,0.95)] transition hover:translate-y-[-1px] hover:bg-[#0f469a]"
+            className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 rounded-full border border-[#7cbcff]/50 px-4 py-3 text-sm font-semibold primary-action"
           >
             <Bot className="h-4 w-4" />
             {t("assistant.chat")}

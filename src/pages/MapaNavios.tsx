@@ -387,9 +387,9 @@ export default function MapaNavios() {
   const selectedWeather = selectedShip ? WEATHER_EVENTS.slice(0, selectedShip.risk === "critical" ? 2 : 1) : [];
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full bg-[#eef3f8]">
       <div className="flex flex-1 flex-col">
-        <div className="flex items-center justify-between border-b border-border bg-card px-5 py-3">
+        <div className="mx-4 mt-4 flex items-center justify-between rounded-[1.35rem] border border-[#d5e2f1] bg-white/[0.92] px-5 py-3 shadow-[0_18px_42px_-32px_rgba(20,63,111,0.55)] backdrop-blur">
           <div className="flex items-center gap-3">
             <MapPinned className="h-4 w-4 text-accent" />
             <div>
@@ -413,7 +413,7 @@ export default function MapaNavios() {
           </div>
         </div>
 
-        <div className="relative flex-1 overflow-hidden bg-secondary/30 p-4">
+        <div className="relative flex-1 overflow-hidden p-4">
           <div className="absolute bottom-6 left-6 z-10 hidden rounded-2xl border border-slate-100/20 bg-slate-950/74 p-3 text-[10px] font-mono uppercase tracking-[0.18em] text-slate-200 shadow-[0_18px_50px_-30px_rgba(15,23,42,0.9)] backdrop-blur md:block">
               <div className="mb-2 text-slate-50">{t("map.layers")}</div>
             <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-primary" /> {t("map.layerPorts")}</div>
@@ -568,7 +568,7 @@ export default function MapaNavios() {
                           <MarkerLabel
                             position="top"
                             className={cn(
-                              "rounded-full bg-white/92 px-2 py-1 font-mono uppercase tracking-[0.14em] text-[9px] shadow-sm",
+                              "rounded-full bg-white/[0.92] px-2 py-1 font-mono uppercase tracking-[0.14em] text-[9px] shadow-sm",
                               isHighlighted && "border border-primary/40 bg-white"
                             )}
                           >
@@ -600,8 +600,8 @@ export default function MapaNavios() {
       </div>
 
       {selectedShip && (
-        <aside key={selectedShip.id} className="w-[400px] shrink-0 overflow-y-auto border-l border-border bg-card">
-          <div className="border-b border-border p-5">
+        <aside key={selectedShip.id} className="w-[400px] shrink-0 overflow-y-auto border-l border-[#d5e2f1] bg-white/95 shadow-[0_22px_58px_-36px_rgba(19,50,95,0.42)] backdrop-blur">
+          <div className="border-b border-[#d5e2f1] p-5">
             <div className="mb-3 flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <div className="mb-1 text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">Navio · IMO {selectedShip.imo}</div>
@@ -617,7 +617,7 @@ export default function MapaNavios() {
               <RiskBadge level={selectedShip.risk} />
             </div>
             {selectedDestination && (
-              <div className="mt-4 rounded-xl border border-border bg-secondary/35 p-3">
+              <div className="mt-4 rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] p-3">
                 <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground">{t("map.destination")}</div>
                 <div className="mt-2 text-sm font-semibold text-foreground">{selectedDestination.name}</div>
                 <div className="mt-1 text-xs text-muted-foreground">
@@ -626,11 +626,11 @@ export default function MapaNavios() {
               </div>
             )}
             <div className="mt-3 grid grid-cols-2 gap-3">
-              <div className="rounded-xl border border-border bg-secondary/30 p-3">
+              <div className="rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] p-3">
                 <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground">{t("map.routeProgress")}</div>
                 <div className="mt-1 text-lg font-semibold text-foreground">{Math.round((selectedShip.routeProgress ?? 0.5) * 100)}%</div>
               </div>
-              <div className="rounded-xl border border-border bg-secondary/30 p-3">
+              <div className="rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] p-3">
                 <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground">{t("map.eta")}</div>
                 <div className="mt-1 text-lg font-semibold text-foreground">
                   {new Date(selectedShip.eta).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
@@ -641,14 +641,14 @@ export default function MapaNavios() {
               <button
                 type="button"
                 onClick={() => openAssistant(selectedShip.id)}
-                className="rounded-xl border border-[#cfe0f3] bg-[#1351b4] px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0f469a]"
+                className="primary-action rounded-xl px-3 py-3 text-sm font-semibold"
               >
                 {language === "pt" ? "Assistente" : language === "en" ? "Assistant" : "助手"}
               </button>
               <button
                 type="button"
                 onClick={() => openReport(selectedShip.id)}
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#cfe0f3] bg-white px-3 py-3 text-sm font-semibold text-[#1351b4] transition-colors hover:bg-[#f4f8fd]"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#cfe0f3] bg-white px-3 py-3 text-sm font-semibold text-[#1351b4] transition-colors hover:border-[#8bb4e7] hover:bg-[#f4f8fd]"
               >
                 <FileText className="h-4 w-4" />
                 {language === "pt" ? "Relatório" : language === "en" ? "Report" : "报告"}
@@ -656,14 +656,14 @@ export default function MapaNavios() {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 border-b border-border text-[10px] font-mono uppercase tracking-wider">
-            <Link to="/documentos" className="border-r border-border py-3 text-center text-muted-foreground hover:bg-secondary hover:text-foreground">
+          <div className="grid grid-cols-3 border-b border-[#d5e2f1] text-[10px] font-mono uppercase tracking-wider">
+            <Link to="/documentos" className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
               <FileText className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Docs" : language === "en" ? "Docs" : "文件"}
             </Link>
-            <Link to="/liberacoes" className="border-r border-border py-3 text-center text-muted-foreground hover:bg-secondary hover:text-foreground">
+            <Link to="/liberacoes" className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
               <ShieldCheck className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Órgãos" : language === "en" ? "Agencies" : "机构"}
             </Link>
-            <button className="py-3 text-center text-muted-foreground hover:bg-secondary hover:text-foreground">
+            <button className="py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
               <Navigation className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Rota" : language === "en" ? "Route" : "路线"}
             </button>
           </div>
@@ -690,7 +690,7 @@ export default function MapaNavios() {
               <span className="font-mono uppercase text-muted-foreground">Agente</span>
               <span>{selectedShip.agent}</span>
             </div>
-            <div className="mt-3 rounded-xl border border-border bg-secondary/35 p-3">
+            <div className="mt-3 rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] p-3">
               <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground">{t("map.destinationFinal")}</div>
               <div className="mt-1 text-xs text-foreground">{selectedDestination?.name ?? (language === "pt" ? "Hub Maranhão" : language === "en" ? "Maranhão hub" : "马拉尼昂枢纽")}</div>
             </div>
@@ -701,19 +701,19 @@ export default function MapaNavios() {
               const intel = analyzeShip(selectedShip, language);
               return (
                 <div className="space-y-3 text-xs">
-                  <div className="rounded-xl border border-border bg-secondary/30 p-3">
+                  <div className="rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] p-3">
                     <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground">
                       {language === "pt" ? "Probabilidade de atraso" : language === "en" ? "Delay probability" : "延误概率"}
                     </div>
                     <div className="mt-1 text-lg font-semibold text-foreground">{intel.delayProbability}%</div>
                   </div>
-                  <div className="rounded-xl border border-border bg-secondary/30 p-3">
+                  <div className="rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] p-3">
                     <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground">
                       {language === "pt" ? "Gargalo" : language === "en" ? "Bottleneck" : "瓶颈"}
                     </div>
                     <div className="mt-1 text-sm text-foreground">{intel.bottleneck}</div>
                   </div>
-                  <div className="rounded-xl border border-border bg-secondary/30 p-3">
+                  <div className="rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] p-3">
                     <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground">
                       {language === "pt" ? "Próxima ação" : language === "en" ? "Next action" : "下一步"}
                     </div>
@@ -741,7 +741,7 @@ export default function MapaNavios() {
             <Section title={`Pendências (${selectedShip.pendencias.length})`} icon={TriangleAlert}>
               <div className="space-y-2">
                 {selectedShip.pendencias.map((pendency, index) => (
-                  <div key={index} className="rounded border border-border bg-secondary/50 p-2.5">
+                  <div key={index} className="rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] p-2.5">
                     <div className="mb-1 flex items-center justify-between">
                       <span className="text-[10px] font-mono uppercase text-warning">{pendency.area}</span>
                       {pendency.agency && <span className="text-[10px] font-mono text-muted-foreground">{pendency.agency}</span>}
@@ -780,7 +780,7 @@ export default function MapaNavios() {
           <Section title="Alertas climáticos" icon={TriangleAlert}>
             <div className="space-y-2">
               {selectedWeather.map((event) => (
-                <div key={event.id} className="rounded-xl border border-border bg-secondary/35 p-3">
+                <div key={event.id} className="rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] p-3">
                   <div className="flex items-start gap-3">
                     <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-base shadow-sm">
                       {event.symbol}
@@ -936,7 +936,7 @@ interface SectionProps {
 
 function Section({ title, icon: Icon, children, tone }: SectionProps) {
   return (
-    <section className="border-b border-border p-5">
+    <section className="border-b border-[#d5e2f1] p-5">
       <div className="mb-3 flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
         <Icon className={cn("h-3.5 w-3.5", tone === "critical" && "text-destructive", tone === "high" && "text-risk-high")} />
         {title}

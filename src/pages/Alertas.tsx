@@ -25,7 +25,7 @@ export default function Alertas() {
   };
 
   return (
-    <div className="p-6 animate-fade-in space-y-5">
+    <div className="mx-auto max-w-[1440px] p-6 lg:p-8 animate-fade-in space-y-6">
       <div>
         <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-accent mb-1">
           {language === "pt" ? "Inteligência · Eventos" : language === "en" ? "Intelligence · Events" : "智能 · 事件"}
@@ -73,7 +73,7 @@ export default function Alertas() {
                   <div className="text-xs text-muted-foreground mt-1">{a.description}</div>
 
                   {a.recommendedAction && (
-                    <div className="mt-3 rounded border border-border bg-card p-2.5 text-xs">
+                    <div className="mt-3 rounded-xl border border-[#d5e2f1] bg-white/70 p-2.5 text-xs">
                       <div className="text-[10px] font-mono uppercase text-accent mb-0.5">
                         {language === "pt" ? "Ação recomendada" : language === "en" ? "Recommended action" : "建议操作"}
                       </div>
@@ -83,11 +83,11 @@ export default function Alertas() {
 
                   <div className="mt-3 flex items-center gap-2 flex-wrap">
                     {ship && (
-                      <ShipLink shipId={ship.id} className="inline-flex items-center gap-1.5 rounded bg-card border border-border px-2 py-1 text-[11px] font-mono no-underline hover:border-accent hover:text-accent transition-colors">
+                      <ShipLink shipId={ship.id} className="inline-flex items-center gap-1.5 rounded-full bg-white/80 border border-[#d5e2f1] px-2.5 py-1 text-[11px] font-mono no-underline hover:border-accent hover:text-accent transition-colors">
                         {ship.flag} {ship.name} <ArrowRight className="h-3 w-3" />
                       </ShipLink>
                     )}
-                    <Link to="/riscos" className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-card border border-border text-[11px] font-mono hover:border-accent hover:text-accent transition-colors">
+                    <Link to="/riscos" className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/80 border border-[#d5e2f1] text-[11px] font-mono hover:border-accent hover:text-accent transition-colors">
                       {language === "pt" ? "Ver risco" : language === "en" ? "View risk" : "查看风险"} <ArrowRight className="h-3 w-3" />
                     </Link>
                   </div>

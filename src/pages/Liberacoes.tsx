@@ -51,7 +51,7 @@ export default function Liberacoes() {
   };
 
   return (
-    <div className="p-6 animate-fade-in space-y-6">
+    <div className="mx-auto max-w-[1440px] p-6 lg:p-8 animate-fade-in space-y-6">
       <div>
         <div className="text-[11px] font-mono uppercase tracking-[0.25em] text-primary mb-1">
           {language === "pt" ? "Core · Integração entre órgãos" : language === "en" ? "Core · Agency integration" : "核心 · 机构集成"}
@@ -76,14 +76,14 @@ export default function Liberacoes() {
           { st: "bloqueado", label: language === "pt" ? "Bloqueados" : language === "en" ? "Blocked" : "已阻止", cls: "text-destructive border-destructive/30 bg-destructive/5" },
         ].map((x) => (
           <button key={x.st} onClick={() => openSummary(x.st as ClearanceStatus)}
-            className={`text-left rounded-lg border p-4 transition ${x.cls} ${filter === x.st ? "ring-2 ring-primary/50" : ""}`}>
+            className={`card-flat text-left p-4 transition ${x.cls} ${filter === x.st ? "ring-2 ring-primary/50" : ""}`}>
             <div className="text-[10px] font-mono uppercase tracking-wider opacity-80">{x.label}</div>
             <div className="text-2xl font-bold font-mono mt-1">{counts[x.st] ?? 0}</div>
           </button>
         ))}
       </div>
 
-      <div className="rounded-xl border border-border bg-card overflow-hidden">
+      <div className="premium-panel overflow-hidden">
         <div className="p-4 border-b border-border flex items-center justify-between">
           <div className="text-sm font-semibold">{language === "pt" ? "Matriz Navio × Órgão" : language === "en" ? "Vessel × Agency matrix" : "船舶 × 机构矩阵"}</div>
           <div className="flex items-center gap-2">
@@ -109,7 +109,7 @@ export default function Liberacoes() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-[10px] uppercase tracking-wider text-muted-foreground font-mono">
-                <th className="text-left px-5 py-3 sticky left-0 bg-card">{language === "pt" ? "Navio" : language === "en" ? "Vessel" : "船舶"}</th>
+                <th className="text-left px-5 py-3 sticky left-0 bg-white/95">{language === "pt" ? "Navio" : language === "en" ? "Vessel" : "船舶"}</th>
                 {AGENCIES.map((a) => (
                   <th key={a} className="text-center px-3 py-3 min-w-[140px]">{a}</th>
                 ))}
@@ -122,7 +122,7 @@ export default function Liberacoes() {
                 const pct = (approved / s.clearances.length) * 100;
                 return (
                   <tr key={s.id} className="border-b border-border/50 hover:bg-secondary/20">
-                    <td className="px-5 py-3 sticky left-0 bg-card">
+                    <td className="px-5 py-3 sticky left-0 bg-white/95">
                       <div className="font-medium">
                         <ShipLink shipId={s.id} className="font-medium text-foreground no-underline hover:text-primary">
                           {s.flag} {s.name}

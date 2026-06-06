@@ -166,7 +166,7 @@ export function OperationalAssistant() {
     <div className="fixed inset-x-3 bottom-3 z-[60] sm:inset-x-auto sm:bottom-6 sm:right-6">
       <div className="w-full max-w-[calc(100vw-1.5rem)] sm:w-[28rem]">
         <div className="flex h-[min(44rem,calc(100dvh-1.5rem))] flex-col overflow-hidden rounded-[1.75rem] border border-[#cfe0f3] bg-[linear-gradient(180deg,#f8fbff_0%,#edf4fb_100%)] shadow-[0_26px_80px_-34px_rgba(16,45,87,0.48)] backdrop-blur-xl sm:h-[min(44rem,calc(100dvh-7rem))]">
-          <div className="sticky top-0 z-10 border-b border-border/70 bg-white/92 backdrop-blur-xl">
+          <div className="sticky top-0 z-10 border-b border-border/70 bg-white/90 backdrop-blur-xl">
             <div className="flex items-start justify-between gap-3 px-4 pb-3 pt-4 sm:px-5">
               <div className="flex min-w-0 items-center gap-3">
                 {mode === "report" && (
@@ -313,7 +313,7 @@ export function OperationalAssistant() {
           </div>
 
           {mode === "chat" && (
-            <div className="border-t border-border/60 bg-white/88 px-4 py-4 backdrop-blur sm:px-5">
+            <div className="border-t border-border/60 bg-white/90 px-4 py-4 backdrop-blur sm:px-5">
               <div className="rounded-[1.5rem] border border-border bg-white p-3 shadow-[0_18px_46px_-34px_rgba(16,45,87,0.34)]">
                 <Textarea
                   value={input}

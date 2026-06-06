@@ -71,9 +71,6 @@ export default function Login() {
               </div>
               <div>
                 <div className="text-[3rem] font-bold leading-none tracking-[-0.03em]">PortOps</div>
-                <div className="mt-2 text-[0.82rem] uppercase tracking-[0.42em] text-white/78">
-                  {t("login.brandSub")}
-                </div>
               </div>
             </div>
 
@@ -82,7 +79,7 @@ export default function Login() {
                 <span className="block whitespace-nowrap">{t("login.heroTitle1")}</span>
                 <span className="block whitespace-nowrap">{t("login.heroTitle2")}</span>
               </h1>
-              <p className="mt-5 max-w-[23rem] text-[0.92rem] leading-[1.7] text-white/78">
+              <p className="mt-5 max-w-[23rem] text-[0.92rem] leading-[1.7] text-white/[0.78]">
                 {t("login.heroLead")}
               </p>
             </div>
@@ -99,14 +96,11 @@ export default function Login() {
               </div>
               <div>
                 <div className="text-2xl font-bold tracking-[-0.03em] text-[#183153]">PortOps</div>
-                <div className="text-[0.7rem] uppercase tracking-[0.3em] text-[#557195]">
-                  {t("login.brandSub")}
-                </div>
               </div>
             </div>
 
             <div
-              className="flex max-h-[calc(100dvh-6.5rem)] min-h-[32rem] flex-col overflow-y-auto rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_28px_70px_-32px_rgba(19,50,95,0.38)] backdrop-blur sm:min-h-[35rem] sm:px-8 sm:py-7 lg:px-10"
+              className="premium-panel flex max-h-[calc(100dvh-6.5rem)] min-h-[32rem] flex-col overflow-y-auto rounded-[2rem] px-6 py-6 sm:min-h-[35rem] sm:px-8 sm:py-7 lg:px-10"
             >
               <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-[1.4rem] border border-[#d9e3f1] bg-[#f7faff] text-[#1351b4] shadow-[0_12px_26px_-18px_rgba(19,81,180,0.5)] sm:h-16 sm:w-16">
                 <ShieldCheck className="h-7 w-7" strokeWidth={2.1} />
@@ -140,7 +134,7 @@ export default function Login() {
 
                   <button
                     onClick={() => setStep("gov")}
-                    className="mt-7 flex h-[4.2rem] w-full items-center justify-center gap-4 rounded-[1.25rem] bg-[#1351b4] px-6 text-[1rem] font-semibold text-white shadow-[0_22px_40px_-26px_rgba(19,81,180,0.95)] transition-colors hover:bg-[#0f469a]"
+                    className="primary-action mt-7 flex h-[4.2rem] w-full items-center justify-center gap-4 rounded-[1.25rem] px-6 text-[1rem] font-semibold"
                   >
                     <span className="rounded-full bg-white px-4 py-2 text-[0.96rem] font-bold leading-none text-[#1351b4]">
                       gov.br
@@ -175,7 +169,7 @@ export default function Login() {
                       <Input
                         value={cpf}
                         onChange={(e) => setCpf(e.target.value)}
-                        className="h-12 rounded-xl border-[#cfe0f3] bg-white/92 text-[#183153] placeholder:text-[#8aa0ba]/60"
+                        className="h-12 rounded-xl border-[#cfe0f3] bg-white/90 text-[#183153] placeholder:text-[#8aa0ba]/60"
                         placeholder="123.456.789-00"
                       />
                     </div>
@@ -187,7 +181,7 @@ export default function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         type="password"
-                        className="h-12 rounded-xl border-[#cfe0f3] bg-white/92 text-[#183153] placeholder:text-[#8aa0ba]/60"
+                        className="h-12 rounded-xl border-[#cfe0f3] bg-white/90 text-[#183153] placeholder:text-[#8aa0ba]/60"
                         placeholder="Digite a senha"
                       />
                     </div>
@@ -203,7 +197,7 @@ export default function Login() {
                     </button>
                     <button
                       type="submit"
-                      className="inline-flex h-11 items-center gap-2 rounded-full bg-[#1351b4] px-5 text-sm font-semibold text-white shadow-[0_18px_36px_-24px_rgba(19,81,180,0.9)] transition-colors hover:bg-[#0f469a]"
+                      className="primary-action inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold"
                     >
                       Entrar <ChevronRight className="h-4 w-4" />
                     </button>
@@ -227,7 +221,7 @@ export default function Login() {
                   </p>
                   <button
                     onClick={() => setStep("demo")}
-                    className="mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#1351b4] px-5 text-sm font-semibold text-white shadow-[0_18px_36px_-24px_rgba(19,81,180,0.9)] transition-colors hover:bg-[#0f469a]"
+                    className="primary-action mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold"
                   >
                     {t("common.continue")} <ChevronRight className="h-4 w-4" />
                   </button>

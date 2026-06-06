@@ -11,7 +11,7 @@ export default function Fila() {
     .sort((a, b) => (a.queuePosition ?? 99) - (b.queuePosition ?? 99));
 
   return (
-    <div className="p-6 animate-fade-in space-y-6">
+    <div className="mx-auto max-w-[1440px] p-6 lg:p-8 animate-fade-in space-y-6">
       <div>
         <div className="text-[11px] font-mono uppercase tracking-[0.25em] text-primary mb-1">
           {language === "pt" ? "Fundeio · Fila" : language === "en" ? "Anchorage · Queue" : "锚地 · 队列"}
@@ -21,11 +21,11 @@ export default function Fila() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-border bg-card p-5">
+        <div className="card-flat p-5">
           <div className="flex items-center gap-2 text-xs font-mono uppercase text-muted-foreground"><Hourglass className="h-3.5 w-3.5" /> {language === "pt" ? "Espera média" : language === "en" ? "Average wait" : "平均等待"}</div>
           <div className="text-3xl font-bold font-mono mt-2">14<span className="text-base text-muted-foreground">h 22m</span></div>
         </div>
-        <div className="rounded-xl border border-border bg-card p-5">
+        <div className="card-flat p-5">
           <div className="flex items-center gap-2 text-xs font-mono uppercase text-muted-foreground"><AlertCircle className="h-3.5 w-3.5" /> {language === "pt" ? "Maior espera" : language === "en" ? "Longest wait" : "最长等待"}</div>
           <div className="text-3xl font-bold font-mono mt-2 text-warning">28<span className="text-base text-muted-foreground">h</span></div>
         </div>
@@ -49,7 +49,7 @@ export default function Fila() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-border bg-card overflow-hidden">
+      <div className="premium-panel overflow-hidden">
         <div className="p-5 border-b border-border">
           <div className="text-sm font-semibold">{language === "pt" ? "Navios fundeados — ordem de prioridade" : language === "en" ? "Anchored vessels — priority order" : "锚泊船舶 - 优先顺序"}</div>
         </div>

@@ -21,7 +21,7 @@ export default function Riscos() {
   }, {} as Record<RiskLevel, number>);
 
   return (
-    <div className="p-6 animate-fade-in space-y-5">
+    <div className="mx-auto max-w-[1440px] p-6 lg:p-8 animate-fade-in space-y-6">
       <div>
         <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-accent mb-1">{language === "pt" ? "Inteligência · Riscos operacionais" : language === "en" ? "Intelligence · Operational risks" : "智能 · 运营风险"}</div>
         <h1 className="text-2xl font-bold tracking-tight flex items-center gap-3">
@@ -45,7 +45,7 @@ export default function Riscos() {
           const berth = r.berthId ? berths.find((b) => b.id === r.berthId) : null;
           const hoursLeft = Math.round((+new Date(r.deadline) - Date.now()) / 3600000);
           return (
-            <div key={r.id} className="card-flat overflow-hidden">
+            <div key={r.id} className="premium-panel overflow-hidden">
               <div className="grid md:grid-cols-[1fr_280px]">
                 <div className="p-4 border-r border-border">
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -67,7 +67,7 @@ export default function Riscos() {
                     <span className="font-mono uppercase text-[10px] text-muted-foreground mr-1.5">{language === "pt" ? "Impacto:" : language === "en" ? "Impact:" : "影响："}</span>
                     {r.impact}
                   </div>
-                  <div className="mt-3 flex items-start gap-2 rounded border border-accent/30 bg-accent/5 p-2.5">
+                  <div className="mt-3 flex items-start gap-2 rounded-xl border border-accent/30 bg-accent/5 p-2.5">
                     <Target className="h-3.5 w-3.5 text-accent shrink-0 mt-0.5" />
                     <div className="text-xs">
                       <div className="text-[10px] font-mono uppercase text-accent mb-0.5">{language === "pt" ? "Plano de mitigação" : language === "en" ? "Mitigation plan" : "缓解计划"}</div>
@@ -75,7 +75,7 @@ export default function Riscos() {
                     </div>
                   </div>
                 </div>
-                <div className="p-4 bg-secondary/30 space-y-3">
+                <div className="p-4 bg-[#f6f9fd] space-y-3">
                   <div>
                     <div className="text-[10px] font-mono uppercase text-muted-foreground flex items-center gap-1.5"><Clock className="h-3 w-3" /> {language === "pt" ? "Prazo crítico" : language === "en" ? "Critical deadline" : "关键期限"}</div>
                     <div className={cn("text-lg font-bold font-mono mt-1", hoursLeft <= 2 ? "text-destructive" : hoursLeft <= 6 ? "text-warning" : "text-foreground")}>

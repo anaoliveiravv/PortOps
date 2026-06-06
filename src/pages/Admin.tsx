@@ -46,7 +46,7 @@ export default function Admin() {
   };
 
   return (
-    <div className="p-6 space-y-5 animate-fade-in">
+    <div className="mx-auto max-w-[1440px] p-6 lg:p-8 space-y-6 animate-fade-in">
       <div className="flex items-start justify-between">
         <div>
           <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-accent mb-1">{language === "pt" ? "Administração" : language === "en" ? "Administration" : "管理"}</div>
@@ -59,7 +59,7 @@ export default function Admin() {
                 : "机构凭证管理。用户身份通过 gov.br 自动识别。"}
           </p>
         </div>
-        <button className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded text-sm font-medium hover:opacity-90">
+        <button className="primary-action flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-semibold">
           <Plus className="h-4 w-4" /> {language === "pt" ? "Novo vínculo" : language === "en" ? "New assignment" : "新增绑定"}
         </button>
       </div>
@@ -81,7 +81,7 @@ export default function Admin() {
         ))}
       </div>
 
-      <div className="card-flat overflow-hidden">
+      <div className="premium-panel overflow-hidden">
         <div className="p-3 border-b border-border flex flex-wrap gap-2 items-center">
           <div className="relative flex-1 min-w-[220px]">
             <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -144,7 +144,7 @@ export default function Admin() {
         </table>
       </div>
 
-      <div className="card-flat p-5">
+      <div className="premium-panel p-5">
         <div className="text-sm font-semibold mb-1">{language === "pt" ? "Matriz de permissões por perfil" : language === "en" ? "Permission matrix by profile" : "按身份划分的权限矩阵"}</div>
         <div className="text-xs text-muted-foreground mb-4">{language === "pt" ? "Áreas da plataforma acessíveis por cada perfil institucional." : language === "en" ? "Platform areas accessible to each institutional profile." : "各机构身份可访问的平台区域。"}</div>
         <div className="overflow-x-auto">

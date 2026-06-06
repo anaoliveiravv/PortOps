@@ -11,7 +11,7 @@ export function LanguageSelector({ className }: { className?: string }) {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <div className={cn("inline-flex items-center gap-1 rounded-full border border-border bg-white/90 p-1 shadow-sm backdrop-blur", className)}>
+    <div className={cn("inline-flex items-center gap-1 rounded-full border border-[#b9d2ef] bg-white/90 p-1 shadow-[0_14px_30px_-24px_rgba(13,63,126,0.55)] backdrop-blur", className)}>
       {OPTIONS.map((option) => {
         const active = language === option.code;
         return (
@@ -20,13 +20,13 @@ export function LanguageSelector({ className }: { className?: string }) {
             type="button"
             onClick={() => setLanguage(option.code)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold transition-colors",
-              active ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+              "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-semibold transition-all duration-200 active:scale-[0.98]",
+              active ? "bg-[#0759ce] text-white blue-glow" : "text-[#53687f] hover:bg-[#eef6ff] hover:text-[#183153]",
             )}
             title={option.label}
           >
-            <span>{option.flag}</span>
-            <span className="font-mono uppercase tracking-[0.18em]">{option.label}</span>
+            <span className="text-[0.78rem] leading-none">{option.flag}</span>
+            <span className="font-mono uppercase tracking-[0.14em]">{option.label}</span>
           </button>
         );
       })}

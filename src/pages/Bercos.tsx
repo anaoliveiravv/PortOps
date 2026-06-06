@@ -27,7 +27,7 @@ export default function Bercos() {
   const conflicts = berths.filter((b) => b.conflict).length;
 
   return (
-    <div className="p-6 animate-fade-in space-y-5">
+    <div className="mx-auto max-w-[1440px] p-6 lg:p-8 animate-fade-in space-y-6">
       <div>
         <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-accent mb-1">{language === "pt" ? "Operação · Berços" : language === "en" ? "Operations · Berths" : "运营 · 泊位"}</div>
         <h1 className="text-2xl font-bold tracking-tight">{language === "pt" ? "Gestão de Berços" : language === "en" ? "Berth Management" : "泊位管理"}</h1>
@@ -81,7 +81,7 @@ export default function Bercos() {
                 </div>
 
                 {ship && (
-                  <div className="rounded border border-border bg-secondary/50 p-2.5">
+                  <div className="rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] p-2.5">
                     <div className="text-[10px] font-mono uppercase text-muted-foreground mb-0.5">{language === "pt" ? "Atracado agora" : language === "en" ? "Currently berthed" : "当前靠泊"}</div>
                     <div className="text-sm font-medium">
                       <ShipLink shipId={ship.id} className="font-medium text-foreground no-underline hover:text-primary">
@@ -95,7 +95,7 @@ export default function Bercos() {
                 )}
 
                 {next && (
-                  <div className="rounded border border-dashed border-border p-2.5">
+                  <div className="rounded-xl border border-dashed border-[#c5d6eb] bg-white/60 p-2.5">
                     <div className="text-[10px] font-mono uppercase text-muted-foreground mb-0.5 flex items-center gap-1">
                       <ArrowRight className="h-3 w-3" /> {language === "pt" ? "Próximo navio" : language === "en" ? "Next vessel" : "下一艘船"}
                     </div>
@@ -115,7 +115,7 @@ export default function Bercos() {
                 )}
 
                 {b.conflict && (
-                  <Link to="/riscos" className="flex items-start gap-2 rounded border border-destructive/40 bg-destructive/5 p-2.5 text-xs hover:bg-destructive/10 transition-colors">
+                  <Link to="/riscos" className="flex items-start gap-2 rounded-xl border border-destructive/40 bg-destructive/5 p-2.5 text-xs hover:bg-destructive/10 transition-colors">
                     <AlertTriangle className="h-3.5 w-3.5 text-destructive shrink-0 mt-0.5" />
                     <div>
                       <div className="text-[10px] font-mono uppercase text-destructive mb-0.5">{language === "pt" ? "Conflito previsto" : language === "en" ? "Predicted conflict" : "预计冲突"}</div>
