@@ -16,7 +16,7 @@ export default function Login() {
   const t = useT();
   const language = useLanguageCode();
   const [step, setStep] = useState<Step>("landing");
-  const [cpf, setCpf] = useState("123.456.789-00");
+  const [cpf, setCpf] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function Login() {
           </div>
         </section>
 
-        <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,rgba(63,119,209,0.12),transparent_26%),linear-gradient(180deg,#f8fbff_0%,#edf3fb_100%)] px-5 py-5 sm:px-8 sm:py-6 lg:px-10 lg:py-8">
+        <section className="relative flex min-h-screen items-center justify-center overflow-y-auto bg-[radial-gradient(circle_at_top,rgba(63,119,209,0.12),transparent_26%),linear-gradient(180deg,#f8fbff_0%,#edf3fb_100%)] px-5 py-5 sm:px-8 sm:py-6 lg:px-10 lg:py-8">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,255,255,0.88),transparent_44%)]" />
 
           <div className="relative z-10 flex min-h-0 w-full max-w-[35rem] flex-col justify-center">
@@ -106,17 +106,17 @@ export default function Login() {
             </div>
 
             <div
-              className="flex h-[min(41rem,calc(100dvh-2rem))] min-h-0 flex-col overflow-hidden rounded-[2rem] border border-white/70 bg-white/88 px-6 py-7 shadow-[0_28px_70px_-32px_rgba(19,50,95,0.38)] backdrop-blur sm:h-[min(41rem,calc(100dvh-3rem))] sm:px-8 sm:py-8 lg:px-10 lg:py-8"
+              className="flex max-h-[calc(100dvh-6.5rem)] min-h-[32rem] flex-col overflow-y-auto rounded-[2rem] border border-white/70 bg-white/88 px-6 py-6 shadow-[0_28px_70px_-32px_rgba(19,50,95,0.38)] backdrop-blur sm:min-h-[35rem] sm:px-8 sm:py-7 lg:px-10"
             >
-              <div className="mx-auto mb-6 grid h-14 w-14 place-items-center rounded-[1.4rem] border border-[#d9e3f1] bg-[#f7faff] text-[#1351b4] shadow-[0_12px_26px_-18px_rgba(19,81,180,0.5)] sm:h-16 sm:w-16">
+              <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-[1.4rem] border border-[#d9e3f1] bg-[#f7faff] text-[#1351b4] shadow-[0_12px_26px_-18px_rgba(19,81,180,0.5)] sm:h-16 sm:w-16">
                 <ShieldCheck className="h-7 w-7" strokeWidth={2.1} />
               </div>
 
-              <div className="min-h-[9.75rem] text-center sm:min-h-[10.5rem]">
+              <div className="text-center">
                 <div className="text-[0.82rem] font-semibold uppercase tracking-[0.38em] text-[#1f5dc4]">
                   {t("login.accessInstitutional")}
                 </div>
-                <h2 className="mt-4 text-[2rem] font-bold tracking-[-0.04em] text-[#183153] sm:text-[2.3rem]">
+                <h2 className="mt-3 text-[2rem] font-bold tracking-[-0.04em] text-[#183153] sm:text-[2.3rem]">
                   {t("login.submit")}
                 </h2>
                 <p className="mt-3 text-[0.98rem] leading-7 text-[#6d7f99]">
@@ -125,7 +125,7 @@ export default function Login() {
               </div>
 
               {step === "landing" && (
-                <div className="mt-7 flex flex-1 flex-col justify-center">
+                <div className="mt-6 flex flex-1 flex-col justify-center">
                   <div className="rounded-[1.45rem] border border-[#dce5f2] bg-[linear-gradient(180deg,#f8fbff_0%,#f3f7fd_100%)] px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:px-6">
                     <div className="flex items-start gap-4">
                       <div className="mt-0.5 grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white text-[#1351b4] shadow-[0_10px_22px_-18px_rgba(19,81,180,0.8)]">
@@ -151,20 +151,23 @@ export default function Login() {
               )}
 
               {step === "gov" && (
-                <form onSubmit={handleGovEntry} className="mt-7 flex flex-1 flex-col rounded-[1.55rem] border border-[#cfdcf0] bg-[linear-gradient(180deg,#eff6ff_0%,#f8fbff_100%)] p-4 sm:p-5">
-                  <div className="rounded-[1.15rem] bg-[#1351b4] px-4 py-3 text-white shadow-[0_18px_40px_-28px_rgba(19,81,180,0.9)]">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <div className="text-[0.75rem] font-semibold uppercase tracking-[0.3em] text-white/80">gov.br</div>
-                        <div className="mt-0.5 text-lg font-semibold tracking-[-0.03em]">{t("login.govSim")}</div>
+                <form onSubmit={handleGovEntry} className="mt-5 flex flex-1 flex-col rounded-[1.35rem] border border-[#cfdcf0] bg-[linear-gradient(180deg,#f7fbff_0%,#eef6ff_100%)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] sm:p-5">
+                  <div className="mb-4 flex items-center justify-between gap-3 border-b border-[#d8e5f5] pb-3">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <div className="grid h-8 w-12 shrink-0 place-items-center rounded-lg bg-[#1351b4] text-[0.78rem] font-bold text-white shadow-[0_10px_22px_-18px_rgba(19,81,180,0.85)]">
+                        gov.br
                       </div>
-                      <div className="rounded-full bg-white/15 px-3 py-1 text-[10px] font-mono uppercase tracking-[0.24em]">
-                        {t("login.level")}
+                      <div className="min-w-0">
+                        <div className="text-sm font-semibold tracking-[-0.02em] text-[#183153]">{t("login.enterWithGov")}</div>
+                        <div className="mt-0.5 text-xs text-[#6d7f99]">{t("login.govSim")}</div>
                       </div>
+                    </div>
+                    <div className="shrink-0 rounded-full border border-[#c9daf1] bg-white/75 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#1351b4]">
+                      {t("login.level")}
                     </div>
                   </div>
 
-                  <div className="mt-5 space-y-4">
+                  <div className="space-y-4">
                     <div>
                       <label className="mb-1.5 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#537095]">
                         <UserRound className="h-3.5 w-3.5" /> {t("login.cpf")}
@@ -172,8 +175,8 @@ export default function Login() {
                       <Input
                         value={cpf}
                         onChange={(e) => setCpf(e.target.value)}
-                        className="h-12 rounded-xl border-[#cfe0f3] bg-white/90 text-[#183153] placeholder:text-[#8aa0ba]"
-                        placeholder="000.000.000-00"
+                        className="h-12 rounded-xl border-[#cfe0f3] bg-white/92 text-[#183153] placeholder:text-[#8aa0ba]/60"
+                        placeholder="123.456.789-00"
                       />
                     </div>
                     <div>
@@ -184,13 +187,13 @@ export default function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         type="password"
-                        className="h-12 rounded-xl border-[#cfe0f3] bg-white/90 text-[#183153] placeholder:text-[#8aa0ba]"
+                        className="h-12 rounded-xl border-[#cfe0f3] bg-white/92 text-[#183153] placeholder:text-[#8aa0ba]/60"
                         placeholder="Digite a senha"
                       />
                     </div>
                   </div>
 
-                  <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+                  <div className="mt-auto flex items-center justify-between gap-3 pt-4">
                     <button
                       type="button"
                       onClick={() => setStep("landing")}

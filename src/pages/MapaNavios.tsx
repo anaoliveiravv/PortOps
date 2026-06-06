@@ -272,7 +272,7 @@ type MapShip = Ship & {
 export default function MapaNavios() {
   const t = useT();
   const language = useLanguageCode();
-  const { openAssistant } = useAssistant();
+  const { openAssistant, openReport } = useAssistant();
   const mapRef = useRef<MapRef | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [ships, setShips] = useState<MapShip[]>(
@@ -578,8 +578,8 @@ export default function MapaNavios() {
                       </div>
                     </MarkerContent>
                     <MarkerTooltip>{ship.flag} {ship.name}</MarkerTooltip>
-                    <MarkerPopup className="w-64">
-                      <div className="flex flex-col gap-2">
+                    <MarkerPopup className="w-64" closeButton>
+                      <div className="flex flex-col gap-2 pr-5">
                         <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground">
                           Navio · IMO {ship.imo}
                         </div>
@@ -637,13 +637,23 @@ export default function MapaNavios() {
                 </div>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => openAssistant(selectedShip.id)}
-              className="mt-4 w-full rounded-xl border border-[#cfe0f3] bg-[#1351b4] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0f469a]"
-            >
-              {language === "pt" ? "Abrir assistente com este navio" : language === "en" ? "Open assistant on this vessel" : "在此船上打开助手"}
-            </button>
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => openAssistant(selectedShip.id)}
+                className="rounded-xl border border-[#cfe0f3] bg-[#1351b4] px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0f469a]"
+              >
+                {language === "pt" ? "Assistente" : language === "en" ? "Assistant" : "助手"}
+              </button>
+              <button
+                type="button"
+                onClick={() => openReport(selectedShip.id)}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#cfe0f3] bg-white px-3 py-3 text-sm font-semibold text-[#1351b4] transition-colors hover:bg-[#f4f8fd]"
+              >
+                <FileText className="h-4 w-4" />
+                {language === "pt" ? "Relatório" : language === "en" ? "Report" : "报告"}
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-3 border-b border-border text-[10px] font-mono uppercase tracking-wider">

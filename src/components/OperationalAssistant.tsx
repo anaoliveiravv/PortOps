@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Bot, Copy, Download, FileText, MessageSquareMore, Send, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { ArrowLeft, Bot, Copy, Download, FileText, MessageSquareMore, Send, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useAssistant } from "@/store/assistantStore";
@@ -67,30 +67,36 @@ export function OperationalAssistant() {
   const { open, mode, focusShipId, closeAssistant, openAssistant, openReport } = useAssistant();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [rememberedShipId, setRememberedShipId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const report = useMemo(() => buildOperationalReport(language, focusShipId), [language, focusShipId]);
   const fleetPreview = useMemo(() => analyzeFleet(language).slice(0, 3), [language]);
   const quickPrompts = QUICK_PROMPTS[language];
   const closeLabel = language === "pt" ? "Fechar assistente" : language === "en" ? "Close assistant" : "关闭助手";
+  const clearLabel = language === "pt" ? "Limpar conversa" : language === "en" ? "Clear chat" : "清空对话";
+
+  const createWelcomeMessage = useCallback((shipId?: string | null): ChatMessage => ({
+    id: `welcome-${shipId ?? "fleet"}-${language}-${Date.now()}`,
+    role: "assistant",
+    text: buildWelcomeMessage(language, shipId ?? null),
+    severity: "normal",
+  }), [language]);
 
   useEffect(() => {
     if (!open) return;
-    if (mode !== "chat") {
+
+    const activeShipId = rememberedShipId ?? focusShipId ?? null;
+
+    if (messages.length === 0) {
       setInput("");
-      return;
+      setMessages([createWelcomeMessage(activeShipId)]);
     }
 
-    setInput("");
-    setMessages([
-      {
-        id: `welcome-${mode}-${focusShipId ?? "fleet"}-${language}`,
-        role: "assistant",
-        text: buildWelcomeMessage(language, focusShipId),
-        severity: "normal",
-      },
-    ]);
-  }, [open, mode, focusShipId, language]);
+    if (focusShipId && focusShipId !== rememberedShipId) {
+      setRememberedShipId(focusShipId);
+    }
+  }, [open, createWelcomeMessage, focusShipId, rememberedShipId, messages.length]);
 
   useEffect(() => {
     if (!open) {
@@ -102,8 +108,12 @@ export function OperationalAssistant() {
     const trimmedPrompt = prompt.trim();
     if (!trimmedPrompt) return;
 
-    const answer = answerAssistantQuery(trimmedPrompt, language, focusShipId);
+    const answer = answerAssistantQuery(trimmedPrompt, language, focusShipId, rememberedShipId);
     const timestamp = Date.now();
+
+    if (answer.shipId) {
+      setRememberedShipId(answer.shipId);
+    }
 
     setMessages((current) => [
       ...current,
@@ -123,6 +133,13 @@ export function OperationalAssistant() {
     if (!input.trim()) return;
     handlePrompt(input);
     setInput("");
+  };
+
+  const handleClearChat = () => {
+    const nextShipId = focusShipId ?? null;
+    setInput("");
+    setRememberedShipId(nextShipId);
+    setMessages([createWelcomeMessage(nextShipId)]);
   };
 
   const handleCopyReport = async () => {
@@ -171,9 +188,16 @@ export function OperationalAssistant() {
                   <div className="truncate text-xs text-[#6d7f99]">{mode === "report" ? t("assistant.reports") : t("assistant.subtitle")}</div>
                 </div>
               </div>
-              <Button variant="ghost" size="icon" onClick={closeAssistant} className="shrink-0 rounded-full" aria-label={closeLabel}>
-                <X className="h-4 w-4" />
-              </Button>
+              <div className="flex shrink-0 items-center gap-1">
+                {mode === "chat" && (
+                  <Button variant="ghost" size="icon" onClick={handleClearChat} className="rounded-full" aria-label={clearLabel} title={clearLabel}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                )}
+                <Button variant="ghost" size="icon" onClick={closeAssistant} className="rounded-full" aria-label={closeLabel}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
 
             <div className="px-4 pb-4 sm:px-5">

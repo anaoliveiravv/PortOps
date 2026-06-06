@@ -77,6 +77,8 @@ const AGENCY_ALIASES: Array<{ agency: ClearanceAgency; terms: string[] }> = [
   { agency: "VIGIAGRO", terms: ["vigiagro", "fitossanit", "agro", "agricultural"] },
 ];
 
+const SHIP_REFERENCE_TERMS = ["navio", "embarcacao", "embarcação", "ship", "vessel"];
+
 function normalize(value: string) {
   return value
     .normalize("NFD")
@@ -88,11 +90,66 @@ function includesAny(query: string, terms: string[]) {
   return terms.some((term) => query.includes(normalize(term)));
 }
 
+function normalizeShipToken(token: string) {
+  if (token.length > 4 && token.endsWith("s") && !token.endsWith("ss")) {
+    return token.slice(0, -1);
+  }
+  return token;
+}
+
+function normalizeShipPhrase(value: string) {
+  return normalize(value)
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .replace(/\b(mv|m\/v|ss|m)\b/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(normalizeShipToken)
+    .join(" ");
+}
+
+function buildShipAliases(ship: Ship) {
+  const manualAliases = SHIP_NAME_ALIASES.find((item) => item.id === ship.id)?.names ?? [];
+  const withoutPrefix = ship.name.replace(/^(mv|m\/v|ss)\s+/i, "");
+  return Array.from(new Set([ship.name, withoutPrefix, ...manualAliases]))
+    .map(normalizeShipPhrase)
+    .filter((alias) => alias.length >= 3);
+}
+
 function findShipByQuery(query: string) {
-  const n = normalize(query);
-  const alias = SHIP_NAME_ALIASES.find((item) => item.names.some((name) => n.includes(normalize(name))));
-  if (alias) return ships.find((ship) => ship.id === alias.id) ?? null;
-  return ships.find((ship) => normalize(ship.name).includes(n) || normalize(ship.origin).includes(n)) ?? null;
+  const queryPhrase = normalizeShipPhrase(query);
+  if (!queryPhrase) return null;
+
+  return ships.find((ship) => buildShipAliases(ship).some((alias) => queryPhrase.includes(alias))) ?? null;
+}
+
+function hasUnmatchedShipReference(query: string) {
+  const normalized = normalize(query);
+  const hasSingularReference = SHIP_REFERENCE_TERMS.some((term) => {
+    const reference = normalize(term);
+    return new RegExp(`\\b${reference}\\b`).test(normalized);
+  });
+
+  if (!hasSingularReference) return false;
+  if (includesAny(normalized, ["quais navios", "navios criticos", "navios críticos", "frota", "fleet", "which vessels", "which ships"])) {
+    return false;
+  }
+
+  const match = normalized.match(/\b(?:navio|embarcacao|ship|vessel)\s+([a-z0-9][a-z0-9\s-]*)/);
+  if (!match?.[1]) return false;
+
+  const candidate = match[1]
+    .replace(/\b(agora|atual|relatorio inteligente|relatorio|report|status|esta|estao)\b/g, " ")
+    .trim();
+
+  return candidate.length >= 3;
+}
+
+function buildUnknownShipReply(language: LanguageCode) {
+  return language === "pt"
+    ? "Não consegui identificar com segurança qual navio você citou. Confira o nome ou selecione o navio no mapa para eu gerar a resposta correta."
+    : language === "en"
+      ? "I could not safely identify which vessel you mentioned. Check the name or select the vessel on the map so I can answer correctly."
+      : "我无法可靠识别你提到的船舶。请检查名称或在地图上选择该船舶，以便我给出正确回答。";
 }
 
 function findAgencyByQuery(query: string) {
@@ -368,18 +425,18 @@ function getShipRiskSummary(ship: Ship, language: LanguageCode) {
 
   if (criticalRisk) {
     return language === "pt"
-      ? `O maior risco ativo é ${criticalRisk.description.toLowerCase()}, com impacto de ${criticalRisk.impact.toLowerCase()}.`
+      ? `Para ${ship.name}, o maior risco ativo é ${criticalRisk.description.toLowerCase()}, com impacto de ${criticalRisk.impact.toLowerCase()}.`
       : language === "en"
-        ? `The main active risk is ${criticalRisk.description.toLowerCase()}, with impact of ${criticalRisk.impact.toLowerCase()}.`
-        : `当前主要风险是${criticalRisk.description}，影响为${criticalRisk.impact}。`;
+        ? `For ${ship.name}, the main active risk is ${criticalRisk.description.toLowerCase()}, with impact of ${criticalRisk.impact.toLowerCase()}.`
+        : `对于 ${ship.name}，当前主要风险是${criticalRisk.description}，影响为${criticalRisk.impact}。`;
   }
 
   if (alert) {
     return language === "pt"
-      ? `O alerta mais relevante agora é "${alert.title}".`
+      ? `Para ${ship.name}, o alerta mais relevante agora é "${alert.title}".`
       : language === "en"
-        ? `The most relevant alert right now is "${alert.title}".`
-        : `当前最相关的警报是“${alert.title}”。`;
+        ? `For ${ship.name}, the most relevant alert right now is "${alert.title}".`
+        : `对于 ${ship.name}，当前最相关的警报是“${alert.title}”。`;
   }
 
   return language === "pt"
@@ -527,13 +584,20 @@ export function analyzeFleet(language: LanguageCode) {
   return ships.map((ship) => analyzeShip(ship, language)).sort((a, b) => b.delayProbability - a.delayProbability);
 }
 
-export function answerAssistantQuery(query: string, language: LanguageCode, focusShipId?: string | null): AssistantAnswer {
+export function answerAssistantQuery(
+  query: string,
+  language: LanguageCode,
+  focusShipId?: string | null,
+  rememberedShipId?: string | null,
+): AssistantAnswer {
   const trimmedQuery = query.trim();
   const focusedShip = focusShipId ? ships.find((ship) => ship.id === focusShipId) ?? null : null;
+  const rememberedShip = rememberedShipId ? ships.find((ship) => ship.id === rememberedShipId) ?? null : null;
   const mentionedShip = findShipByQuery(trimmedQuery);
-  const ship = mentionedShip ?? focusedShip;
+  const hasUnknownShipReference = !mentionedShip && hasUnmatchedShipReference(trimmedQuery);
+  const ship = hasUnknownShipReference ? null : mentionedShip ?? rememberedShip ?? focusedShip;
   const agency = findAgencyByQuery(trimmedQuery);
-  const intent = detectIntent(trimmedQuery, focusShipId);
+  const intent = detectIntent(trimmedQuery, ship?.id ?? focusShipId);
   const locale = language === "pt" ? "pt-BR" : language === "en" ? "en-US" : "zh-CN";
 
   const reply = (
@@ -560,6 +624,10 @@ export function answerAssistantQuery(query: string, language: LanguageCode, focu
         : `当前最高优先级是 ${top.shipName}，延误概率为 ${top.delayProbability}%，主要原因是 ${top.bottleneck}。其后是 ${topShips.slice(1).map((item) => item.shipName).join(" 和 ") || "其余受监控船舶"}。`;
 
     return reply(text, top.alertSeverity, topShips.map((item) => ({ label: item.shipName, shipId: item.shipId })), top.shipId);
+  }
+
+  if (hasUnknownShipReference) {
+    return reply(buildUnknownShipReply(language), "attention");
   }
 
   if (intent === "fleet_summary" && !ship) {
