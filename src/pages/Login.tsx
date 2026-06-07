@@ -7,6 +7,7 @@ import shipImage from "../../fotosbase/navio.png";
 import { Input } from "@/components/ui/input";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { useLanguageCode, useT } from "@/i18n/useT";
+import { cn } from "@/lib/utils";
 
 type Step = "landing" | "gov" | "success" | "demo";
 
@@ -89,7 +90,7 @@ export default function Login() {
         <section className="relative flex min-h-screen items-center justify-center overflow-y-auto bg-[radial-gradient(circle_at_top,rgba(63,119,209,0.12),transparent_26%),linear-gradient(180deg,#f8fbff_0%,#edf3fb_100%)] px-5 py-5 sm:px-8 sm:py-6 lg:px-10 lg:py-8">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,255,255,0.88),transparent_44%)]" />
 
-          <div className="relative z-10 flex min-h-0 w-full max-w-[35rem] flex-col justify-center">
+          <div className={cn("relative z-10 flex min-h-0 w-full flex-col justify-center", step === "gov" ? "max-w-[46rem]" : "max-w-[35rem]")}>
             <div className="mb-6 flex items-center gap-3 lg:hidden">
               <div className="grid h-11 w-11 place-items-center rounded-xl bg-[#1653b8] text-white">
                 <Anchor className="h-5 w-5" strokeWidth={2.2} />
@@ -145,62 +146,77 @@ export default function Login() {
               )}
 
               {step === "gov" && (
-                <form onSubmit={handleGovEntry} className="mt-5 flex flex-1 flex-col rounded-[1.35rem] border border-[#cfdcf0] bg-[linear-gradient(180deg,#f7fbff_0%,#eef6ff_100%)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] sm:p-5">
-                  <div className="mb-4 flex items-center justify-between gap-3 border-b border-[#d8e5f5] pb-3">
-                    <div className="flex min-w-0 items-center gap-3">
-                      <div className="grid h-8 w-12 shrink-0 place-items-center rounded-lg bg-[#1351b4] text-[0.78rem] font-bold text-white shadow-[0_10px_22px_-18px_rgba(19,81,180,0.85)]">
-                        gov.br
+                <form onSubmit={handleGovEntry} className="mt-4 flex flex-1 flex-col rounded-[1.55rem] border border-[#b9cff0] bg-white px-5 py-4 shadow-[0_22px_64px_-46px_rgba(19,50,95,0.68),inset_0_1px_0_rgba(255,255,255,0.92)] sm:px-6 sm:py-5">
+                  <div className="flex flex-col gap-3 border-b border-[#d6e4f5] pb-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex min-w-0 items-center gap-3.5">
+                      <div className="grid h-14 w-14 shrink-0 place-items-center rounded-[1rem] bg-[#0649b9] text-[0.95rem] font-bold tracking-[-0.04em] shadow-[0_16px_30px_-24px_rgba(5,55,145,0.95)]">
+                        <span aria-label="gov.br">
+                          <span className="text-[#2f80ed]">g</span>
+                          <span className="text-[#f2c94c]">o</span>
+                          <span className="text-[#27ae60]">v</span>
+                          <span className="text-white">.</span>
+                          <span className="text-[#2f80ed]">b</span>
+                          <span className="text-[#f2c94c]">r</span>
+                        </span>
                       </div>
                       <div className="min-w-0">
-                        <div className="text-sm font-semibold tracking-[-0.02em] text-[#183153]">{t("login.enterWithGov")}</div>
-                        <div className="mt-0.5 text-xs text-[#6d7f99]">{t("login.govSim")}</div>
+                        <div className="whitespace-nowrap text-lg font-bold leading-tight tracking-[-0.04em] text-[#102a4c] sm:text-[1.35rem]">{t("login.enterWithGov")}</div>
                       </div>
                     </div>
-                    <div className="shrink-0 rounded-full border border-[#c9daf1] bg-white/75 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#1351b4]">
-                      {t("login.level")}
+                    <div className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-[#c4d8f3] bg-white/90 px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.18em] text-[#0649b9] shadow-[inset_0_1px_0_rgba(255,255,255,0.94)]">
+                      <ShieldCheck className="h-3.5 w-3.5 text-[#7b95b8]" />
+                      Prata/Ouro
                     </div>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="mt-4 space-y-4">
                     <div>
-                      <label className="mb-1.5 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#537095]">
-                        <UserRound className="h-3.5 w-3.5" /> {t("login.cpf")}
+                      <label className="mb-2 flex items-center gap-2.5 text-[10px] font-bold uppercase tracking-[0.3em] text-[#102a4c]">
+                        <UserRound className="h-4 w-4 text-[#0649b9]" /> {t("login.cpf")}
                       </label>
                       <Input
                         value={cpf}
                         onChange={(e) => setCpf(e.target.value)}
-                        className="h-12 rounded-xl border-[#cfe0f3] bg-white/90 text-[#183153] placeholder:text-[#8aa0ba]/60"
+                        className="h-14 rounded-[0.95rem] border-[#bcd0ea] bg-white px-5 text-base text-[#183153] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] placeholder:text-[#9aacc5]/80 hover:border-[#9fbee7] focus-visible:ring-[#8bb8f3]"
                         placeholder="123.456.789-00"
                       />
                     </div>
                     <div>
-                      <label className="mb-1.5 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#537095]">
-                        <KeyRound className="h-3.5 w-3.5" /> {t("login.password")}
+                      <label className="mb-2 flex items-center gap-2.5 text-[10px] font-bold uppercase tracking-[0.3em] text-[#102a4c]">
+                        <KeyRound className="h-4 w-4 text-[#0649b9]" /> {t("login.password")}
                       </label>
                       <Input
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         type="password"
-                        className="h-12 rounded-xl border-[#cfe0f3] bg-white/90 text-[#183153] placeholder:text-[#8aa0ba]/60"
+                        className="h-14 rounded-[0.95rem] border-[#bcd0ea] bg-white px-5 text-base text-[#183153] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] placeholder:text-[#9aacc5]/80 hover:border-[#9fbee7] focus-visible:ring-[#8bb8f3]"
                         placeholder="Digite a senha"
                       />
                     </div>
                   </div>
 
-                  <div className="mt-auto flex items-center justify-between gap-3 pt-4">
+                  <div className="mt-auto flex items-center justify-between gap-4 pt-5">
                     <button
                       type="button"
                       onClick={() => setStep("landing")}
-                      className="rounded-full border border-[#c8d7ea] bg-white px-4 py-2 text-sm font-medium text-[#4d6784] transition-colors hover:bg-[#f4f8fd]"
+                      className="min-w-28 rounded-[1rem] border border-[#a9c4eb] bg-white px-5 py-2.5 text-sm font-bold text-[#0649b9] transition-colors hover:bg-[#f4f8fd]"
                     >
                       {t("common.back")}
                     </button>
                     <button
                       type="submit"
-                      className="primary-action inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold"
+                      className="primary-action inline-flex h-12 min-w-44 items-center justify-center gap-3 rounded-[1rem] px-8 text-base font-bold"
                     >
                       Entrar <ChevronRight className="h-4 w-4" />
                     </button>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-[#d6e4f5] pt-3 text-[11px] text-[#637592]">
+                    <span>Está com dúvidas e precisa de ajuda?</span>
+                    <a href="#" className="font-semibold text-[#0649b9] hover:underline">Esqueci minha senha</a>
+                    <a href="#" className="font-semibold text-[#0649b9] hover:underline">Termos de Uso</a>
+                    <a href="#" className="font-semibold text-[#0649b9] hover:underline">Aviso de privacidade</a>
+                    <a href="#" className="font-semibold text-[#0649b9] hover:underline">Cadastre-se</a>
                   </div>
                 </form>
               )}

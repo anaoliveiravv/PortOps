@@ -52,17 +52,6 @@ export default function Bercos() {
         <p className="text-sm text-muted-foreground mt-0.5">{language === "pt" ? "Ocupação atual, próximas atracações, conflitos e taxa de utilização." : language === "en" ? "Current occupancy, next berthings, conflicts and utilization rate." : "当前占用、下一批靠泊、冲突和利用率。"}</p>
       </div>
 
-      {focusedShip && (
-        <div className="rounded-xl border border-[#9fc7f2] bg-[#eef6ff] px-4 py-3 text-sm text-[#102a4c] shadow-[0_18px_38px_-32px_rgba(19,81,180,0.55)]">
-          <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[#1351b4]">
-            {language === "pt" ? "Contexto do navio" : language === "en" ? "Vessel context" : "船舶上下文"}
-          </div>
-          <div className="mt-0.5 font-semibold">
-            {language === "pt" ? "Visualizando informações de" : language === "en" ? "Viewing information for" : "正在查看"} {focusedShip.name} · IMO {focusedShip.imo}
-          </div>
-        </div>
-      )}
-
       <SummaryMetricsPanel>
         {[
           { label: language === "pt" ? "Livres" : language === "en" ? "Free" : "空闲", n: livre },

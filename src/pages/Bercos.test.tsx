@@ -16,7 +16,6 @@ describe("Bercos focused ship context", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText(/Visualizando informações de Iberia Bulk · IMO 9612330/i)).toBeInTheDocument();
     expect(screen.getByText("Berço em foco")).toBeInTheDocument();
     expect(screen.queryByText("Navio selecionado")).not.toBeInTheDocument();
     expect(screen.getByText("Berço 06").closest("[aria-current='true']")).toBeInTheDocument();
@@ -30,7 +29,6 @@ describe("Bercos focused ship context", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText(/Visualizando informações de Santos Express · IMO 9456712/i)).toBeInTheDocument();
     expect(screen.getByText("Navio selecionado")).toBeInTheDocument();
     expect(screen.getByText("Berço 01")).toBeInTheDocument();
   });

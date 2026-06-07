@@ -16,7 +16,6 @@ describe("Riscos focused ship context", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText(/Visualizando informações de Iberia Bulk · IMO 9612330/i)).toBeInTheDocument();
     expect(screen.queryByText("Risco em foco")).not.toBeInTheDocument();
     expect(screen.queryByText("Navio selecionado")).not.toBeInTheDocument();
     expect(screen.getByText("VIGIAGRO ultrapassou SLA de 2h").closest("[aria-current='true']")).toBeInTheDocument();
@@ -30,7 +29,6 @@ describe("Riscos focused ship context", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText(/Visualizando informações de Iberia Bulk · IMO 9612330/i)).toBeInTheDocument();
     expect(screen.getAllByText("Navio selecionado")).toHaveLength(2);
     expect(screen.getByText("VIGIAGRO ultrapassou SLA de 2h")).toBeInTheDocument();
     expect(screen.getByText("Berço 06 em manutenção programada")).toBeInTheDocument();

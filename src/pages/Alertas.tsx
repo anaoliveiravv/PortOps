@@ -16,9 +16,39 @@ export default function Alertas() {
     info: language === "pt" ? "Informativo" : language === "en" ? "Info" : "信息",
   };
   const SEV = {
-    critical: { icon: AlertOctagon, cls: "border-destructive/40 bg-destructive/5", text: "text-destructive", label: severityLabels.critical },
-    warning: { icon: AlertTriangle, cls: "border-warning/40 bg-warning/5", text: "text-warning", label: severityLabels.warning },
-    info: { icon: Info, cls: "border-info/40 bg-info/5", text: "text-info", label: severityLabels.info },
+    critical: {
+      icon: AlertOctagon,
+      cls: "border-destructive/40 bg-destructive/5",
+      text: "text-destructive",
+      label: severityLabels.critical,
+      card: "border-l-destructive/80 border-destructive/20 bg-[radial-gradient(circle_at_18%_12%,rgba(248,113,113,0.16),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.96),rgba(255,245,247,0.92))]",
+      iconBox: "bg-[linear-gradient(135deg,#fb7185,#ef4444)] text-white shadow-[0_18px_34px_-22px_rgba(239,68,68,0.95)]",
+      pill: "border-destructive/20 bg-destructive/10 text-destructive",
+      action: "border-destructive/20 bg-white/72 text-destructive",
+      button: "border-destructive/70 text-destructive hover:bg-destructive hover:text-white",
+    },
+    warning: {
+      icon: AlertTriangle,
+      cls: "border-warning/40 bg-warning/5",
+      text: "text-warning",
+      label: severityLabels.warning,
+      card: "border-l-warning/90 border-warning/20 bg-[radial-gradient(circle_at_18%_12%,rgba(251,146,60,0.18),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.96),rgba(255,250,240,0.94))]",
+      iconBox: "bg-[linear-gradient(135deg,#fdba74,#f59e0b)] text-white shadow-[0_18px_34px_-22px_rgba(245,158,11,0.9)]",
+      pill: "border-warning/25 bg-warning/10 text-warning",
+      action: "border-warning/25 bg-white/72 text-warning",
+      button: "border-warning/75 text-warning hover:bg-warning hover:text-white",
+    },
+    info: {
+      icon: Info,
+      cls: "border-info/40 bg-info/5",
+      text: "text-info",
+      label: severityLabels.info,
+      card: "border-l-info/90 border-info/20 bg-[radial-gradient(circle_at_18%_12%,rgba(96,165,250,0.17),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.96),rgba(244,249,255,0.94))]",
+      iconBox: "bg-[linear-gradient(135deg,#60a5fa,#2563eb)] text-white shadow-[0_18px_34px_-22px_rgba(37,99,235,0.9)]",
+      pill: "border-info/25 bg-info/10 text-info",
+      action: "border-info/25 bg-white/72 text-info",
+      button: "border-info/75 text-info hover:bg-info hover:text-white",
+    },
   };
   const grouped = {
     critical: alerts.filter((a) => a.severity === "critical"),
@@ -44,7 +74,7 @@ export default function Alertas() {
         </p>
       </div>
 
-      <SummaryMetricsPanel>
+      <SummaryMetricsPanel className="mx-auto max-w-[1360px]">
         {(["critical", "warning", "info"] as const).map((k) => (
           <SummaryMetricCard key={k} className={SEV[k].cls}>
             <div className="text-[10px] font-mono uppercase tracking-wider text-foreground">{SEV[k].label}</div>
@@ -53,7 +83,7 @@ export default function Alertas() {
         ))}
       </SummaryMetricsPanel>
 
-      <div className="space-y-2.5">
+      <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
         {alerts.map((a) => {
           const s = SEV[a.severity];
           const Icon = s.icon;
@@ -64,37 +94,57 @@ export default function Alertas() {
               ? `/riscos?risk=${encodeURIComponent(a.riskId)}`
               : "/riscos";
           return (
-            <div key={a.id} className={cn("card-flat border-l-4 p-4 shadow-sm", s.cls, a.severity === "critical" && "ring-1 ring-destructive/30 shadow-[0_16px_34px_-26px_rgba(220,38,38,0.5)]")} style={{ borderLeftColor: `hsl(var(--${a.severity === "critical" ? "destructive" : a.severity === "warning" ? "warning" : "info"}))` }}>
-              <div className="flex gap-4">
-                <div className={cn("h-9 w-9 rounded shrink-0 grid place-items-center bg-card border border-border", s.text)}>
+            <div
+              key={a.id}
+              className={cn(
+                "group relative overflow-hidden rounded-[1.15rem] border border-l-2 p-4 shadow-[0_24px_52px_-40px_rgba(16,42,76,0.58)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_30px_64px_-42px_rgba(16,42,76,0.68)]",
+                s.card
+              )}
+            >
+              <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-white/80" />
+              <div className="flex gap-3">
+                <div className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-xl", s.iconBox)}>
                   <Icon className="h-4 w-4" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className={cn("text-[10px] font-mono uppercase tracking-wider font-semibold", s.text)}>{s.label}</span>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">· {a.source}</span>
-                    {a.origin && <span className="text-[10px] font-mono text-muted-foreground">· {a.origin}</span>}
-                    <span className="text-[10px] font-mono text-muted-foreground ml-auto">{new Date(a.timestamp).toLocaleString(locale)}</span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="min-h-6 font-semibold text-sm text-[#102a4c]">
+                        {ship ? (
+                          <ShipLink shipId={ship.id} className="text-[#102a4c] no-underline hover:text-primary">
+                            {ship.flag} {ship.name}
+                          </ShipLink>
+                        ) : (
+                          <span>{a.source}</span>
+                        )}
+                      </div>
+                      <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                        <span className={cn("rounded-full border px-2 py-0.5 text-[10px] font-mono uppercase tracking-[0.12em]", s.pill)}>
+                          {s.label}
+                        </span>
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">· {a.source}</span>
+                        {a.origin && <span className="text-[10px] font-mono text-muted-foreground">· {a.origin}</span>}
+                      </div>
+                    </div>
+                    <span className="shrink-0 text-right text-[10px] font-mono text-muted-foreground">
+                      {new Date(a.timestamp).toLocaleString(locale)}
+                    </span>
                   </div>
-                  <div className="font-semibold text-sm">{a.title}</div>
-                  <div className="text-xs text-muted-foreground mt-1">{a.description}</div>
+
+                  <div className="mt-4 text-[0.95rem] font-bold leading-snug text-[#102a4c]">{a.title}</div>
+                  <div className="mt-1 text-xs leading-5 text-[#405672]">{a.description}</div>
 
                   {a.recommendedAction && (
-                    <div className="mt-3 rounded-xl border border-[#d5e2f1] bg-white/70 p-2.5 text-xs">
-                      <div className="text-[10px] font-mono uppercase text-accent mb-0.5">
+                    <div className={cn("mt-3 rounded-xl border p-2.5 text-xs text-[#102a4c]", s.action)}>
+                      <div className={cn("text-[10px] font-mono uppercase tracking-[0.12em] mb-0.5", s.text)}>
                         {language === "pt" ? "Ação recomendada" : language === "en" ? "Recommended action" : "建议操作"}
                       </div>
                       {a.recommendedAction}
                     </div>
                   )}
 
-                  <div className="mt-3 flex items-center gap-2 flex-wrap">
-                    {ship && (
-                      <ShipLink shipId={ship.id} className="inline-flex items-center gap-1.5 rounded-full bg-white/80 border border-[#d5e2f1] px-2.5 py-1 text-[11px] font-mono no-underline hover:border-accent hover:text-accent transition-colors">
-                        {ship.flag} {ship.name} <ArrowRight className="h-3 w-3" />
-                      </ShipLink>
-                    )}
-                    <Link to={riskHref} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/80 border border-[#d5e2f1] text-[11px] font-mono hover:border-accent hover:text-accent transition-colors">
+                  <div className="mt-3 flex justify-end">
+                    <Link to={riskHref} className={cn("inline-flex items-center gap-1.5 rounded-full border bg-white/70 px-3 py-1.5 text-[11px] font-mono font-semibold transition-colors", s.button)}>
                       {language === "pt" ? "Ver risco" : language === "en" ? "View risk" : "查看风险"} <ArrowRight className="h-3 w-3" />
                     </Link>
                   </div>

@@ -50,17 +50,6 @@ export default function Riscos() {
         <p className="text-sm text-muted-foreground mt-0.5">{language === "pt" ? "Atuação preventiva: identificação, impacto, prazo crítico e plano de mitigação." : language === "en" ? "Preventive action: identification, impact, critical deadline and mitigation plan." : "预防性管理：识别、影响、关键期限和缓解计划。"}</p>
       </div>
 
-      {focusedShip && (
-        <div className="rounded-xl border border-[#9fc7f2] bg-[#eef6ff] px-4 py-3 text-sm text-[#102a4c] shadow-[0_18px_38px_-32px_rgba(19,81,180,0.55)]">
-          <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[#1351b4]">
-            {language === "pt" ? "Contexto do navio" : language === "en" ? "Vessel context" : "船舶上下文"}
-          </div>
-          <div className="mt-0.5 font-semibold">
-            {language === "pt" ? "Visualizando informações de" : language === "en" ? "Viewing information for" : "正在查看"} {focusedShip.name} · IMO {focusedShip.imo}
-          </div>
-        </div>
-      )}
-
       <SummaryMetricsPanel>
         {ORDER.map((k) => (
           <SummaryMetricCard key={k} className="border-l-4" style={{ borderLeftColor: `hsl(var(--risk-${k}))` }}>
