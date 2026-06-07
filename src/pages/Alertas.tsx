@@ -4,6 +4,7 @@ import { AlertTriangle, Info, AlertOctagon, Bell, ArrowRight } from "lucide-reac
 import { cn } from "@/lib/utils";
 import { useLanguageCode } from "@/i18n/useT";
 import { ShipLink } from "@/components/ShipLink";
+import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
 
 export default function Alertas() {
   const language = useLanguageCode();
@@ -42,14 +43,14 @@ export default function Alertas() {
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      <SummaryMetricsPanel>
         {(["critical", "warning", "info"] as const).map((k) => (
-          <div key={k} className={cn("card-flat p-4", SEV[k].cls)}>
+          <SummaryMetricCard key={k} className={SEV[k].cls}>
             <div className={cn("text-[10px] font-mono uppercase tracking-wider", SEV[k].text)}>{SEV[k].label}</div>
-            <div className="text-2xl font-bold font-mono mt-1">{grouped[k].length}</div>
-          </div>
+            <div className="text-2xl font-bold font-mono mt-1 text-[#102a4c]">{grouped[k].length}</div>
+          </SummaryMetricCard>
         ))}
-      </div>
+      </SummaryMetricsPanel>
 
       <div className="space-y-2.5">
         {alerts.map((a) => {

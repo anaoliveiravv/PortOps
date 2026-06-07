@@ -106,6 +106,90 @@
     @apply bg-white/90 border border-white/80 rounded-[1.25rem];
     box-shadow: var(--shadow-card);
   }
+  .summary-metrics-panel {
+    @apply relative overflow-hidden rounded-[1.65rem] border border-[#c5ddfb]/90 p-3 sm:p-4;
+    background:
+      radial-gradient(120% 95% at 93% 9%, hsl(214 100% 84% / 0.62), transparent 52%),
+      radial-gradient(85% 82% at -12% 118%, hsl(211 92% 57% / 0.74), transparent 54%),
+      linear-gradient(135deg, hsl(0 0% 100% / 0.98) 0%, hsl(210 88% 98% / 0.96) 44%, hsl(214 95% 92% / 0.92) 100%);
+    box-shadow:
+      0 24px 58px -36px hsl(214 76% 32% / 0.52),
+      0 10px 24px -22px hsl(211 88% 48% / 0.72),
+      inset 0 1px 0 hsl(0 0% 100% / 0.92);
+  }
+  .summary-metrics-panel::before,
+  .summary-metrics-panel::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
+  .summary-metrics-panel::before {
+    inset: 0;
+    background:
+      radial-gradient(95% 78% at 31% 130%, hsl(213 95% 61% / 0.52), transparent 56%),
+      radial-gradient(82% 76% at 100% 112%, hsl(213 82% 71% / 0.38), transparent 58%),
+      radial-gradient(110% 82% at 82% -26%, hsl(215 88% 75% / 0.35), transparent 56%),
+      linear-gradient(142deg, transparent 0 58%, hsl(212 91% 82% / 0.32) 58% 78%, transparent 78%);
+    opacity: 0.9;
+  }
+  .summary-metrics-panel::after {
+    inset: 1.1rem auto auto 1.15rem;
+    width: 10.5rem;
+    height: 7rem;
+    opacity: 0.48;
+    background-image: radial-gradient(circle, hsl(211 88% 63% / 0.48) 1.6px, transparent 1.9px);
+    background-size: 1.15rem 1.15rem;
+    mask-image: linear-gradient(90deg, #000, transparent);
+  }
+  .summary-metrics-grid {
+    @apply relative z-[1];
+  }
+  .summary-metric-card {
+    @apply relative min-w-0 rounded-[1.25rem] border border-white/70 p-4 text-left backdrop-blur-xl transition duration-300;
+    background-color: hsl(0 0% 100% / 0.72);
+    box-shadow:
+      0 18px 42px -32px hsl(214 66% 30% / 0.52),
+      inset 0 1px 0 hsl(0 0% 100% / 0.92),
+      inset 0 -1px 0 hsl(211 74% 70% / 0.12);
+  }
+  .summary-metric-card:hover {
+    @apply -translate-y-0.5 border-white/90;
+    background-color: hsl(0 0% 100% / 0.82);
+    box-shadow:
+      0 24px 54px -34px hsl(214 72% 30% / 0.58),
+      inset 0 1px 0 hsl(0 0% 100% / 0.94),
+      inset 0 -1px 0 hsl(211 74% 70% / 0.14);
+  }
+  .weather-serious-card {
+    background:
+      linear-gradient(135deg, hsl(43 100% 97% / 0.94), hsl(39 96% 87% / 0.76) 58%, hsl(42 100% 96% / 0.9)),
+      repeating-linear-gradient(135deg, hsl(36 96% 50% / 0.08) 0 8px, transparent 8px 18px);
+    box-shadow:
+      0 20px 44px -34px hsl(30 92% 34% / 0.86),
+      0 0 0 1px hsl(36 90% 58% / 0.18),
+      inset 0 1px 0 hsl(0 0% 100% / 0.94);
+  }
+  .weather-serious-card:hover {
+    background:
+      linear-gradient(135deg, hsl(43 100% 97% / 0.98), hsl(39 96% 85% / 0.82) 58%, hsl(42 100% 96% / 0.94)),
+      repeating-linear-gradient(135deg, hsl(36 96% 50% / 0.1) 0 8px, transparent 8px 18px);
+  }
+  .weather-alert-icon {
+    box-shadow:
+      0 10px 24px -18px hsl(31 95% 44% / 0.9),
+      0 0 0 4px hsl(36 92% 52% / 0.1);
+  }
+  .weather-alert-dot {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 9999px;
+    background: hsl(var(--warning));
+    box-shadow: 0 0 0 4px hsl(var(--warning) / 0.12);
+    animation: weather-alert-dot 1.1s ease-in-out infinite;
+  }
+  button.summary-metric-card:focus-visible {
+    @apply outline-none ring-2 ring-primary/40 ring-offset-2 ring-offset-white;
+  }
   .panel-shadow { box-shadow: var(--shadow-panel); }
   .blue-glow { box-shadow: var(--shadow-blue-glow); }
   .red-glow { box-shadow: var(--shadow-red-glow); }
@@ -205,6 +289,35 @@
     50% { transform: translate3d(4%, -1%, 0); opacity: 0.26; }
     100% { transform: translate3d(8%, 0, 0); opacity: 0.18; }
   }
+  @keyframes weather-alert-blink {
+    0%, 100% {
+      opacity: 1;
+      filter: drop-shadow(0 0 0 hsl(var(--warning) / 0));
+      transform: scale(1);
+    }
+    45% {
+      opacity: 0.34;
+      filter: drop-shadow(0 0 8px hsl(var(--warning) / 0.72));
+      transform: scale(0.94);
+    }
+    62% {
+      opacity: 1;
+      filter: drop-shadow(0 0 10px hsl(var(--warning) / 0.82));
+      transform: scale(1.08);
+    }
+  }
+  @keyframes weather-alert-dot {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+      box-shadow: 0 0 0 3px hsl(var(--warning) / 0.14);
+    }
+    50% {
+      opacity: 0.45;
+      transform: scale(0.72);
+      box-shadow: 0 0 0 7px hsl(var(--warning) / 0.04);
+    }
+  }
   .route-flow {
     stroke-dasharray: 10 12;
     animation: route-flow 14s linear infinite;
@@ -220,5 +333,15 @@
   }
   .water-sheen {
     animation: water-sheen 12s ease-in-out infinite alternate;
+  }
+  .weather-alert-pulse {
+    transform-origin: center;
+    animation: weather-alert-blink 1.35s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .weather-alert-pulse,
+    .weather-alert-dot {
+      animation: none;
+    }
   }
 }

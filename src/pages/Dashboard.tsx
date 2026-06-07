@@ -11,6 +11,7 @@ import { useLanguageCode, useT } from "@/i18n/useT";
 import { analyzeFleet } from "@/lib/portopsAi";
 import { useAssistant } from "@/store/assistantStore";
 import { ShipLink } from "@/components/ShipLink";
+import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
 
 const ROLE_INTRO: Record<ProfileId, { eyebrow: string; title: string; sub: string }> = {
   gestor_porto:    { eyebrow: "Autoridade Portuária · Tempo real", title: "Centro de Controle Portuário",        sub: "Visão consolidada de todos os atores e sistemas integrados." },
@@ -43,14 +44,14 @@ const metricAccent: Record<NonNullable<KPIProps["accent"]>, string> = {
 
 function MetricBlock({ label, value, unit, trend, trendSuffix = "vs ontem", icon: Icon, accent = "primary" }: KPIProps) {
   return (
-    <div className="relative flex min-w-0 items-center gap-4 px-4 py-4">
-      <div className={`grid h-16 w-16 shrink-0 place-items-center rounded-full ${metricAccent[accent]} shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]`}>
+    <SummaryMetricCard className="flex min-w-0 items-center gap-4">
+      <div className={`grid h-14 w-14 shrink-0 place-items-center rounded-full ${metricAccent[accent]} shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]`}>
         <Icon className="h-7 w-7" strokeWidth={1.9} />
       </div>
       <div className="min-w-0">
         <div className="text-[0.72rem] uppercase tracking-[0.12em] text-[#405672] font-semibold">{label}</div>
         <div className="mt-1 flex items-baseline gap-2">
-          <span className="text-[2rem] font-bold font-mono tracking-[-0.06em] text-[#102a4c]">{value}</span>
+          <span className="text-[2rem] font-bold font-mono tracking-tight text-[#102a4c]">{value}</span>
           {unit && <span className="text-sm text-[#53687f]">{unit}</span>}
         </div>
         {trend && (
@@ -60,7 +61,7 @@ function MetricBlock({ label, value, unit, trend, trendSuffix = "vs ontem", icon
           </div>
         )}
       </div>
-    </div>
+    </SummaryMetricCard>
   );
 }
 
@@ -68,7 +69,7 @@ function OccupancyGauge({ value, label, trendSuffix }: { value: number; label: s
   const normalized = Math.min(100, Math.max(0, value));
 
   return (
-    <div className="flex items-center justify-center gap-5 px-4 py-4">
+    <SummaryMetricCard className="flex items-center justify-center gap-5">
       <div className="relative h-24 w-36">
         <svg viewBox="0 0 140 82" className="h-full w-full overflow-visible">
           <path d="M18 70a52 52 0 0 1 104 0" fill="none" stroke="hsl(214 42% 84%)" strokeWidth="11" strokeLinecap="round" />
@@ -94,7 +95,7 @@ function OccupancyGauge({ value, label, trendSuffix }: { value: number; label: s
           <TrendingUp className="h-3 w-3" /> +5% <span className="font-normal text-muted-foreground">{trendSuffix}</span>
         </div>
       </div>
-    </div>
+    </SummaryMetricCard>
   );
 }
 
@@ -144,20 +145,22 @@ export default function Dashboard() {
         )}
       </div>
 
-      <section className="operational-panel overflow-hidden">
-        <div className="flex items-center justify-between px-6 pt-5">
+      <SummaryMetricsPanel
+        gridClassName="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1.2fr]"
+        header={
+          <div className="flex items-center justify-between">
           <div className="text-[0.76rem] font-bold uppercase tracking-[0.12em] text-[#0759ce]">
             {language === "pt" ? "Panorama operacional" : language === "en" ? "Operational overview" : "运营概览"}
           </div>
           <Anchor className="h-5 w-5 text-[#0759ce]" strokeWidth={1.9} />
-        </div>
-        <div className="mt-2 grid grid-cols-1 divide-y divide-[#cbd9ea] px-2 pb-4 md:grid-cols-[1fr_1fr_1fr_1.25fr] md:divide-x md:divide-y-0">
-          <MetricBlock label={language === "pt" ? "Navios em operação" : language === "en" ? "Operating vessels" : "运营船舶"} value={operating} unit={language === "pt" ? "ativos" : language === "en" ? "active" : "正常"} icon={Ship} trend={{ up: true, value: "+12%" }} trendSuffix={trendLabel} accent="primary" />
-          <MetricBlock label={language === "pt" ? "Fila de fundeio" : language === "en" ? "Anchorage queue" : "锚地排队"} value={queue} unit={language === "pt" ? "aguardando" : language === "en" ? "waiting" : "等待"} icon={Hourglass} trend={{ up: false, value: "-8%" }} trendSuffix={trendLabel} accent="warning" />
-          <MetricBlock label={language === "pt" ? "Em rota (24h)" : language === "en" ? "In transit (24h)" : "24 小时航行中"} value={transit} unit={language === "pt" ? "navios" : "ships"} icon={Anchor} accent="info" />
-          <OccupancyGauge value={occupancy} label={language === "pt" ? "Ocupação de berços" : language === "en" ? "Berth occupancy" : "泊位占用"} trendSuffix={trendLabel} />
-        </div>
-      </section>
+          </div>
+        }
+      >
+        <MetricBlock label={language === "pt" ? "Navios em operação" : language === "en" ? "Operating vessels" : "运营船舶"} value={operating} unit={language === "pt" ? "ativos" : language === "en" ? "active" : "正常"} icon={Ship} trend={{ up: true, value: "+12%" }} trendSuffix={trendLabel} accent="primary" />
+        <MetricBlock label={language === "pt" ? "Fila de fundeio" : language === "en" ? "Anchorage queue" : "锚地排队"} value={queue} unit={language === "pt" ? "aguardando" : language === "en" ? "waiting" : "等待"} icon={Hourglass} trend={{ up: false, value: "-8%" }} trendSuffix={trendLabel} accent="warning" />
+        <MetricBlock label={language === "pt" ? "Em rota (24h)" : language === "en" ? "In transit (24h)" : "24 小时航行中"} value={transit} unit={language === "pt" ? "navios" : "ships"} icon={Anchor} accent="info" />
+        <OccupancyGauge value={occupancy} label={language === "pt" ? "Ocupação de berços" : language === "en" ? "Berth occupancy" : "泊位占用"} trendSuffix={trendLabel} />
+      </SummaryMetricsPanel>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_28rem]">
         <section className="risk-panel p-6">

@@ -5,6 +5,7 @@ import { ShieldCheck, Filter } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useLanguageCode } from "@/i18n/useT";
 import { ShipLink } from "@/components/ShipLink";
+import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
 
 const AGENCIES: ClearanceAgency[] = ["Receita Federal", "ANVISA", "Polícia Federal", "VIGIAGRO"];
 
@@ -68,20 +69,20 @@ export default function Liberacoes() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <SummaryMetricsPanel>
           {[
           { st: "aprovado", label: language === "pt" ? "Aprovados" : language === "en" ? "Approved" : "已批准", cls: "text-emerald-700 border-emerald-200 bg-emerald-50/80" },
           { st: "em_analise", label: language === "pt" ? "Em análise" : language === "en" ? "Under review" : "审核中", cls: "text-blue-700 border-blue-200 bg-blue-50/80" },
           { st: "pendente", label: language === "pt" ? "Pendentes" : language === "en" ? "Pending" : "待处理", cls: "text-orange-600 border-orange-200 bg-orange-50/80" },
           { st: "bloqueado", label: language === "pt" ? "Bloqueados" : language === "en" ? "Blocked" : "已阻止", cls: "text-red-600 border-red-200 bg-red-50/85" },
         ].map((x) => (
-          <button key={x.st} onClick={() => openSummary(x.st as ClearanceStatus)}
-            className={`card-flat text-left p-4 transition ${x.cls} ${filter === x.st ? "ring-2 ring-primary/50" : ""}`}>
+          <SummaryMetricCard key={x.st} as="button" onClick={() => openSummary(x.st as ClearanceStatus)}
+            className={`${x.cls} ${filter === x.st ? "ring-2 ring-primary/50" : ""}`}>
             <div className="text-[10px] font-mono uppercase tracking-wider opacity-80">{x.label}</div>
-            <div className="text-2xl font-bold font-mono mt-1">{counts[x.st] ?? 0}</div>
-          </button>
+            <div className="text-2xl font-bold font-mono mt-1 text-[#102a4c]">{counts[x.st] ?? 0}</div>
+          </SummaryMetricCard>
         ))}
-      </div>
+      </SummaryMetricsPanel>
 
       <div className="premium-panel overflow-hidden">
         <div className="p-4 border-b border-border flex items-center justify-between">

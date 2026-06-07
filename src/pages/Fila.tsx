@@ -3,6 +3,7 @@ import { ShipStatusBadge } from "@/components/StatusBadges";
 import { Cloud, Hourglass, AlertCircle, Sparkles } from "lucide-react";
 import { useLanguageCode } from "@/i18n/useT";
 import { ShipLink } from "@/components/ShipLink";
+import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
 
 export default function Fila() {
   const language = useLanguageCode();
@@ -20,34 +21,40 @@ export default function Fila() {
         <p className="text-sm text-muted-foreground mt-1">{language === "pt" ? "Ordem por chegada e tempo estimado de atracação." : language === "en" ? "Order by arrival and estimated berthing time." : "按到达顺序和预计靠泊时间排序。"}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="card-flat p-5">
-          <div className="flex items-center gap-2 text-xs font-mono uppercase text-muted-foreground"><Hourglass className="h-3.5 w-3.5" /> {language === "pt" ? "Espera média" : language === "en" ? "Average wait" : "平均等待"}</div>
-          <div className="text-3xl font-bold font-mono mt-2">14<span className="text-base text-muted-foreground">h 22m</span></div>
-        </div>
-        <div className="card-flat p-5">
-          <div className="flex items-center gap-2 text-xs font-mono uppercase text-muted-foreground"><AlertCircle className="h-3.5 w-3.5" /> {language === "pt" ? "Maior espera" : language === "en" ? "Longest wait" : "最长等待"}</div>
-          <div className="text-3xl font-bold font-mono mt-2 text-warning">28<span className="text-base text-muted-foreground">h</span></div>
-        </div>
-        <div className="rounded-xl border border-warning/40 bg-[linear-gradient(135deg,rgba(245,158,11,0.18),rgba(251,191,36,0.08))] p-5 shadow-[0_22px_40px_-28px_rgba(245,158,11,0.8)]">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-xs font-mono uppercase text-warning">
-              <Cloud className="h-3.5 w-3.5" /> {language === "pt" ? "Impacto climático" : language === "en" ? "Weather impact" : "天气影响"}
+      <SummaryMetricsPanel gridClassName="grid grid-cols-1 gap-3 lg:grid-cols-3">
+        <SummaryMetricCard>
+          <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#405672]"><Hourglass className="h-3.5 w-3.5 text-[#0759ce]" /> {language === "pt" ? "Espera média" : language === "en" ? "Average wait" : "平均等待"}</div>
+          <div className="text-3xl font-bold font-mono mt-2 text-[#102a4c]">14<span className="text-base text-muted-foreground">h 22m</span></div>
+        </SummaryMetricCard>
+        <SummaryMetricCard>
+          <div className="flex items-center gap-2 text-xs font-mono uppercase text-warning"><AlertCircle className="h-3.5 w-3.5" /> {language === "pt" ? "Maior espera" : language === "en" ? "Longest wait" : "最长等待"}</div>
+          <div className="text-3xl font-bold font-mono mt-2 text-[#102a4c]">28<span className="text-base text-muted-foreground">h</span></div>
+        </SummaryMetricCard>
+        <SummaryMetricCard className="weather-serious-card border-[#e29b2f]/80">
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1.5 bg-[linear-gradient(180deg,#d97706,#b45309)]" />
+          <div className="pointer-events-none absolute right-0 top-0 h-16 w-24 rounded-bl-full bg-[#f59e0b]/15" />
+          <div className="relative flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 text-xs font-mono uppercase tracking-[0.14em] text-[#8a4b00]">
+              <span className="weather-alert-icon grid h-8 w-8 place-items-center rounded-full border border-[#edb96a] bg-white/80 text-[#d97706]">
+                <Cloud className="weather-alert-pulse h-4 w-4" />
+              </span>
+              {language === "pt" ? "Impacto climático" : language === "en" ? "Weather impact" : "天气影响"}
             </div>
-            <span className="inline-flex items-center gap-1 rounded-full border border-warning/40 bg-white/70 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] text-warning">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e29b2f]/70 bg-white/85 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] text-[#8a4b00]">
+              <span className="weather-alert-dot" />
               <Sparkles className="h-3 w-3" /> {language === "pt" ? "Atenção" : language === "en" ? "Attention" : "注意"}
             </span>
           </div>
-          <div className="mt-3 text-lg font-bold text-[#7a4600]">{language === "pt" ? "Redução estimada de 35%" : language === "en" ? "Estimated 35% reduction" : "预计降低 35%"}</div>
-          <div className="mt-2 text-sm leading-6 text-[#7a4600]">
+          <div className="relative mt-3 text-lg font-bold text-[#6f3f00]">{language === "pt" ? "Redução estimada de 35%" : language === "en" ? "Estimated 35% reduction" : "预计降低 35%"}</div>
+          <div className="relative mt-2 text-sm leading-6 text-[#744400]">
             {language === "pt"
               ? "Chuva forte prevista entre 16h e 20h. Priorize navios com janela crítica e prepare operação reduzida."
               : language === "en"
                 ? "Heavy rain is expected between 4pm and 8pm. Prioritize vessels with critical windows and prepare for reduced operations."
                 : "预计 16:00 至 20:00 有强降雨。请优先处理关键时间窗船舶，并准备降低作业能力。"}
           </div>
-        </div>
-      </div>
+        </SummaryMetricCard>
+      </SummaryMetricsPanel>
 
       <div className="premium-panel overflow-hidden">
         <div className="p-5 border-b border-border">

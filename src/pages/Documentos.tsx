@@ -24,6 +24,7 @@ import { PROFILES } from "@/data/profiles";
 import { useLanguageCode } from "@/i18n/useT";
 import { ShipLink } from "@/components/ShipLink";
 import { DocumentStatusBadge } from "@/components/StatusBadges";
+import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
 
 type LocalDocument = DocumentItem & {
   source: "seed" | "upload";
@@ -277,25 +278,25 @@ export default function Documentos() {
         </button>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-4">
+      <SummaryMetricsPanel>
         {[
           { label: language === "pt" ? "Total" : language === "en" ? "Total" : "总计", value: stats.total, detail: language === "pt" ? "documentos rastreados" : language === "en" ? "tracked documents" : "已跟踪文件", surface: "border-primary/20 bg-primary/[0.04]", icon: FileText, text: "text-primary" },
           { label: language === "pt" ? "Validados" : language === "en" ? "Validated" : "已验证", value: stats.validado, detail: language === "pt" ? "prontos para uso" : language === "en" ? "ready for use" : "可直接使用", surface: "border-success/25 bg-success/5", icon: CheckCircle2, text: "text-success" },
           { label: language === "pt" ? "Pendentes" : language === "en" ? "Pending" : "待处理", value: stats.pendente, detail: language === "pt" ? "aguardando análise" : language === "en" ? "awaiting review" : "等待审核", surface: "border-warning/25 bg-warning/5", icon: Clock, text: "text-warning" },
           { label: language === "pt" ? "Rejeitados" : language === "en" ? "Rejected" : "已拒绝", value: stats.rejeitado, detail: language === "pt" ? "requerem ajuste" : language === "en" ? "need adjustment" : "需要调整", surface: "border-destructive/25 bg-destructive/5", icon: XCircle, text: "text-destructive" },
         ].map((item) => (
-          <div key={item.label} className={`card-flat p-4 ${item.surface}`}>
+          <SummaryMetricCard key={item.label} className={item.surface}>
             <div className="flex items-start justify-between">
               <div>
-                <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">{item.label}</div>
-                <div className={`mt-2 text-3xl font-bold ${item.text}`}>{item.value}</div>
+                <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#405672]">{item.label}</div>
+                <div className="mt-2 text-3xl font-bold text-[#102a4c]">{item.value}</div>
                 <div className="mt-1 text-xs text-muted-foreground">{item.detail}</div>
               </div>
               <item.icon className={`h-5 w-5 ${item.text}`} />
             </div>
-          </div>
+          </SummaryMetricCard>
         ))}
-      </div>
+      </SummaryMetricsPanel>
 
       <div className="premium-panel overflow-hidden">
         <div className="flex items-center justify-between border-b border-border px-5 py-4">

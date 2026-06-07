@@ -5,6 +5,7 @@ import { AlertTriangle, Clock, Shield, ArrowRight, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguageCode } from "@/i18n/useT";
 import { ShipLink } from "@/components/ShipLink";
+import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
 
 const ORDER: RiskLevel[] = ["critical", "high", "medium", "low"];
 export default function Riscos() {
@@ -30,14 +31,14 @@ export default function Riscos() {
         <p className="text-sm text-muted-foreground mt-0.5">{language === "pt" ? "Atuação preventiva: identificação, impacto, prazo crítico e plano de mitigação." : language === "en" ? "Preventive action: identification, impact, critical deadline and mitigation plan." : "预防性管理：识别、影响、关键期限和缓解计划。"}</p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <SummaryMetricsPanel>
         {ORDER.map((k) => (
-          <div key={k} className={cn("card-flat p-4 border-l-4")} style={{ borderLeftColor: `hsl(var(--risk-${k}))` }}>
-            <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">{levelLabels[k]}</div>
-            <div className="text-2xl font-bold font-mono mt-1" style={{ color: `hsl(var(--risk-${k}))` }}>{counts[k]}</div>
-          </div>
+          <SummaryMetricCard key={k} className="border-l-4" style={{ borderLeftColor: `hsl(var(--risk-${k}))` }}>
+            <div className="text-[10px] font-mono uppercase tracking-wider" style={{ color: `hsl(var(--risk-${k}))` }}>{levelLabels[k]}</div>
+            <div className="text-2xl font-bold font-mono mt-1 text-[#102a4c]">{counts[k]}</div>
+          </SummaryMetricCard>
         ))}
-      </div>
+      </SummaryMetricsPanel>
 
       <div className="space-y-2.5">
         {ORDER.flatMap((lvl) => riskItems.filter((r) => r.level === lvl)).map((r) => {

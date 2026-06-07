@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLanguageCode } from "@/i18n/useT";
 import { ShipLink } from "@/components/ShipLink";
+import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
 
 const STATUS = {
   livre:      { cls: "border-emerald-200 bg-emerald-50/80 text-emerald-700", label: "Livre",       text: "text-emerald-700", icon: CheckCircle2 },
@@ -34,7 +35,7 @@ export default function Bercos() {
         <p className="text-sm text-muted-foreground mt-0.5">{language === "pt" ? "Ocupação atual, próximas atracações, conflitos e taxa de utilização." : language === "en" ? "Current occupancy, next berthings, conflicts and utilization rate." : "当前占用、下一批靠泊、冲突和利用率。"}</p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <SummaryMetricsPanel>
         {[
           { label: language === "pt" ? "Livres" : language === "en" ? "Free" : "空闲", n: livre, color: "text-success" },
           { label: language === "pt" ? "Ocupados" : language === "en" ? "Occupied" : "占用", n: ocupado, color: "text-accent" },
@@ -42,12 +43,12 @@ export default function Bercos() {
           { label: language === "pt" ? "Manutenção" : language === "en" ? "Maintenance" : "维护", n: manut, color: "text-destructive" },
           { label: language === "pt" ? "Conflitos" : language === "en" ? "Conflicts" : "冲突", n: conflicts, color: "text-destructive" },
         ].map((k) => (
-          <div key={k.label} className="card-flat p-4">
-            <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">{k.label}</div>
-            <div className={cn("text-2xl font-bold font-mono mt-1", k.color)}>{k.n}</div>
-          </div>
+          <SummaryMetricCard key={k.label}>
+            <div className={cn("text-[10px] font-mono uppercase tracking-wider", k.color)}>{k.label}</div>
+            <div className="text-2xl font-bold font-mono mt-1 text-[#102a4c]">{k.n}</div>
+          </SummaryMetricCard>
         ))}
-      </div>
+      </SummaryMetricsPanel>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
         {berths.map((b) => {

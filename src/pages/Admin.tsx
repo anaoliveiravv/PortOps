@@ -4,6 +4,7 @@ import { PROFILES, type ProfileId } from "@/data/profiles";
 import { useLanguageCode } from "@/i18n/useT";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/sonner";
+import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
 
 interface User {
   id: string;
@@ -145,22 +146,22 @@ export default function Admin() {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <SummaryMetricsPanel>
         {[
           { label: language === "pt" ? "Usuários totais" : language === "en" ? "Total users" : "用户总数", value: stats.total, icon: Users },
           { label: language === "pt" ? "Ativos" : language === "en" ? "Active" : "活跃", value: stats.active, icon: Shield },
           { label: language === "pt" ? "Organizações" : language === "en" ? "Organizations" : "机构数", value: stats.orgs, icon: Building2 },
           { label: language === "pt" ? "Perfis distintos" : language === "en" ? "Distinct profiles" : "不同身份", value: stats.profiles, icon: Shield },
         ].map((s) => (
-          <div key={s.label} className="card-flat p-4">
+          <SummaryMetricCard key={s.label}>
             <div className="flex items-start justify-between mb-2">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-mono">{s.label}</div>
-              <s.icon className="h-4 w-4 text-accent" />
+              <div className="text-[10px] uppercase tracking-wider text-[#405672] font-mono">{s.label}</div>
+              <s.icon className="h-4 w-4 text-[#0759ce]" />
             </div>
-            <div className="text-2xl font-bold font-mono tracking-tight">{s.value}</div>
-          </div>
+            <div className="text-2xl font-bold font-mono tracking-tight text-[#102a4c]">{s.value}</div>
+          </SummaryMetricCard>
         ))}
-      </div>
+      </SummaryMetricsPanel>
 
       <div className="premium-panel overflow-hidden">
         <div className="p-3 border-b border-border flex flex-wrap gap-2 items-center">
