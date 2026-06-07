@@ -23,24 +23,24 @@ export default function Fila() {
 
       <SummaryMetricsPanel gridClassName="grid grid-cols-1 gap-3 lg:grid-cols-3">
         <SummaryMetricCard>
-          <div className="flex items-center gap-2 text-[11px] font-mono uppercase text-[#405672]"><Hourglass className="h-3.5 w-3.5 text-[#0759ce]" /> {language === "pt" ? "Espera média" : language === "en" ? "Average wait" : "平均等待"}</div>
+          <div className="flex items-center gap-2 text-[11px] font-mono uppercase text-foreground"><Hourglass className="h-3.5 w-3.5" /> {language === "pt" ? "Espera média" : language === "en" ? "Average wait" : "平均等待"}</div>
           <div className="text-2xl font-bold font-mono mt-1.5 text-[#102a4c]">14<span className="text-sm text-muted-foreground">h 22m</span></div>
         </SummaryMetricCard>
         <SummaryMetricCard>
-          <div className="flex items-center gap-2 text-[11px] font-mono uppercase text-warning"><AlertCircle className="h-3.5 w-3.5" /> {language === "pt" ? "Maior espera" : language === "en" ? "Longest wait" : "最长等待"}</div>
+          <div className="flex items-center gap-2 text-[11px] font-mono uppercase text-foreground"><AlertCircle className="h-3.5 w-3.5" /> {language === "pt" ? "Maior espera" : language === "en" ? "Longest wait" : "最长等待"}</div>
           <div className="text-2xl font-bold font-mono mt-1.5 text-[#102a4c]">28<span className="text-sm text-muted-foreground">h</span></div>
         </SummaryMetricCard>
         <SummaryMetricCard className="weather-serious-card overflow-hidden border-[#e29b2f]/80">
           <div className="pointer-events-none absolute inset-y-0 left-0 w-1.5 rounded-l-[1.25rem] bg-[linear-gradient(180deg,#d97706,#b45309)]" />
           <div className="pointer-events-none absolute right-0 top-0 h-16 w-24 rounded-bl-full bg-[#f59e0b]/15" />
           <div className="relative flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5 text-xs font-mono uppercase tracking-[0.14em] text-[#8a4b00]">
-              <span className="weather-alert-icon grid h-8 w-8 place-items-center rounded-full border border-[#edb96a] bg-white/80 text-[#d97706]">
+            <div className="flex items-center gap-2.5 text-xs font-mono uppercase tracking-[0.14em] text-foreground">
+              <span className="weather-alert-icon grid h-8 w-8 place-items-center rounded-full border border-[#edb96a] bg-white/80 text-foreground">
                 <Cloud className="weather-alert-pulse h-4 w-4" />
               </span>
               {language === "pt" ? "Impacto climático" : language === "en" ? "Weather impact" : "天气影响"}
             </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e29b2f]/70 bg-white/85 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] text-[#8a4b00]">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e29b2f]/70 bg-white/85 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] text-foreground">
               <span className="weather-alert-dot" />
               <Sparkles className="h-3 w-3" /> {language === "pt" ? "Atenção" : language === "en" ? "Attention" : "注意"}
             </span>

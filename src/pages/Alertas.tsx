@@ -47,7 +47,7 @@ export default function Alertas() {
       <SummaryMetricsPanel>
         {(["critical", "warning", "info"] as const).map((k) => (
           <SummaryMetricCard key={k} className={SEV[k].cls}>
-            <div className={cn("text-[10px] font-mono uppercase tracking-wider", SEV[k].text)}>{SEV[k].label}</div>
+            <div className="text-[10px] font-mono uppercase tracking-wider text-foreground">{SEV[k].label}</div>
             <div className="text-2xl font-bold font-mono mt-1 text-[#102a4c]">{grouped[k].length}</div>
           </SummaryMetricCard>
         ))}

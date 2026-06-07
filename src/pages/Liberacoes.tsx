@@ -78,7 +78,7 @@ export default function Liberacoes() {
         ].map((x) => (
           <SummaryMetricCard key={x.st} as="button" onClick={() => openSummary(x.st as ClearanceStatus)}
             className={`${x.cls} ${filter === x.st ? "ring-2 ring-primary/50" : ""}`}>
-            <div className="text-[10px] font-mono uppercase tracking-wider opacity-80">{x.label}</div>
+            <div className="text-[10px] font-mono uppercase tracking-wider text-foreground opacity-80">{x.label}</div>
             <div className="text-2xl font-bold font-mono mt-1 text-[#102a4c]">{counts[x.st] ?? 0}</div>
           </SummaryMetricCard>
         ))}

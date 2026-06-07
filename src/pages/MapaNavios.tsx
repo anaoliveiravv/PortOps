@@ -2,6 +2,7 @@ import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode } from "
 import { Link, useSearchParams } from "react-router-dom";
 import {
   ships as initialShips,
+  type RiskLevel,
   type Ship,
 } from "@/data/mockData";
 import { ClearanceBadge, ShipStatusBadge, RiskBadge, RISK_HSL } from "@/components/StatusBadges";
@@ -603,7 +604,7 @@ export default function MapaNavios() {
 
       {selectedShip && (
         <aside key={selectedShip.id} className="w-[400px] shrink-0 overflow-y-auto border-l border-[#d5e2f1] bg-white/95 shadow-[0_22px_58px_-36px_rgba(19,50,95,0.42)] backdrop-blur">
-          <div className="sticky top-0 z-20 border-b border-[#d5e2f1] bg-white/95 p-5 shadow-[0_18px_34px_-32px_rgba(19,50,95,0.52)] backdrop-blur">
+          <div className="border-b border-[#d5e2f1] bg-white/95 p-5 shadow-[0_18px_34px_-32px_rgba(19,50,95,0.52)] backdrop-blur">
             <div className="mb-3 rounded-xl border border-[#9fc7f2] bg-[#eef6ff] px-3 py-2.5">
               <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[#1351b4]">
                 {language === "pt" ? "Navio selecionado" : language === "en" ? "Selected vessel" : "选定船舶"}
@@ -740,18 +741,28 @@ export default function MapaNavios() {
             })()}
           </Section>
 
-          {selectedShip.riskFactors.length > 0 && (
-            <Section title={`Fatores de risco (${selectedShip.riskFactors.length})`} icon={TriangleAlert} tone={selectedShip.risk}>
-              <ul className="space-y-1.5 text-xs">
+          <Section
+            title={`Fatores de risco (${selectedShip.riskFactors.length})`}
+            icon={TriangleAlert}
+            tone={selectedShip.riskFactors.length > 0 ? selectedShip.risk : undefined}
+          >
+            {selectedShip.riskFactors.length > 0 ? (
+              <ul className="space-y-2 text-xs">
                 {selectedShip.riskFactors.map((riskFactor, index) => (
-                  <li key={index} className="flex gap-2">
-                    <span className="mt-0.5 text-destructive">▸</span>
-                    <span>{riskFactor}</span>
+                  <li key={index} className="flex items-center gap-2 rounded-xl border border-destructive/25 bg-destructive/5 px-3 py-2 shadow-[0_14px_28px_-26px_rgba(220,38,38,0.8)]">
+                    <span className="weather-alert-pulse grid h-5 w-5 shrink-0 place-items-center rounded-full bg-destructive/10 text-destructive">
+                      <TriangleAlert className="h-3.5 w-3.5" />
+                    </span>
+                    <span className="font-medium text-foreground">{riskFactor}</span>
                   </li>
                 ))}
               </ul>
-            </Section>
-          )}
+            ) : (
+              <div className="rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] px-3 py-2 text-xs text-muted-foreground">
+                {language === "pt" ? "Sem fatores de risco ativos para este navio." : language === "en" ? "No active risk factors for this vessel." : "该船暂无活动风险因素。"}
+              </div>
+            )}
+          </Section>
 
           {selectedShip.pendencias.length > 0 && (
             <Section title={`Pendências (${selectedShip.pendencias.length})`} icon={TriangleAlert}>
@@ -780,12 +791,13 @@ export default function MapaNavios() {
             </div>
           </Section>
 
-          <Section title="Alertas climáticos" icon={TriangleAlert}>
+          <Section title="Alertas climáticos" icon={TriangleAlert} tone="high">
             <div className="space-y-2">
               {selectedWeather.map((event) => (
-                <div key={event.id} className="rounded-xl border border-[#d5e2f1] bg-[#f6f9fd] p-3">
+                <div key={event.id} className="weather-serious-card relative overflow-hidden rounded-xl border border-[#e29b2f]/80 p-3">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 w-1.5 rounded-l-xl bg-[linear-gradient(180deg,#d97706,#b45309)]" />
                   <div className="flex items-start gap-3">
-                    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-base shadow-sm">
+                    <div className="weather-alert-icon weather-alert-pulse grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[#edb96a] bg-white text-lg shadow-sm">
                       {event.symbol}
                     </div>
                     <div className="min-w-0">
@@ -934,14 +946,14 @@ interface SectionProps {
   title: string;
   icon: LucideIcon;
   children: ReactNode;
-  tone?: "critical" | "high";
+  tone?: RiskLevel;
 }
 
 function Section({ title, icon: Icon, children, tone }: SectionProps) {
   return (
     <section className="border-b border-[#d5e2f1] p-5">
       <div className="mb-3 flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
-        <Icon className={cn("h-3.5 w-3.5", tone === "critical" && "text-destructive", tone === "high" && "text-risk-high")} />
+        <Icon className={cn("h-3.5 w-3.5", tone && "weather-alert-pulse", tone === "critical" && "text-destructive", tone === "high" && "text-risk-high", tone === "medium" && "text-warning")} />
         {title}
       </div>
       {children}

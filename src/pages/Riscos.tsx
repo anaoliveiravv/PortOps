@@ -64,7 +64,7 @@ export default function Riscos() {
       <SummaryMetricsPanel>
         {ORDER.map((k) => (
           <SummaryMetricCard key={k} className="border-l-4" style={{ borderLeftColor: `hsl(var(--risk-${k}))` }}>
-            <div className="text-[10px] font-mono uppercase tracking-wider" style={{ color: `hsl(var(--risk-${k}))` }}>{levelLabels[k]}</div>
+            <div className="text-[10px] font-mono uppercase tracking-wider text-foreground">{levelLabels[k]}</div>
             <div className="text-2xl font-bold font-mono mt-1 text-[#102a4c]">{counts[k]}</div>
           </SummaryMetricCard>
         ))}

@@ -65,14 +65,14 @@ export default function Bercos() {
 
       <SummaryMetricsPanel>
         {[
-          { label: language === "pt" ? "Livres" : language === "en" ? "Free" : "空闲", n: livre, color: "text-success" },
-          { label: language === "pt" ? "Ocupados" : language === "en" ? "Occupied" : "占用", n: ocupado, color: "text-accent" },
-          { label: language === "pt" ? "Reservados" : language === "en" ? "Reserved" : "已预留", n: reservado, color: "text-warning" },
-          { label: language === "pt" ? "Manutenção" : language === "en" ? "Maintenance" : "维护", n: manut, color: "text-destructive" },
-          { label: language === "pt" ? "Conflitos" : language === "en" ? "Conflicts" : "冲突", n: conflicts, color: "text-destructive" },
+          { label: language === "pt" ? "Livres" : language === "en" ? "Free" : "空闲", n: livre },
+          { label: language === "pt" ? "Ocupados" : language === "en" ? "Occupied" : "占用", n: ocupado },
+          { label: language === "pt" ? "Reservados" : language === "en" ? "Reserved" : "已预留", n: reservado },
+          { label: language === "pt" ? "Manutenção" : language === "en" ? "Maintenance" : "维护", n: manut },
+          { label: language === "pt" ? "Conflitos" : language === "en" ? "Conflicts" : "冲突", n: conflicts },
         ].map((k) => (
           <SummaryMetricCard key={k.label}>
-            <div className={cn("text-[10px] font-mono uppercase tracking-wider", k.color)}>{k.label}</div>
+            <div className="text-[10px] font-mono uppercase tracking-wider text-foreground">{k.label}</div>
             <div className="text-2xl font-bold font-mono mt-1 text-[#102a4c]">{k.n}</div>
           </SummaryMetricCard>
         ))}
