@@ -50,7 +50,7 @@ export default function Login() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f3f6fb] text-foreground">
+    <div className="relative min-h-screen overflow-hidden bg-[#f3f6fb] font-sans text-foreground">
       <div className="absolute right-4 top-4 z-20">
         <LanguageSelector />
       </div>
@@ -107,7 +107,7 @@ export default function Login() {
               </div>
 
               <div className="text-center">
-                <div className="text-[0.82rem] font-semibold uppercase tracking-[0.38em] text-[#1f5dc4]">
+                <div className="login-display-label text-[#1f5dc4]">
                   {t("login.accessInstitutional")}
                 </div>
                 <h2 className="mt-3 text-[2rem] font-bold tracking-[-0.04em] text-[#183153] sm:text-[2.3rem]">
@@ -210,7 +210,7 @@ export default function Login() {
                   <div className="mx-auto grid h-14 w-14 place-items-center rounded-full border border-success/20 bg-success/10 text-success">
                     <CheckCircle2 className="h-7 w-7" />
                   </div>
-                  <div className="mt-4 text-[0.76rem] font-semibold uppercase tracking-[0.34em] text-[#1f5dc4]">
+                  <div className="login-display-label mt-4 text-[#1f5dc4]">
                     {t("login.successTitle")}
                   </div>
                   <div className="mt-3 text-[1.2rem] font-bold tracking-[-0.03em] text-[#183153] sm:text-[1.28rem]">
@@ -230,7 +230,7 @@ export default function Login() {
 
               {step === "demo" && (
                 <div className="mt-6 flex min-h-0 flex-1 flex-col">
-                  <div className="rounded-[1.1rem] bg-[#edf5ff] px-4 py-3 text-center text-[0.82rem] font-semibold uppercase tracking-[0.26em] text-[#1f5dc4]">
+                  <div className="login-display-label rounded-[1.1rem] bg-[#edf5ff] px-4 py-3 text-center text-[#1f5dc4]">
                     {t("login.selectProfile")}
                   </div>
                   <p className="mt-3 text-center text-sm leading-6 text-[#6d7f99]">

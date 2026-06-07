@@ -158,7 +158,7 @@ export const ships: Ship[] = [
       { agency: "Receita Federal", status: "aprovado", updatedAt: h(-10) },
       { agency: "ANVISA", status: "aprovado", updatedAt: h(-9) },
       { agency: "Polícia Federal", status: "aprovado", updatedAt: h(-9) },
-      { agency: "VIGIAGRO", status: "em_analise", updatedAt: h(-2), note: "Análise fitossanitária da soja" },
+      { agency: "VIGIAGRO", status: "em_analise", updatedAt: h(-2) },
     ],
     risk: "high",
     riskFactors: ["Fundeio há 18h", "VIGIAGRO em análise há 2h", "Berço destino em manutenção"],
@@ -242,7 +242,7 @@ export const ships: Ship[] = [
     lat: 55, lng: 56, heading: 0, speed: 0,
     clearances: [
       { agency: "Receita Federal", status: "aprovado", updatedAt: h(-12) },
-      { agency: "ANVISA", status: "bloqueado", updatedAt: h(-1), note: "Divergência em certificado de produto perigoso" },
+      { agency: "ANVISA", status: "bloqueado", updatedAt: h(-1)},
       { agency: "Polícia Federal", status: "aprovado", updatedAt: h(-12) },
       { agency: "VIGIAGRO", status: "aprovado", updatedAt: h(-12) },
     ],

@@ -464,19 +464,6 @@ export default function Documentos() {
               </div>
             </label>
 
-            <div className="rounded-[1.5rem] border border-primary/10 bg-primary/[0.04] p-4">
-              <div className="flex items-start gap-3">
-                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <div className="text-sm leading-6 text-foreground/90">
-                  {language === "pt"
-                    ? <>O documento será registrado como <strong>pendente</strong> para análise inicial no protótipo, com visualização e download disponíveis logo após o envio.</>
-                    : language === "en"
-                      ? <>The document will be registered as <strong>pending</strong> for initial prototype review, with preview and download available right after upload.</>
-                      : <>该文件将在原型中登记为 <strong>待处理</strong>，用于初步审核，上传后即可预览和下载。</>}
-                </div>
-              </div>
-            </div>
-
             <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
               <button
                 onClick={() => setUploadOpen(false)}
