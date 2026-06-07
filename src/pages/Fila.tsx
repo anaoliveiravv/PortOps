@@ -30,8 +30,8 @@ export default function Fila() {
           <div className="flex items-center gap-2 text-xs font-mono uppercase text-warning"><AlertCircle className="h-3.5 w-3.5" /> {language === "pt" ? "Maior espera" : language === "en" ? "Longest wait" : "最长等待"}</div>
           <div className="text-3xl font-bold font-mono mt-2 text-[#102a4c]">28<span className="text-base text-muted-foreground">h</span></div>
         </SummaryMetricCard>
-        <SummaryMetricCard className="weather-serious-card border-[#e29b2f]/80">
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1.5 bg-[linear-gradient(180deg,#d97706,#b45309)]" />
+        <SummaryMetricCard className="weather-serious-card overflow-hidden border-[#e29b2f]/80">
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1.5 rounded-l-[1.25rem] bg-[linear-gradient(180deg,#d97706,#b45309)]" />
           <div className="pointer-events-none absolute right-0 top-0 h-16 w-24 rounded-bl-full bg-[#f59e0b]/15" />
           <div className="relative flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5 text-xs font-mono uppercase tracking-[0.14em] text-[#8a4b00]">
