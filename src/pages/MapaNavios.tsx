@@ -6,6 +6,7 @@ import {
 } from "@/data/mockData";
 import { ClearanceBadge, ShipStatusBadge, RiskBadge, RISK_HSL } from "@/components/StatusBadges";
 import {
+  Anchor,
   Clock,
   FileText,
   History,
@@ -32,6 +33,7 @@ import { cn } from "@/lib/utils";
 import { useLanguageCode, useT } from "@/i18n/useT";
 import { analyzeShip } from "@/lib/portopsAi";
 import { useAssistant } from "@/store/assistantStore";
+import { getShipBerthsHref, getShipRisksHref } from "@/lib/shipLinks";
 
 const WORLD_CENTER: [number, number] = [-18, 8];
 
@@ -601,10 +603,21 @@ export default function MapaNavios() {
 
       {selectedShip && (
         <aside key={selectedShip.id} className="w-[400px] shrink-0 overflow-y-auto border-l border-[#d5e2f1] bg-white/95 shadow-[0_22px_58px_-36px_rgba(19,50,95,0.42)] backdrop-blur">
-          <div className="border-b border-[#d5e2f1] p-5">
+          <div className="sticky top-0 z-20 border-b border-[#d5e2f1] bg-white/95 p-5 shadow-[0_18px_34px_-32px_rgba(19,50,95,0.52)] backdrop-blur">
+            <div className="mb-3 rounded-xl border border-[#9fc7f2] bg-[#eef6ff] px-3 py-2.5">
+              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[#1351b4]">
+                {language === "pt" ? "Navio selecionado" : language === "en" ? "Selected vessel" : "选定船舶"}
+              </div>
+              <div className="mt-1 text-sm font-semibold text-[#102a4c]">
+                {selectedShip.flag} {selectedShip.name}
+              </div>
+              <div className="mt-1 text-[11px] font-mono text-[#53687f]">
+                {selectedOrigin ? selectedOrigin.name : selectedShip.origin} → {selectedDestination?.name ?? (language === "pt" ? "Destino operacional" : language === "en" ? "Operational destination" : "作业目的地")}
+              </div>
+            </div>
             <div className="mb-3 flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <div className="mb-1 text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">Navio · IMO {selectedShip.imo}</div>
+                <div className="mb-1 text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">{language === "pt" ? "Detalhes da embarcação" : language === "en" ? "Vessel details" : "船舶详情"} · IMO {selectedShip.imo}</div>
                 <div className={cn("truncate text-xl font-bold leading-tight", highlightShipId === selectedShip.id && "text-primary")}>{selectedShip.flag} {selectedShip.name}</div>
                 <div className="mt-0.5 text-xs font-mono text-muted-foreground">{selectedShip.type} · {selectedShip.loa}m · {selectedShip.origin}</div>
               </div>
@@ -656,16 +669,19 @@ export default function MapaNavios() {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 border-b border-[#d5e2f1] text-[10px] font-mono uppercase tracking-wider">
+          <div className="grid grid-cols-4 border-b border-[#d5e2f1] text-[10px] font-mono uppercase tracking-wider">
+            <Link to={getShipBerthsHref(selectedShip.id)} className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
+              <Anchor className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Berço" : language === "en" ? "Berth" : "泊位"}
+            </Link>
+            <Link to={getShipRisksHref(selectedShip.id)} className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
+              <TriangleAlert className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Risco" : language === "en" ? "Risk" : "风险"}
+            </Link>
             <Link to="/documentos" className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
               <FileText className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Docs" : language === "en" ? "Docs" : "文件"}
             </Link>
-            <Link to="/liberacoes" className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
+            <Link to="/liberacoes" className="py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
               <ShieldCheck className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Órgãos" : language === "en" ? "Agencies" : "机构"}
             </Link>
-            <button className="py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
-              <Navigation className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Rota" : language === "en" ? "Route" : "路线"}
-            </button>
           </div>
 
           <Section title="Programação" icon={Clock}>

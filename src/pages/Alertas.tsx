@@ -4,6 +4,7 @@ import { AlertTriangle, Info, AlertOctagon, Bell, ArrowRight } from "lucide-reac
 import { cn } from "@/lib/utils";
 import { useLanguageCode } from "@/i18n/useT";
 import { ShipLink } from "@/components/ShipLink";
+import { getShipRisksHref } from "@/lib/shipLinks";
 import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
 
 export default function Alertas() {
@@ -57,6 +58,11 @@ export default function Alertas() {
           const s = SEV[a.severity];
           const Icon = s.icon;
           const ship = a.shipId ? ships.find((x) => x.id === a.shipId) : null;
+          const riskHref = ship
+            ? getShipRisksHref(ship.id, a.riskId)
+            : a.riskId
+              ? `/riscos?risk=${encodeURIComponent(a.riskId)}`
+              : "/riscos";
           return (
             <div key={a.id} className={cn("card-flat border-l-4 p-4 shadow-sm", s.cls, a.severity === "critical" && "ring-1 ring-destructive/30 shadow-[0_16px_34px_-26px_rgba(220,38,38,0.5)]")} style={{ borderLeftColor: `hsl(var(--${a.severity === "critical" ? "destructive" : a.severity === "warning" ? "warning" : "info"}))` }}>
               <div className="flex gap-4">
@@ -88,7 +94,7 @@ export default function Alertas() {
                         {ship.flag} {ship.name} <ArrowRight className="h-3 w-3" />
                       </ShipLink>
                     )}
-                    <Link to="/riscos" className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/80 border border-[#d5e2f1] text-[11px] font-mono hover:border-accent hover:text-accent transition-colors">
+                    <Link to={riskHref} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/80 border border-[#d5e2f1] text-[11px] font-mono hover:border-accent hover:text-accent transition-colors">
                       {language === "pt" ? "Ver risco" : language === "en" ? "View risk" : "查看风险"} <ArrowRight className="h-3 w-3" />
                     </Link>
                   </div>

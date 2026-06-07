@@ -34,35 +34,35 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-[100dvh] flex-col overflow-hidden bg-background lg:flex-row">
-      <aside className="navy-sheen relative flex max-h-[14rem] w-full shrink-0 flex-col border-b border-[#236198]/35 text-sidebar-foreground lg:max-h-none lg:w-[18.25rem] lg:border-b-0 lg:border-r">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-[radial-gradient(circle_at_22%_20%,rgba(88,174,255,0.18),transparent_34%)]" />
-        <div className="relative flex items-center gap-3 border-b border-white/10 px-4 py-4 lg:px-5 lg:py-6">
-          <div className="grid h-11 w-11 place-items-center rounded-[1.05rem] border border-white/[0.12] bg-[#0d4b95]/60 shadow-[0_20px_42px_-28px_rgba(62,159,255,0.9)] lg:h-12 lg:w-12 lg:rounded-[1.15rem]">
-            <Anchor className="h-5 w-5 text-white lg:h-6 lg:w-6" strokeWidth={2.1} />
+      <aside className="navy-sheen relative flex max-h-[11rem] w-full shrink-0 flex-col border-b border-[#236198]/35 text-sidebar-foreground lg:max-h-none lg:w-[14.5rem] lg:border-b-0 lg:border-r">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_22%_20%,rgba(88,174,255,0.18),transparent_34%)]" />
+        <div className="relative flex items-center gap-2.5 border-b border-white/10 px-3.5 py-3 lg:px-4 lg:py-3.5">
+          <div className="grid h-10 w-10 place-items-center rounded-[0.9rem] border border-white/[0.12] bg-[#0d4b95]/60 shadow-[0_20px_42px_-28px_rgba(62,159,255,0.9)] lg:h-9 lg:w-9">
+            <Anchor className="h-5 w-5 text-white" strokeWidth={2.1} />
           </div>
           <div>
-            <div className="text-xl font-bold leading-none tracking-[-0.03em] text-white lg:text-2xl">PortOps</div>
+            <div className="text-lg font-bold leading-none tracking-[-0.03em] text-white lg:text-xl">PortOps</div>
           </div>
         </div>
 
-        <nav className="relative flex gap-2 overflow-x-auto px-3 py-3 lg:flex-1 lg:flex-col lg:space-y-2 lg:overflow-x-hidden lg:overflow-y-auto lg:py-5">
+        <nav className="relative flex gap-2 overflow-x-auto px-3 py-2.5 lg:flex-1 lg:flex-col lg:gap-1.5 lg:overflow-x-hidden lg:overflow-y-auto lg:px-3 lg:py-3">
           {visibleNav.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
                 cn(
-                  "group relative flex shrink-0 items-center gap-3 whitespace-nowrap rounded-[1.05rem] border px-4 py-3 text-[0.9rem] transition-all duration-300 active:scale-[0.99] lg:shrink lg:py-3.5 lg:text-[0.95rem]",
+                  "group relative flex shrink-0 items-center gap-2.5 whitespace-nowrap rounded-[0.85rem] border px-3 py-2.5 text-[0.86rem] transition-all duration-300 active:scale-[0.99] lg:shrink lg:px-3 lg:py-2 lg:text-[0.82rem]",
                   isActive
-                    ? "bg-[#0759ce] text-white border-[#4db5ff]/40 blue-glow"
+                    ? "bg-[#0759ce] text-white border-[#4db5ff]/40 shadow-[0_12px_32px_-24px_rgba(77,181,255,0.95)]"
                     : "border-transparent text-sidebar-foreground/90 hover:bg-white/10 hover:border-white/10 hover:text-white"
                 )
               }
             >
               {({ isActive }) => (
                 <>
-                  {isActive && <span className="absolute inset-x-4 -bottom-1 h-1 rounded-t-full bg-[#6ad4ff] shadow-[0_0_18px_rgba(106,212,255,0.85)] lg:inset-x-auto lg:-right-1 lg:bottom-3 lg:top-3 lg:h-auto lg:w-1 lg:rounded-l-full" />}
-                  <item.icon className={cn("h-5 w-5", isActive ? "text-white" : "text-sidebar-foreground/80 group-hover:text-white")} strokeWidth={1.85} />
+                  {isActive && <span className="absolute inset-x-4 -bottom-1 h-1 rounded-t-full bg-[#6ad4ff] shadow-[0_0_18px_rgba(106,212,255,0.85)] lg:inset-x-auto lg:-right-1 lg:bottom-2.5 lg:top-2.5 lg:h-auto lg:w-1 lg:rounded-l-full" />}
+                  <item.icon className={cn("h-[1.125rem] w-[1.125rem] lg:h-4 lg:w-4", isActive ? "text-white" : "text-sidebar-foreground/80 group-hover:text-white")} strokeWidth={1.85} />
                   <span className="font-medium">{t(item.labelKey)}</span>
                 </>
               )}
@@ -71,21 +71,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </nav>
 
         {profile && (
-          <div className="relative hidden border-t border-white/10 p-4 lg:block">
-            <div className="rounded-[1.2rem] border border-white/10 bg-white/[0.055] p-4 mb-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_20px_48px_-36px_rgba(50,157,255,0.55)]">
-              <div className="flex items-center gap-2 mb-1.5">
-                <profile.icon className="h-4 w-4 text-[#4bb2ff]" />
-                <div className="text-xs font-semibold text-white truncate">{profile.name}</div>
-                <ChevronRight className="ml-auto h-4 w-4 text-white/70" />
+          <div className="relative hidden border-t border-white/10 p-3 lg:block">
+            <div className="mb-2 rounded-[0.95rem] border border-white/10 bg-white/[0.055] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_20px_48px_-36px_rgba(50,157,255,0.55)]">
+              <div className="mb-1 flex items-center gap-2">
+                <profile.icon className="h-3.5 w-3.5 text-[#4bb2ff]" />
+                <div className="truncate text-[11px] font-semibold text-white">{profile.name}</div>
+                <ChevronRight className="ml-auto h-3.5 w-3.5 text-white/70" />
               </div>
-              <div className="text-[10px] text-sidebar-foreground/70 font-mono truncate">{profile.org}</div>
+              <div className="truncate font-mono text-[9px] text-sidebar-foreground/70">{profile.org}</div>
               {session && (
-                <div className="mt-2 text-[10px] font-mono text-sidebar-foreground/60 leading-relaxed">
+                <div className="mt-1.5 truncate font-mono text-[9px] leading-relaxed text-sidebar-foreground/60">
                   {session.name} · {session.cpf}
                 </div>
               )}
             </div>
-            <button onClick={logout} className="w-full flex items-center justify-center gap-2 text-xs text-sidebar-foreground/80 hover:text-white px-3 py-2.5 rounded-[1rem] border border-white/10 hover:bg-white/10 transition-all duration-200 active:scale-[0.98]">
+            <button onClick={logout} className="flex w-full items-center justify-center gap-2 rounded-[0.8rem] border border-white/10 px-3 py-2 text-[11px] text-sidebar-foreground/80 transition-all duration-200 hover:bg-white/10 hover:text-white active:scale-[0.98]">
               <LogOut className="h-3.5 w-3.5" /> {t("common.logout")}
             </button>
           </div>

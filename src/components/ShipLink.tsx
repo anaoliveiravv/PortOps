@@ -1,10 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-
-export function getShipMapHref(shipId: string) {
-  return `/mapa?ship=${encodeURIComponent(shipId)}`;
-}
+import { getShipMapHref } from "@/lib/shipLinks";
 
 export function ShipLink({
   shipId,

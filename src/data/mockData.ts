@@ -71,6 +71,7 @@ export interface AlertItem {
   source: string;
   timestamp: string;
   shipId?: string;
+  riskId?: string;
   recommendedAction?: string;
   origin?: string;
 }
@@ -290,12 +291,12 @@ export const berths: Berth[] = [
 ];
 
 export const alerts: AlertItem[] = [
-  { id: "A-001", severity: "critical", title: "ANVISA bloqueou MV Hamburg Trader", description: "Divergência em certificado de produto perigoso. Operação suspensa no Berço 05.", source: "ANVISA", timestamp: h(-1), shipId: "SHP-007", origin: "Inspeção sanitária", recommendedAction: "Agente deve reapresentar certificado MSDS atualizado." },
-  { id: "A-002", severity: "warning",  title: "VIGIAGRO pendente — Iberia Bulk",   description: "Análise fitossanitária da soja há mais de 2h. Risco de atrasar atracação.", source: "VIGIAGRO", timestamp: h(-2), shipId: "SHP-003", origin: "SLA ultrapassado", recommendedAction: "Escalar para coordenação VIGIAGRO; reagendar atracação se necessário." },
-  { id: "A-003", severity: "warning",  title: "Previsão de chuva forte às 16h",     description: "Operação reduzida em ~35%. 2 berços de granel afetados.",                                            source: "Meteorologia", timestamp: h(-0.5), origin: "Boletim INMET", recommendedAction: "Antecipar operações em granel; suspender movimentações sensíveis." },
-  { id: "A-004", severity: "critical", title: "Nordic Tide aguarda 3 liberações",   description: "Carga perigosa sem DI, ANVISA e VIGIAGRO. Atracação prevista em 10h.",                              source: "Sistema",       timestamp: h(-3), shipId: "SHP-004", origin: "Documentação", recommendedAction: "Notificar agente Norske Shipping para envio imediato dos documentos." },
-  { id: "A-005", severity: "warning",  title: "Conflito de berço previsto",          description: "Pacific Dawn (ETB +12h) e Cabo Frio competem pelo Berço 04.",                                       source: "Sistema",       timestamp: h(-0.2), shipId: "SHP-005", origin: "Programação", recommendedAction: "Realocar SHP-008 para B-02 (livre)." },
-  { id: "A-006", severity: "info",     title: "Receita liberou Santos Express",      description: "Documentação validada. Operação pode iniciar assim que ANVISA aprovar.",                            source: "Receita Federal", timestamp: h(-1), shipId: "SHP-002" },
+  { id: "A-001", severity: "critical", title: "ANVISA bloqueou MV Hamburg Trader", description: "Divergência em certificado de produto perigoso. Operação suspensa no Berço 05.", source: "ANVISA", timestamp: h(-1), shipId: "SHP-007", riskId: "R-001", origin: "Inspeção sanitária", recommendedAction: "Agente deve reapresentar certificado MSDS atualizado." },
+  { id: "A-002", severity: "warning",  title: "VIGIAGRO pendente — Iberia Bulk",   description: "Análise fitossanitária da soja há mais de 2h. Risco de atrasar atracação.", source: "VIGIAGRO", timestamp: h(-2), shipId: "SHP-003", riskId: "R-003", origin: "SLA ultrapassado", recommendedAction: "Escalar para coordenação VIGIAGRO; reagendar atracação se necessário." },
+  { id: "A-003", severity: "warning",  title: "Previsão de chuva forte às 16h",     description: "Operação reduzida em ~35%. 2 berços de granel afetados.",                                            source: "Meteorologia", timestamp: h(-0.5), riskId: "R-005", origin: "Boletim INMET", recommendedAction: "Antecipar operações em granel; suspender movimentações sensíveis." },
+  { id: "A-004", severity: "critical", title: "Nordic Tide aguarda 3 liberações",   description: "Carga perigosa sem DI, ANVISA e VIGIAGRO. Atracação prevista em 10h.",                              source: "Sistema",       timestamp: h(-3), shipId: "SHP-004", riskId: "R-002", origin: "Documentação", recommendedAction: "Notificar agente Norske Shipping para envio imediato dos documentos." },
+  { id: "A-005", severity: "warning",  title: "Conflito de berço previsto",          description: "Pacific Dawn (ETB +12h) e Cabo Frio competem pelo Berço 04.",                                       source: "Sistema",       timestamp: h(-0.2), shipId: "SHP-005", riskId: "R-004", origin: "Programação", recommendedAction: "Realocar SHP-008 para B-02 (livre)." },
+  { id: "A-006", severity: "info",     title: "Receita liberou Santos Express",      description: "Documentação validada. Operação pode iniciar assim que ANVISA aprovar.",                            source: "Receita Federal", timestamp: h(-1), shipId: "SHP-002", riskId: "R-007" },
 ];
 
 export const documents: DocumentItem[] = [

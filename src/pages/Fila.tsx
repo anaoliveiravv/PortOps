@@ -12,23 +12,23 @@ export default function Fila() {
     .sort((a, b) => (a.queuePosition ?? 99) - (b.queuePosition ?? 99));
 
   return (
-    <div className="mx-auto max-w-[1440px] p-6 lg:p-8 animate-fade-in space-y-6">
+    <div className="mx-auto max-w-[1440px] p-5 lg:p-6 animate-fade-in space-y-5">
       <div>
         <div className="text-[11px] font-mono uppercase tracking-[0.25em] text-primary mb-1">
           {language === "pt" ? "Fundeio · Fila" : language === "en" ? "Anchorage · Queue" : "锚地 · 队列"}
         </div>
-        <h1 className="text-3xl font-bold tracking-tight">{language === "pt" ? "Fila de Espera" : language === "en" ? "Waiting Queue" : "等待队列"}</h1>
-        <p className="text-sm text-muted-foreground mt-1">{language === "pt" ? "Ordem por chegada e tempo estimado de atracação." : language === "en" ? "Order by arrival and estimated berthing time." : "按到达顺序和预计靠泊时间排序。"}</p>
+        <h1 className="text-2xl font-bold tracking-tight">{language === "pt" ? "Fila de Espera" : language === "en" ? "Waiting Queue" : "等待队列"}</h1>
+        <p className="text-sm text-muted-foreground mt-0.5">{language === "pt" ? "Ordem por chegada e tempo estimado de atracação." : language === "en" ? "Order by arrival and estimated berthing time." : "按到达顺序和预计靠泊时间排序。"}</p>
       </div>
 
       <SummaryMetricsPanel gridClassName="grid grid-cols-1 gap-3 lg:grid-cols-3">
         <SummaryMetricCard>
-          <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#405672]"><Hourglass className="h-3.5 w-3.5 text-[#0759ce]" /> {language === "pt" ? "Espera média" : language === "en" ? "Average wait" : "平均等待"}</div>
-          <div className="text-3xl font-bold font-mono mt-2 text-[#102a4c]">14<span className="text-base text-muted-foreground">h 22m</span></div>
+          <div className="flex items-center gap-2 text-[11px] font-mono uppercase text-[#405672]"><Hourglass className="h-3.5 w-3.5 text-[#0759ce]" /> {language === "pt" ? "Espera média" : language === "en" ? "Average wait" : "平均等待"}</div>
+          <div className="text-2xl font-bold font-mono mt-1.5 text-[#102a4c]">14<span className="text-sm text-muted-foreground">h 22m</span></div>
         </SummaryMetricCard>
         <SummaryMetricCard>
-          <div className="flex items-center gap-2 text-xs font-mono uppercase text-warning"><AlertCircle className="h-3.5 w-3.5" /> {language === "pt" ? "Maior espera" : language === "en" ? "Longest wait" : "最长等待"}</div>
-          <div className="text-3xl font-bold font-mono mt-2 text-[#102a4c]">28<span className="text-base text-muted-foreground">h</span></div>
+          <div className="flex items-center gap-2 text-[11px] font-mono uppercase text-warning"><AlertCircle className="h-3.5 w-3.5" /> {language === "pt" ? "Maior espera" : language === "en" ? "Longest wait" : "最长等待"}</div>
+          <div className="text-2xl font-bold font-mono mt-1.5 text-[#102a4c]">28<span className="text-sm text-muted-foreground">h</span></div>
         </SummaryMetricCard>
         <SummaryMetricCard className="weather-serious-card overflow-hidden border-[#e29b2f]/80">
           <div className="pointer-events-none absolute inset-y-0 left-0 w-1.5 rounded-l-[1.25rem] bg-[linear-gradient(180deg,#d97706,#b45309)]" />
@@ -45,8 +45,8 @@ export default function Fila() {
               <Sparkles className="h-3 w-3" /> {language === "pt" ? "Atenção" : language === "en" ? "Attention" : "注意"}
             </span>
           </div>
-          <div className="relative mt-3 text-lg font-bold text-[#6f3f00]">{language === "pt" ? "Redução estimada de 35%" : language === "en" ? "Estimated 35% reduction" : "预计降低 35%"}</div>
-          <div className="relative mt-2 text-sm leading-6 text-[#744400]">
+          <div className="relative mt-2 text-base font-bold text-[#6f3f00]">{language === "pt" ? "Redução estimada de 35%" : language === "en" ? "Estimated 35% reduction" : "预计降低 35%"}</div>
+          <div className="relative mt-1.5 text-sm leading-5 text-[#744400]">
             {language === "pt"
               ? "Chuva forte prevista entre 16h e 20h. Priorize navios com janela crítica e prepare operação reduzida."
               : language === "en"
@@ -57,7 +57,7 @@ export default function Fila() {
       </SummaryMetricsPanel>
 
       <div className="premium-panel overflow-hidden">
-        <div className="p-5 border-b border-border">
+        <div className="p-4 border-b border-border">
           <div className="text-sm font-semibold">{language === "pt" ? "Navios fundeados — ordem de prioridade" : language === "en" ? "Anchored vessels — priority order" : "锚泊船舶 - 优先顺序"}</div>
         </div>
         <div className="divide-y divide-border">
@@ -65,8 +65,8 @@ export default function Fila() {
             const waitH = Math.round((Date.now() - +new Date(s.eta)) / 3600000);
             const etbH = Math.round((+new Date(s.etb) - Date.now()) / 3600000);
             return (
-              <div key={s.id} className="p-5 flex items-center gap-5 hover:bg-secondary/30">
-                <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-warning/20 to-warning/5 grid place-items-center font-mono text-xl font-bold text-warning border border-warning/30">
+              <div key={s.id} className="p-4 flex items-center gap-4 hover:bg-secondary/30">
+                <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-warning/20 to-warning/5 grid place-items-center font-mono text-lg font-bold text-warning border border-warning/30">
                   {idx + 1}
                 </div>
                 <div className="flex-1">
@@ -75,7 +75,7 @@ export default function Fila() {
                       {s.flag} {s.name}
                     </ShipLink>
                   </div>
-                  <div className="text-xs text-muted-foreground font-mono mt-0.5">IMO {s.imo} · {s.type} · {s.cargo}</div>
+                  <div className="text-[11px] text-muted-foreground font-mono mt-0.5">IMO {s.imo} · {s.type} · {s.cargo}</div>
                 </div>
                 <div className="text-right">
                   <div className="text-[10px] font-mono uppercase text-muted-foreground">{language === "pt" ? "Aguardando" : language === "en" ? "Waiting" : "等待中"}</div>

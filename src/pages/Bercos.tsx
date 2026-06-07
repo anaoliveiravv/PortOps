@@ -1,10 +1,12 @@
-import { berths, ships } from "@/data/mockData";
+import { berths, riskItems, ships } from "@/data/mockData";
 import { Anchor, Wrench, Calendar, AlertTriangle, ArrowRight, CheckCircle2, Clock3 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLanguageCode } from "@/i18n/useT";
 import { ShipLink } from "@/components/ShipLink";
+import { getShipRisksHref } from "@/lib/shipLinks";
 import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
+import { useEffect, useRef } from "react";
 
 const STATUS = {
   livre:      { cls: "border-emerald-200 bg-emerald-50/80 text-emerald-700", label: "Livre",       text: "text-emerald-700", icon: CheckCircle2 },
@@ -15,6 +17,11 @@ const STATUS = {
 
 export default function Bercos() {
   const language = useLanguageCode();
+  const [searchParams] = useSearchParams();
+  const focusedShipId = searchParams.get("ship");
+  const focusedBerthParam = searchParams.get("berth");
+  const focusedShip = focusedShipId ? ships.find((ship) => ship.id === focusedShipId) ?? null : null;
+  const firstFocusedCardRef = useRef<HTMLDivElement | null>(null);
   const statusLabels = {
     livre: language === "pt" ? "Livre" : language === "en" ? "Free" : "空闲",
     ocupado: language === "pt" ? "Ocupado" : language === "en" ? "Occupied" : "占用",
@@ -26,6 +33,16 @@ export default function Bercos() {
   const manut = berths.filter((b) => b.status === "manutencao").length;
   const reservado = berths.filter((b) => b.status === "reservado").length;
   const conflicts = berths.filter((b) => b.conflict).length;
+  const explicitFocusedBerth = focusedBerthParam ? berths.find((b) => b.id === focusedBerthParam) ?? null : null;
+  const firstFocusedBerthId = explicitFocusedBerth?.id
+    ?? (focusedShip
+      ? berths.find((b) => b.occupiedBy === focusedShip.id || b.nextShipId === focusedShip.id)?.id ?? null
+      : null);
+
+  useEffect(() => {
+    if (typeof firstFocusedCardRef.current?.scrollIntoView !== "function") return;
+    firstFocusedCardRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [firstFocusedBerthId]);
 
   return (
     <div className="mx-auto max-w-[1440px] p-6 lg:p-8 animate-fade-in space-y-6">
@@ -34,6 +51,17 @@ export default function Bercos() {
         <h1 className="text-2xl font-bold tracking-tight">{language === "pt" ? "Gestão de Berços" : language === "en" ? "Berth Management" : "泊位管理"}</h1>
         <p className="text-sm text-muted-foreground mt-0.5">{language === "pt" ? "Ocupação atual, próximas atracações, conflitos e taxa de utilização." : language === "en" ? "Current occupancy, next berthings, conflicts and utilization rate." : "当前占用、下一批靠泊、冲突和利用率。"}</p>
       </div>
+
+      {focusedShip && (
+        <div className="rounded-xl border border-[#9fc7f2] bg-[#eef6ff] px-4 py-3 text-sm text-[#102a4c] shadow-[0_18px_38px_-32px_rgba(19,81,180,0.55)]">
+          <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[#1351b4]">
+            {language === "pt" ? "Contexto do navio" : language === "en" ? "Vessel context" : "船舶上下文"}
+          </div>
+          <div className="mt-0.5 font-semibold">
+            {language === "pt" ? "Visualizando informações de" : language === "en" ? "Viewing information for" : "正在查看"} {focusedShip.name} · IMO {focusedShip.imo}
+          </div>
+        </div>
+      )}
 
       <SummaryMetricsPanel>
         {[
@@ -56,8 +84,25 @@ export default function Bercos() {
           const next = ships.find((s) => s.id === b.nextShipId);
           const st = { ...STATUS[b.status], label: statusLabels[b.status] };
           const StatusIcon = st.icon;
+          const isExplicitFocusedBerth = explicitFocusedBerth?.id === b.id;
+          const isFocusedBerth = isExplicitFocusedBerth || Boolean(!explicitFocusedBerth && focusedShip && (b.occupiedBy === focusedShip.id || b.nextShipId === focusedShip.id));
+          const contextualRisk = riskItems.find((risk) => risk.berthId === b.id);
+          const contextualRiskHref = focusedShip && isFocusedBerth
+            ? getShipRisksHref(focusedShip.id, contextualRisk?.id)
+            : contextualRisk
+              ? `/riscos?risk=${encodeURIComponent(contextualRisk.id)}`
+              : "/riscos";
           return (
-            <div key={b.id} className={cn("card-flat overflow-hidden", b.conflict && "border-destructive/40")}>
+            <div
+              key={b.id}
+              ref={b.id === firstFocusedBerthId ? firstFocusedCardRef : undefined}
+              aria-current={isFocusedBerth ? "true" : undefined}
+              className={cn(
+                "card-flat overflow-hidden transition-all duration-300",
+                b.conflict && "border-destructive/40",
+                isFocusedBerth && "border-[#1351b4] ring-4 ring-[#67b6ff]/50 shadow-[0_26px_58px_-30px_rgba(19,81,180,0.82)]"
+              )}
+            >
               <div className={cn("px-4 py-3 border-b border-border flex items-center justify-between", st.cls)}>
                 <div className="flex items-center gap-2">
                   {b.status === "manutencao" ? <Wrench className={cn("h-4 w-4", st.text)} /> : <Anchor className={cn("h-4 w-4", st.text)} />}
@@ -73,6 +118,14 @@ export default function Bercos() {
               </div>
 
               <div className="p-4 space-y-3">
+                {isFocusedBerth && (
+                  <div className="inline-flex items-center rounded-full border border-[#7bb7f0] bg-[#eef6ff] px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.14em] text-[#1351b4]">
+                    {isExplicitFocusedBerth
+                      ? language === "pt" ? "Berço em foco" : language === "en" ? "Focused berth" : "聚焦泊位"
+                      : language === "pt" ? "Navio selecionado" : language === "en" ? "Selected vessel" : "选定船舶"}
+                  </div>
+                )}
+
                 <div className="grid grid-cols-3 gap-2 text-xs">
                   <div><div className="text-[10px] text-muted-foreground font-mono uppercase">{language === "pt" ? "Compr." : language === "en" ? "Length" : "长度"}</div><div className="font-mono font-semibold">{b.length} m</div></div>
                   <div><div className="text-[10px] text-muted-foreground font-mono uppercase">{language === "pt" ? "Calado" : language === "en" ? "Draft" : "吃水"}</div><div className="font-mono font-semibold">{b.draft} m</div></div>
@@ -120,7 +173,7 @@ export default function Bercos() {
                 )}
 
                 {b.conflict && (
-                  <Link to="/riscos" className="flex items-start gap-2 rounded-xl border border-destructive/40 bg-destructive/5 p-2.5 text-xs hover:bg-destructive/10 transition-colors">
+                  <Link to={contextualRiskHref} className="flex items-start gap-2 rounded-xl border border-destructive/40 bg-destructive/5 p-2.5 text-xs hover:bg-destructive/10 transition-colors">
                     <AlertTriangle className="h-3.5 w-3.5 text-destructive shrink-0 mt-0.5" />
                     <div>
                       <div className="text-[10px] font-mono uppercase text-destructive mb-0.5">{language === "pt" ? "Conflito previsto" : language === "en" ? "Predicted conflict" : "预计冲突"}</div>

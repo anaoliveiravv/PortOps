@@ -1,15 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { riskItems, ships, berths, type RiskLevel } from "@/data/mockData";
 import { RiskBadge } from "@/components/StatusBadges";
 import { AlertTriangle, Clock, Shield, ArrowRight, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguageCode } from "@/i18n/useT";
 import { ShipLink } from "@/components/ShipLink";
+import { getShipBerthsHref } from "@/lib/shipLinks";
 import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
+import { useEffect, useRef } from "react";
 
 const ORDER: RiskLevel[] = ["critical", "high", "medium", "low"];
 export default function Riscos() {
   const language = useLanguageCode();
+  const [searchParams] = useSearchParams();
+  const focusedShipId = searchParams.get("ship");
+  const focusedRiskParam = searchParams.get("risk");
+  const focusedShip = focusedShipId ? ships.find((ship) => ship.id === focusedShipId) ?? null : null;
+  const focusedBerthIds = new Set([focusedShip?.berthId, focusedShip?.nextBerthId].filter(Boolean));
+  const firstFocusedRiskRef = useRef<HTMLDivElement | null>(null);
   const levelLabels: Record<RiskLevel, string> = {
     critical: language === "pt" ? "Crítico" : language === "en" ? "Critical" : "严重",
     high: language === "pt" ? "Alto" : language === "en" ? "High" : "高",
@@ -20,6 +28,17 @@ export default function Riscos() {
     acc[k] = riskItems.filter((r) => r.level === k).length;
     return acc;
   }, {} as Record<RiskLevel, number>);
+  const orderedRisks = ORDER.flatMap((lvl) => riskItems.filter((r) => r.level === lvl));
+  const explicitFocusedRisk = focusedRiskParam ? orderedRisks.find((r) => r.id === focusedRiskParam) ?? null : null;
+  const firstFocusedRiskId = explicitFocusedRisk?.id
+    ?? (focusedShip
+      ? orderedRisks.find((r) => r.shipId === focusedShip.id || (r.berthId && focusedBerthIds.has(r.berthId)))?.id ?? null
+      : null);
+
+  useEffect(() => {
+    if (typeof firstFocusedRiskRef.current?.scrollIntoView !== "function") return;
+    firstFocusedRiskRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [firstFocusedRiskId]);
 
   return (
     <div className="mx-auto max-w-[1440px] p-6 lg:p-8 animate-fade-in space-y-6">
@@ -31,6 +50,17 @@ export default function Riscos() {
         <p className="text-sm text-muted-foreground mt-0.5">{language === "pt" ? "Atuação preventiva: identificação, impacto, prazo crítico e plano de mitigação." : language === "en" ? "Preventive action: identification, impact, critical deadline and mitigation plan." : "预防性管理：识别、影响、关键期限和缓解计划。"}</p>
       </div>
 
+      {focusedShip && (
+        <div className="rounded-xl border border-[#9fc7f2] bg-[#eef6ff] px-4 py-3 text-sm text-[#102a4c] shadow-[0_18px_38px_-32px_rgba(19,81,180,0.55)]">
+          <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[#1351b4]">
+            {language === "pt" ? "Contexto do navio" : language === "en" ? "Vessel context" : "船舶上下文"}
+          </div>
+          <div className="mt-0.5 font-semibold">
+            {language === "pt" ? "Visualizando informações de" : language === "en" ? "Viewing information for" : "正在查看"} {focusedShip.name} · IMO {focusedShip.imo}
+          </div>
+        </div>
+      )}
+
       <SummaryMetricsPanel>
         {ORDER.map((k) => (
           <SummaryMetricCard key={k} className="border-l-4" style={{ borderLeftColor: `hsl(var(--risk-${k}))` }}>
@@ -41,24 +71,44 @@ export default function Riscos() {
       </SummaryMetricsPanel>
 
       <div className="space-y-2.5">
-        {ORDER.flatMap((lvl) => riskItems.filter((r) => r.level === lvl)).map((r) => {
+        {orderedRisks.map((r) => {
           const ship = r.shipId ? ships.find((s) => s.id === r.shipId) : null;
           const berth = r.berthId ? berths.find((b) => b.id === r.berthId) : null;
           const hoursLeft = Math.round((+new Date(r.deadline) - Date.now()) / 3600000);
+          const isExplicitFocusedRisk = explicitFocusedRisk?.id === r.id;
+          const isFocusedRisk = isExplicitFocusedRisk || Boolean(!explicitFocusedRisk && focusedShip && (r.shipId === focusedShip.id || (r.berthId && focusedBerthIds.has(r.berthId))));
+          const berthHref = focusedShip && isFocusedRisk
+            ? getShipBerthsHref(focusedShip.id, berth?.id)
+            : berth
+              ? `/bercos?berth=${encodeURIComponent(berth.id)}`
+              : "/bercos";
           return (
-            <div key={r.id} className="premium-panel overflow-hidden">
+            <div
+              key={r.id}
+              ref={r.id === firstFocusedRiskId ? firstFocusedRiskRef : undefined}
+              aria-current={isFocusedRisk ? "true" : undefined}
+              className={cn(
+                "premium-panel overflow-hidden transition-all duration-300",
+                isFocusedRisk && "border-[#1351b4] ring-4 ring-[#67b6ff]/50 shadow-[0_26px_58px_-30px_rgba(19,81,180,0.82)]"
+              )}
+            >
               <div className="grid md:grid-cols-[1fr_280px]">
                 <div className="p-4 border-r border-border">
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
                     <RiskBadge level={r.level} />
                     <span className="text-[10px] font-mono uppercase text-muted-foreground">{r.id}</span>
+                    {isFocusedRisk && !isExplicitFocusedRisk && (
+                      <span className="rounded-full border border-[#7bb7f0] bg-[#eef6ff] px-2 py-0.5 text-[10px] font-mono uppercase tracking-[0.14em] text-[#1351b4]">
+                        {language === "pt" ? "Navio selecionado" : language === "en" ? "Selected vessel" : "选定船舶"}
+                      </span>
+                    )}
                     {ship && (
                       <ShipLink shipId={ship.id} className="text-[11px] font-mono px-1.5 py-0.5 rounded border border-border no-underline hover:border-accent hover:text-accent transition-colors">
                         {ship.flag} {ship.name}
                       </ShipLink>
                     )}
                     {berth && (
-                      <Link to="/bercos" className="text-[11px] font-mono px-1.5 py-0.5 rounded border border-border hover:border-accent hover:text-accent transition-colors">
+                      <Link to={berthHref} className="text-[11px] font-mono px-1.5 py-0.5 rounded border border-border hover:border-accent hover:text-accent transition-colors">
                         {berth.id} · {berth.name}
                       </Link>
                     )}

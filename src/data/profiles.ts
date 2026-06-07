@@ -21,7 +21,7 @@ export interface Profile {
   permissions: string[];
 }
 
-const FULL = ["/dashboard", "/mapa", "/bercos", "/fila", "/liberacoes", "/documentos", "/alertas", "/riscos", "/admin"];
+const FULL = ["/mapa", "/dashboard", "/bercos", "/fila", "/liberacoes", "/documentos", "/alertas", "/riscos", "/admin"];
 const OPS  = ["/mapa", "/bercos", "/fila", "/alertas", "/riscos", "/dashboard"];
 const REGULATOR = ["/mapa", "/liberacoes", "/documentos", "/alertas", "/dashboard"];
 const PORT_AUTHORITY = FULL.filter((p) => p !== "/admin");
