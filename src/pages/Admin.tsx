@@ -1,10 +1,11 @@
 import { type FormEvent, type ReactNode, useState } from "react";
-import { Users, Shield, Building2, Plus, Search, MoreHorizontal, Link2 } from "lucide-react";
+import { Users, Shield, Building2, Plus, Search, MoreHorizontal, Link2, CheckCircle2, Clock3, XCircle } from "lucide-react";
 import { PROFILES, type ProfileId } from "@/data/profiles";
 import { useLanguageCode } from "@/i18n/useT";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/sonner";
 import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetrics";
+import { cn } from "@/lib/utils";
 
 interface User {
   id: string;
@@ -23,6 +24,42 @@ type AssignmentForm = {
   profile: ProfileId;
   org: string;
   active: boolean;
+};
+
+type ProfileRequestStatus = "analysis" | "approved" | "rejected";
+
+interface ProfileRequest {
+  id: string;
+  user: string;
+  requestedProfile: string;
+  status: ProfileRequestStatus;
+}
+
+const PROFILE_REQUESTS_SEED: ProfileRequest[] = [
+  { id: "pr1", user: "João Silva", requestedProfile: "Receita Federal", status: "analysis" },
+  { id: "pr2", user: "Maria Santos", requestedProfile: "ANVISA", status: "analysis" },
+];
+
+const REQUEST_STATUS_VIEW: Record<ProfileRequestStatus, {
+  label: string;
+  className: string;
+  icon: typeof Clock3;
+}> = {
+  analysis: {
+    label: "Em análise",
+    className: "border-warning/25 bg-warning/10 text-warning",
+    icon: Clock3,
+  },
+  approved: {
+    label: "Aprovado",
+    className: "border-success/25 bg-success/10 text-success",
+    icon: CheckCircle2,
+  },
+  rejected: {
+    label: "Rejeitado",
+    className: "border-destructive/25 bg-destructive/10 text-destructive",
+    icon: XCircle,
+  },
 };
 
 const SEED: User[] = [
@@ -57,6 +94,7 @@ export default function Admin() {
   const [profileFilter, setProfileFilter] = useState<ProfileId | "all">("all");
   const [assignmentOpen, setAssignmentOpen] = useState(false);
   const [form, setForm] = useState<AssignmentForm>(() => createInitialForm());
+  const [profileRequests, setProfileRequests] = useState<ProfileRequest[]>(PROFILE_REQUESTS_SEED);
 
   const resetForm = () => setForm(createInitialForm());
 
@@ -113,6 +151,14 @@ export default function Admin() {
     toast(language === "pt" ? "Vínculo institucional criado." : language === "en" ? "Institutional assignment created." : "机构绑定已创建。");
   };
 
+  const updateProfileRequestStatus = (id: string, status: ProfileRequestStatus) => {
+    setProfileRequests((current) =>
+      current.map((request) =>
+        request.id === id ? { ...request, status } : request
+      )
+    );
+  };
+
   const filtered = users.filter((u) => {
     if (profileFilter !== "all" && u.profile !== profileFilter) return false;
     if (!q) return true;
@@ -162,6 +208,73 @@ export default function Admin() {
           </SummaryMetricCard>
         ))}
       </SummaryMetricsPanel>
+
+      <div className="premium-panel overflow-hidden">
+        <div className="flex flex-col gap-1 border-b border-border px-5 py-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="text-[11px] font-mono uppercase tracking-[0.18em] text-accent">
+              {language === "pt" ? "Validação institucional" : language === "en" ? "Institutional validation" : "机构验证"}
+            </div>
+            <h2 className="mt-1 text-lg font-bold tracking-[-0.02em]">
+              {language === "pt" ? "Solicitações de Perfil" : language === "en" ? "Profile Requests" : "身份申请"}
+            </h2>
+          </div>
+          <p className="max-w-xl text-xs leading-5 text-muted-foreground">
+            {language === "pt"
+              ? "Protótipo de aprovação por órgão responsável para demonstrar controle de acesso institucional."
+              : language === "en"
+                ? "Approval prototype by responsible agency to demonstrate institutional access control."
+                : "按负责机构审批的原型，用于展示机构访问控制。"}
+          </p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-secondary/40 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+              <tr className="border-b border-border">
+                <th className="px-5 py-2.5 text-left">{language === "pt" ? "Usuário" : language === "en" ? "User" : "用户"}</th>
+                <th className="px-3 py-2.5 text-left">{language === "pt" ? "Perfil Solicitado" : language === "en" ? "Requested Profile" : "申请身份"}</th>
+                <th className="px-3 py-2.5 text-left">Status</th>
+                <th className="px-5 py-2.5 text-right">{language === "pt" ? "Ações" : language === "en" ? "Actions" : "操作"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {profileRequests.map((request) => {
+                const view = REQUEST_STATUS_VIEW[request.status];
+                const Icon = view.icon;
+
+                return (
+                  <tr key={request.id} className="border-b border-border/60 hover:bg-secondary/40">
+                    <td className="px-5 py-3 font-medium">{request.user}</td>
+                    <td className="px-3 py-3 text-xs text-muted-foreground">{request.requestedProfile}</td>
+                    <td className="px-3 py-3">
+                      <span className={cn("inline-flex min-h-[1.75rem] items-center justify-center gap-1.5 rounded-[0.52rem] border px-2.5 py-1 text-[0.72rem] font-semibold leading-none", view.className)}>
+                        <Icon className="h-3.5 w-3.5 shrink-0" />
+                        {view.label}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3">
+                      <div className="flex flex-wrap justify-end gap-2">
+                        <button
+                          onClick={() => updateProfileRequestStatus(request.id, "approved")}
+                          className="rounded-lg border border-success/30 bg-success/5 px-3 py-1.5 text-xs font-semibold text-success transition hover:bg-success hover:text-white"
+                        >
+                          Aprovar
+                        </button>
+                        <button
+                          onClick={() => updateProfileRequestStatus(request.id, "rejected")}
+                          className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-1.5 text-xs font-semibold text-destructive transition hover:bg-destructive hover:text-white"
+                        >
+                          Rejeitar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       <div className="premium-panel overflow-hidden">
         <div className="p-3 border-b border-border flex flex-wrap gap-2 items-center">
