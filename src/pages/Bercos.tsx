@@ -1,5 +1,5 @@
 import { berths, riskItems, ships } from "@/data/mockData";
-import { Anchor, Wrench, Calendar, AlertTriangle, ArrowRight, CheckCircle2, Clock3 } from "lucide-react";
+import { Calendar, AlertTriangle, ArrowRight } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLanguageCode } from "@/i18n/useT";
@@ -9,10 +9,10 @@ import { SummaryMetricCard, SummaryMetricsPanel } from "@/components/SummaryMetr
 import { useEffect, useRef } from "react";
 
 const STATUS = {
-  livre:      { cls: "border-emerald-200 bg-emerald-50/80 text-emerald-700", label: "Livre",       text: "text-emerald-700", icon: CheckCircle2 },
-  ocupado:    { cls: "border-blue-200 bg-blue-50/80 text-blue-700",          label: "Ocupado",     text: "text-blue-700", icon: Anchor },
-  reservado:  { cls: "border-orange-200 bg-orange-50/80 text-orange-600",    label: "Reservado",   text: "text-orange-600", icon: Clock3 },
-  manutencao: { cls: "border-red-200 bg-red-50/85 text-red-600",             label: "Manutenção",  text: "text-red-600", icon: Wrench },
+  livre:      { cls: "border-emerald-200 bg-emerald-50/80 text-emerald-700", label: "Livre" },
+  ocupado:    { cls: "border-blue-200 bg-blue-50/80 text-blue-700",          label: "Ocupado" },
+  reservado:  { cls: "border-orange-200 bg-orange-50/80 text-orange-600",    label: "Reservado" },
+  manutencao: { cls: "border-red-200 bg-red-50/85 text-red-600",             label: "Manutenção" },
 };
 
 export default function Bercos() {
@@ -72,7 +72,6 @@ export default function Bercos() {
           const ship = ships.find((s) => s.id === b.occupiedBy);
           const next = ships.find((s) => s.id === b.nextShipId);
           const st = { ...STATUS[b.status], label: statusLabels[b.status] };
-          const StatusIcon = st.icon;
           const isExplicitFocusedBerth = explicitFocusedBerth?.id === b.id;
           const isFocusedBerth = isExplicitFocusedBerth || Boolean(!explicitFocusedBerth && focusedShip && (b.occupiedBy === focusedShip.id || b.nextShipId === focusedShip.id));
           const contextualRisk = riskItems.find((risk) => risk.berthId === b.id);
@@ -92,16 +91,14 @@ export default function Bercos() {
                 isFocusedBerth && "border-[#1351b4] ring-4 ring-[#67b6ff]/50 shadow-[0_26px_58px_-30px_rgba(19,81,180,0.82)]"
               )}
             >
-              <div className={cn("px-4 py-3 border-b border-border flex items-center justify-between", st.cls)}>
+              <div className="flex items-center justify-between border-b border-border bg-white px-4 py-3">
                 <div className="flex items-center gap-2">
-                  {b.status === "manutencao" ? <Wrench className={cn("h-4 w-4", st.text)} /> : <Anchor className={cn("h-4 w-4", st.text)} />}
                   <div>
                     <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">{b.id} · {b.zone}</div>
                     <div className="font-semibold text-sm leading-tight">{b.name}</div>
                   </div>
                 </div>
                 <span className={cn("inline-flex min-h-[1.75rem] items-center justify-center gap-1.5 rounded-[0.52rem] border px-2.5 py-1 text-[0.72rem] font-semibold leading-none tracking-[-0.01em] shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]", st.cls)}>
-                  <StatusIcon className="h-3.5 w-3.5 shrink-0" />
                   {st.label}
                 </span>
               </div>
@@ -123,7 +120,7 @@ export default function Bercos() {
 
                 <div>
                   <div className="h-1 rounded-full bg-muted overflow-hidden">
-                    <div className="h-full bg-accent" style={{ width: `${b.utilization}%` }} />
+                    <div className="h-full bg-[#64748b]" style={{ width: `${b.utilization}%` }} />
                   </div>
                 </div>
 

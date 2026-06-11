@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ProfileProvider } from "@/store/profileStore";
 import { LanguageProvider } from "@/store/languageStore";
 import { AssistantProvider } from "@/store/assistantStore";
+import { ThemeProvider } from "@/store/themeStore";
 import ProtectedLayout from "@/components/ProtectedLayout";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -27,26 +28,28 @@ const App = () => (
       <Toaster />
       <Sonner />
       <LanguageProvider>
-        <AssistantProvider>
-          <ProfileProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Navigate to="/login" replace />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/mapa"       element={<ProtectedLayout><MapaNavios /></ProtectedLayout>} />
-                <Route path="/dashboard"  element={<ProtectedLayout><Dashboard /></ProtectedLayout>} />
-                <Route path="/bercos"     element={<ProtectedLayout><Bercos /></ProtectedLayout>} />
-                <Route path="/fila"       element={<ProtectedLayout><Fila /></ProtectedLayout>} />
-                <Route path="/liberacoes" element={<ProtectedLayout><Liberacoes /></ProtectedLayout>} />
-                <Route path="/documentos" element={<ProtectedLayout><Documentos /></ProtectedLayout>} />
-                <Route path="/alertas"    element={<ProtectedLayout><Alertas /></ProtectedLayout>} />
-                <Route path="/riscos"     element={<ProtectedLayout><Riscos /></ProtectedLayout>} />
-                <Route path="/admin"      element={<ProtectedLayout><Admin /></ProtectedLayout>} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </ProfileProvider>
-        </AssistantProvider>
+        <ThemeProvider>
+          <AssistantProvider>
+            <ProfileProvider>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Navigate to="/login" replace />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/mapa"       element={<ProtectedLayout><MapaNavios /></ProtectedLayout>} />
+                  <Route path="/dashboard"  element={<ProtectedLayout><Dashboard /></ProtectedLayout>} />
+                  <Route path="/bercos"     element={<ProtectedLayout><Bercos /></ProtectedLayout>} />
+                  <Route path="/fila"       element={<ProtectedLayout><Fila /></ProtectedLayout>} />
+                  <Route path="/liberacoes" element={<ProtectedLayout><Liberacoes /></ProtectedLayout>} />
+                  <Route path="/documentos" element={<ProtectedLayout><Documentos /></ProtectedLayout>} />
+                  <Route path="/alertas"    element={<ProtectedLayout><Alertas /></ProtectedLayout>} />
+                  <Route path="/riscos"     element={<ProtectedLayout><Riscos /></ProtectedLayout>} />
+                  <Route path="/admin"      element={<ProtectedLayout><Admin /></ProtectedLayout>} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </ProfileProvider>
+          </AssistantProvider>
+        </ThemeProvider>
       </LanguageProvider>
     </TooltipProvider>
   </QueryClientProvider>

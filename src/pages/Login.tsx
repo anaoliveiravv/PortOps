@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Anchor, CalendarDays, ChevronRight, Clock3, LifeBuoy, LockKeyhole, ShieldCheck, KeyRound, UserRound, CheckCircle2, XCircle } from "lucide-react";
+import { Anchor, CalendarDays, ChevronRight, Clock3, LifeBuoy, ShieldCheck, KeyRound, UserRound, CheckCircle2, XCircle, Moon, Sun } from "lucide-react";
 import { useProfile } from "@/store/profileStore";
 import { PROFILES, DEMO_PROFILES, detectProfile, type ProfileId } from "@/data/profiles";
 import shipImage from "../../fotosbase/navio.png";
@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { useLanguageCode, useT } from "@/i18n/useT";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/store/themeStore";
 
 type Step = "landing" | "gov" | "success" | "demo" | "status";
 type ProfileRequestStatus = "analysis" | "approved" | "rejected";
@@ -62,6 +63,7 @@ export default function Login() {
   const navigate = useNavigate();
   const t = useT();
   const language = useLanguageCode();
+  const { theme, toggleTheme } = useTheme();
   const [step, setStep] = useState<Step>("landing");
   const [cpf, setCpf] = useState("");
   const [password, setPassword] = useState("");
@@ -109,9 +111,18 @@ export default function Login() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f3f6fb] font-sans text-foreground">
-      <div className="absolute right-4 top-4 z-20">
+    <div className="relative min-h-screen overflow-hidden bg-[#f3f6fb] font-sans text-foreground dark:bg-background">
+      <div className="absolute right-4 top-4 z-20 flex items-center gap-2">
         <LanguageSelector />
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="grid h-10 w-10 place-items-center rounded-xl border border-[#d5e0ef] bg-white text-[#183153] shadow-[0_12px_28px_-24px_rgba(16,42,76,0.65)] transition-colors hover:border-[#a9c4eb] hover:bg-[#f4f8fd] dark:border-border dark:bg-card dark:text-foreground dark:hover:bg-secondary"
+          aria-label={theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"}
+          title={theme === "dark" ? "Tema claro" : "Tema escuro"}
+        >
+          {theme === "dark" ? <Sun className="h-4.5 w-4.5" /> : <Moon className="h-4.5 w-4.5" />}
+        </button>
       </div>
 
       <div className="grid min-h-screen lg:grid-cols-[1.23fr_1fr]">
@@ -142,8 +153,8 @@ export default function Login() {
           </div>
         </section>
 
-        <section className="relative flex min-h-screen items-center justify-center overflow-y-auto bg-[radial-gradient(circle_at_top,rgba(63,119,209,0.12),transparent_26%),linear-gradient(180deg,#f8fbff_0%,#edf3fb_100%)] px-5 py-5 sm:px-8 sm:py-6 lg:px-10 lg:py-8">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,255,255,0.88),transparent_44%)]" />
+        <section className="relative flex min-h-screen items-center justify-center overflow-y-auto bg-[radial-gradient(circle_at_top,rgba(63,119,209,0.12),transparent_26%),linear-gradient(180deg,#f8fbff_0%,#edf3fb_100%)] px-5 py-5 dark:bg-background sm:px-8 sm:py-6 lg:px-10 lg:py-8">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,255,255,0.88),transparent_44%)] dark:hidden" />
 
           <div className="relative z-10 flex min-h-0 w-full max-w-[35rem] flex-col justify-center">
             <div className="mb-6 flex items-center gap-3 lg:hidden">
@@ -163,7 +174,7 @@ export default function Login() {
             >
               {step !== "status" && (
                 <>
-                  <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-[1.4rem] border border-[#d9e3f1] bg-[#f7faff] text-[#1351b4] shadow-[0_12px_26px_-18px_rgba(19,81,180,0.5)] sm:h-16 sm:w-16">
+                  <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-[1.4rem] border border-[#d9e3f1] bg-[#f7faff] text-[#1351b4] shadow-[0_12px_26px_-18px_rgba(19,81,180,0.5)] dark:border-border dark:bg-secondary dark:text-primary sm:h-16 sm:w-16">
                     <ShieldCheck className="h-7 w-7" strokeWidth={2.1} />
                   </div>
 
@@ -180,21 +191,9 @@ export default function Login() {
 
               {step === "landing" && (
                 <div className="mt-8 flex flex-col">
-                  <div className="rounded-[1.45rem] border border-[#dce5f2] bg-[linear-gradient(180deg,#f8fbff_0%,#f3f7fd_100%)] px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:px-6">
-                    <div className="flex items-start gap-4">
-                      <div className="mt-0.5 grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white text-[#1351b4] shadow-[0_10px_22px_-18px_rgba(19,81,180,0.8)]">
-                        <LockKeyhole className="h-5 w-5" strokeWidth={2.1} />
-                      </div>
-                      <p className="text-left text-[0.98rem] leading-7 text-[#5f708a]">
-                        {t("login.accessNotice").replace("Prata ou Ouro.", "")}
-                        <strong className="font-semibold text-[#183153]">{t("login.level")}</strong>
-                      </p>
-                    </div>
-                  </div>
-
                   <button
                     onClick={() => setStep("gov")}
-                    className="primary-action mt-7 flex h-[4.2rem] w-full items-center justify-center gap-4 rounded-[1.25rem] px-6 text-[1rem] font-semibold"
+                    className="primary-action flex h-[4.2rem] w-full items-center justify-center gap-4 rounded-[1.25rem] px-6 text-[1rem] font-semibold"
                   >
                     <span className="rounded-full bg-white px-4 py-2 text-[0.96rem] font-bold leading-none text-[#1351b4]">
                       gov.br
@@ -211,7 +210,7 @@ export default function Login() {
               )}
 
               {step === "gov" && (
-                <form onSubmit={handleGovEntry} className="mx-auto mt-8 flex w-full flex-col rounded-[1.15rem] border border-[#b9cff0] bg-white px-4 py-4 shadow-[0_18px_48px_-38px_rgba(19,50,95,0.58),inset_0_1px_0_rgba(255,255,255,0.92)] sm:px-5">
+                <form onSubmit={handleGovEntry} className="mx-auto mt-8 flex w-full flex-col rounded-[1.15rem] border border-[#b9cff0] bg-white px-4 py-4 shadow-[0_18px_48px_-38px_rgba(19,50,95,0.58),inset_0_1px_0_rgba(255,255,255,0.92)] dark:border-border dark:bg-card sm:px-5">
                   <div className="flex flex-col gap-3 border-b border-[#d6e4f5] pb-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex min-w-0 items-center gap-3">
                       <div className="grid h-10 w-10 shrink-0 place-items-center rounded-[0.78rem] bg-[#0649b9] text-[0.74rem] font-bold tracking-[-0.04em] shadow-[0_14px_26px_-22px_rgba(5,55,145,0.95)]">
@@ -227,10 +226,6 @@ export default function Login() {
                       <div className="min-w-0">
                         <div className="whitespace-nowrap text-base font-bold leading-tight tracking-[-0.02em] text-[#102a4c] sm:text-lg">{t("login.enterWithGov")}</div>
                       </div>
-                    </div>
-                    <div className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full border border-[#c4d8f3] bg-white/90 px-2.5 py-1 text-[8px] font-bold uppercase tracking-[0.1em] text-[#0649b9] shadow-[inset_0_1px_0_rgba(255,255,255,0.94)]">
-                      <ShieldCheck className="h-3 w-3 text-[#7b95b8]" />
-                      Prata/Ouro
                     </div>
                   </div>
 
@@ -283,7 +278,7 @@ export default function Login() {
               )}
 
               {step === "success" && (
-                <div className="mt-7 flex flex-col rounded-[1.55rem] border border-[#dce7f3] bg-[linear-gradient(180deg,#f8fbff_0%,#eef5fd_100%)] p-5 text-center">
+                <div className="mt-7 flex flex-col rounded-[1.55rem] border border-[#dce7f3] bg-[linear-gradient(180deg,#f8fbff_0%,#eef5fd_100%)] p-5 text-center dark:border-border dark:bg-card">
                   <div className="mx-auto grid h-14 w-14 place-items-center rounded-full border border-success/20 bg-success/10 text-success">
                     <CheckCircle2 className="h-7 w-7" />
                   </div>
@@ -307,7 +302,7 @@ export default function Login() {
 
               {step === "demo" && (
                 <div className="mt-6 flex min-h-0 flex-1 flex-col">
-                  <div className="login-display-label rounded-[1.1rem] bg-[#edf5ff] px-4 py-3 text-center text-[#1f5dc4]">
+                  <div className="login-display-label rounded-[1.1rem] bg-[#edf5ff] px-4 py-3 text-center text-[#1f5dc4] dark:bg-secondary dark:text-primary">
                     {t("login.selectProfile")}
                   </div>
                   <p className="mt-3 text-center text-sm leading-6 text-[#6d7f99]">
@@ -321,9 +316,9 @@ export default function Login() {
                         <button
                           key={id}
                           onClick={() => requestProfile(id)}
-                          className="flex w-full items-center gap-3 rounded-[1.15rem] border border-[#dde6f2] bg-[#fbfdff] px-4 py-2.5 text-left transition-colors hover:border-[#b9cdec] hover:bg-[#f4f8fe]"
+                          className="flex w-full items-center gap-3 rounded-[1.15rem] border border-[#dde6f2] bg-[#fbfdff] px-4 py-2.5 text-left transition-colors hover:border-[#b9cdec] hover:bg-[#f4f8fe] dark:border-border dark:bg-card dark:hover:bg-secondary"
                         >
-                          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#edf4ff] text-[#1351b4]">
+                          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#edf4ff] text-[#1351b4] dark:bg-secondary dark:text-primary">
                             <profile.icon className="h-4 w-4" />
                           </div>
                           <div className="min-w-0 flex-1">
@@ -347,7 +342,7 @@ export default function Login() {
                     const profile = PROFILES[profileRequest.profile];
 
                     return (
-                      <div className="rounded-[1.25rem] border border-[#d8e4f2] bg-[linear-gradient(180deg,#ffffff_0%,#f6faff_100%)] p-4 text-center shadow-[0_18px_48px_-40px_rgba(19,50,95,0.5),inset_0_1px_0_rgba(255,255,255,0.94)] sm:p-5">
+                      <div className="rounded-[1.25rem] border border-[#d8e4f2] bg-[linear-gradient(180deg,#ffffff_0%,#f6faff_100%)] p-4 text-center shadow-[0_18px_48px_-40px_rgba(19,50,95,0.5),inset_0_1px_0_rgba(255,255,255,0.94)] dark:border-border dark:bg-card sm:p-5">
                         <div className={cn("mx-auto grid h-10 w-10 place-items-center rounded-full border shadow-[0_10px_22px_-18px_currentColor]", content.tone)}>
                           <Icon className="h-5 w-5" />
                         </div>
@@ -361,7 +356,7 @@ export default function Login() {
                           {content.message}
                         </p>
 
-                        <div className="mt-4 rounded-[1rem] border border-[#dce5f2] bg-white/86 px-3 py-3 text-left shadow-[0_14px_32px_-30px_rgba(19,50,95,0.45)]">
+                        <div className="mt-4 rounded-[1rem] border border-[#dce5f2] bg-white/86 px-3 py-3 text-left shadow-[0_14px_32px_-30px_rgba(19,50,95,0.45)] dark:border-border dark:bg-secondary">
                           <div className="grid gap-0 divide-y divide-[#d6e4f5] text-sm sm:grid-cols-3 sm:divide-x sm:divide-y-0">
                             <div className="px-2 py-2 text-center sm:py-1">
                               <UserRound className="mx-auto h-4 w-4 text-[#0759ce]" />

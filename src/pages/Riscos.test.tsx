@@ -33,4 +33,16 @@ describe("Riscos focused ship context", () => {
     expect(screen.getByText("VIGIAGRO ultrapassou SLA de 2h")).toBeInTheDocument();
     expect(screen.getByText("Berço 06 em manutenção programada")).toBeInTheDocument();
   });
+
+  it("shows mitigation plans with a neutral style", () => {
+    render(
+      <MemoryRouter initialEntries={["/riscos"]}>
+        <Riscos />
+      </MemoryRouter>,
+    );
+
+    const mitigationLabel = screen.getAllByText("Plano de mitigação")[0];
+    expect(mitigationLabel.parentElement?.parentElement).toHaveClass("bg-slate-50");
+    expect(mitigationLabel).toHaveClass("text-slate-500");
+  });
 });

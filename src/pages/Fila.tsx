@@ -30,23 +30,23 @@ export default function Fila() {
           <div className="flex items-center gap-2 text-[11px] font-mono uppercase text-foreground"><AlertCircle className="h-3.5 w-3.5" /> {language === "pt" ? "Maior espera" : language === "en" ? "Longest wait" : "最长等待"}</div>
           <div className="text-2xl font-bold font-mono mt-1.5 text-[#102a4c]">28<span className="text-sm text-muted-foreground">h</span></div>
         </SummaryMetricCard>
-        <SummaryMetricCard className="weather-serious-card overflow-hidden border-[#e29b2f]/80">
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1.5 rounded-l-[1.25rem] bg-[linear-gradient(180deg,#d97706,#b45309)]" />
-          <div className="pointer-events-none absolute right-0 top-0 h-16 w-24 rounded-bl-full bg-[#f59e0b]/15" />
+        <SummaryMetricCard className="overflow-hidden border-[#d5e2f1] bg-white/80">
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1.5 rounded-l-[1.25rem] bg-[#64748b]" />
+          <div className="pointer-events-none absolute right-0 top-0 h-16 w-24 rounded-bl-full bg-slate-200/45" />
           <div className="relative flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5 text-xs font-mono uppercase tracking-[0.14em] text-foreground">
-              <span className="weather-alert-icon grid h-8 w-8 place-items-center rounded-full border border-[#edb96a] bg-white/80 text-foreground">
-                <Cloud className="weather-alert-pulse h-4 w-4" />
+              <span className="grid h-8 w-8 place-items-center rounded-full border border-slate-200 bg-white/80 text-foreground">
+                <Cloud className="h-4 w-4" />
               </span>
               {language === "pt" ? "Impacto climático" : language === "en" ? "Weather impact" : "天气影响"}
             </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e29b2f]/70 bg-white/85 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] text-foreground">
-              <span className="weather-alert-dot" />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white/85 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] text-foreground">
+              <span className="h-1.5 w-1.5 rounded-full bg-slate-500" />
               <Sparkles className="h-3 w-3" /> {language === "pt" ? "Atenção" : language === "en" ? "Attention" : "注意"}
             </span>
           </div>
-          <div className="relative mt-2 text-base font-bold text-[#6f3f00]">{language === "pt" ? "Redução estimada de 35%" : language === "en" ? "Estimated 35% reduction" : "预计降低 35%"}</div>
-          <div className="relative mt-1.5 text-sm leading-5 text-[#744400]">
+          <div className="relative mt-2 text-base font-bold text-[#102a4c]">{language === "pt" ? "Redução estimada de 35%" : language === "en" ? "Estimated 35% reduction" : "预计降低 35%"}</div>
+          <div className="relative mt-1.5 text-sm leading-5 text-[#405672]">
             {language === "pt"
               ? "Chuva forte prevista entre 16h e 20h. Priorize navios com janela crítica e prepare operação reduzida."
               : language === "en"
@@ -66,7 +66,7 @@ export default function Fila() {
             const etbH = Math.round((+new Date(s.etb) - Date.now()) / 3600000);
             return (
               <div key={s.id} className="p-4 flex items-center gap-4 hover:bg-secondary/30">
-                <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-warning/20 to-warning/5 grid place-items-center font-mono text-lg font-bold text-warning border border-warning/30">
+                <div className="h-10 w-10 rounded-lg bg-slate-100 grid place-items-center font-mono text-lg font-bold text-slate-700 border border-slate-200">
                   {idx + 1}
                 </div>
                 <div className="flex-1">
@@ -79,7 +79,7 @@ export default function Fila() {
                 </div>
                 <div className="text-right">
                   <div className="text-[10px] font-mono uppercase text-muted-foreground">{language === "pt" ? "Aguardando" : language === "en" ? "Waiting" : "等待中"}</div>
-                  <div className="font-mono text-warning font-semibold">{waitH > 0 ? `${waitH}h` : "—"}</div>
+                  <div className="font-mono font-semibold text-slate-700">{waitH > 0 ? `${waitH}h` : "—"}</div>
                 </div>
                 <div className="text-right">
                   <div className="text-[10px] font-mono uppercase text-muted-foreground">{language === "pt" ? "Atracação prev." : language === "en" ? "Estimated berth" : "预计靠泊"}</div>

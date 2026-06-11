@@ -107,10 +107,10 @@ export default function Riscos() {
                     <span className="font-mono uppercase text-[10px] text-muted-foreground mr-1.5">{language === "pt" ? "Impacto:" : language === "en" ? "Impact:" : "影响："}</span>
                     {r.impact}
                   </div>
-                  <div className="mt-3 flex items-start gap-2 rounded-xl border border-accent/30 bg-accent/5 p-2.5">
-                    <Target className="h-3.5 w-3.5 text-accent shrink-0 mt-0.5" />
+                  <div className="mt-3 flex items-start gap-2 rounded-xl border border-slate-200 bg-slate-50 p-2.5">
+                    <Target className="h-3.5 w-3.5 text-slate-500 shrink-0 mt-0.5" />
                     <div className="text-xs">
-                      <div className="text-[10px] font-mono uppercase text-accent mb-0.5">{language === "pt" ? "Plano de mitigação" : language === "en" ? "Mitigation plan" : "缓解计划"}</div>
+                      <div className="text-[10px] font-mono uppercase text-slate-500 mb-0.5">{language === "pt" ? "Plano de mitigação" : language === "en" ? "Mitigation plan" : "缓解计划"}</div>
                       {r.mitigation}
                     </div>
                   </div>

@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { LayoutDashboard, Map, Anchor, Hourglass, ShieldCheck, FolderOpen, Bell, LogOut, Users, AlertTriangle, Bot, ChevronRight } from "lucide-react";
+import { LayoutDashboard, Map, Anchor, Hourglass, ShieldCheck, FolderOpen, Bell, LogOut, Users, AlertTriangle, Bot, ChevronRight, Moon, Sun } from "lucide-react";
 import { useProfile } from "@/store/profileStore";
 import { PROFILES } from "@/data/profiles";
 import { cn } from "@/lib/utils";
@@ -7,6 +7,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { useLanguageCode, useT } from "@/i18n/useT";
 import { useAssistant } from "@/store/assistantStore";
 import { OperationalAssistant } from "@/components/OperationalAssistant";
+import { useTheme } from "@/store/themeStore";
 
 const NAV = [
   { to: "/mapa",       icon: Map,             labelKey: "nav.map" },
@@ -27,6 +28,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const t = useT();
   const language = useLanguageCode();
   const { openAssistant, open } = useAssistant();
+  const { theme, toggleTheme } = useTheme();
 
   const visibleNav = NAV.filter((n) => profile?.permissions.includes(n.to));
   const currentItem = NAV.find((n) => location.pathname.startsWith(n.to));
@@ -93,7 +95,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-        <header className="min-h-[4.35rem] border-b border-[#cbd9ea]/90 bg-white/90 backdrop-blur-xl px-6 py-3 flex items-center justify-between gap-5 shrink-0 shadow-[0_16px_38px_-34px_rgba(25,64,113,0.65)]">
+        <header className="min-h-[4.35rem] border-b border-[#cbd9ea]/90 bg-white/90 backdrop-blur-xl px-6 py-3 flex items-center justify-between gap-5 shrink-0 shadow-[0_16px_38px_-34px_rgba(25,64,113,0.65)] dark:border-slate-700/80 dark:bg-slate-900/95">
           <div className="flex min-w-0 items-center gap-5">
             <div>
               <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground">PortOps</div>
@@ -105,6 +107,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex shrink-0 items-center gap-3 text-[11px] font-mono">
             <LanguageSelector className="md:hidden" />
             <span className="text-muted-foreground hidden lg:inline whitespace-nowrap">{new Date().toLocaleString("pt-BR")}</span>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"}
+              title={theme === "dark" ? "Tema claro" : "Tema escuro"}
+              className="grid h-10 w-10 place-items-center rounded-full border border-[#cbd9ea] bg-white text-[#183153] shadow-sm transition-colors hover:bg-[#f4f8fd] dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
             {profile && (
               <div className="hidden min-w-[9.5rem] rounded-[0.9rem] border border-[#b9d2ef] bg-white/90 px-3 py-2 text-right shadow-[0_20px_42px_-30px_rgba(20,70,132,0.48)] sm:block">
                 <div className="text-[9px] font-mono uppercase tracking-[0.18em] text-muted-foreground">{language === "pt" ? "Sessão ativa" : language === "en" ? "Active session" : "当前会话"}</div>

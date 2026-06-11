@@ -22,7 +22,7 @@ describe("Bercos focused ship context", () => {
     expect(screen.getByText("Berço 01").closest("[aria-current='true']")).not.toBeInTheDocument();
   });
 
-  it("shows the focused ship and marks the related berth", () => {
+  it("shows the focused ship and marks the related berth after icon cleanup", () => {
     render(
       <MemoryRouter initialEntries={["/bercos?ship=SHP-002"]}>
         <Bercos />
