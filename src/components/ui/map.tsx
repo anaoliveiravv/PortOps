@@ -593,7 +593,7 @@ function MarkerPopup({
   return createPortal(
     <div
       className={cn(
-        "relative max-w-62 bg-transparent p-0 text-popover-foreground shadow-none",
+        "relative max-w-62 rounded-xl border border-border bg-popover p-3 text-popover-foreground shadow-[0_18px_46px_-26px_rgba(15,23,42,0.38)]",
         className,
       )}
     >

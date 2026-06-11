@@ -165,6 +165,12 @@
   .dark [class*="bg-slate-100"] {
     background: hsl(var(--card));
   }
+  .dark [class*="bg-red-50"],
+  .dark [class*="bg-orange-50"],
+  .dark [class*="bg-amber-50"],
+  .dark [class*="bg-blue-50"] {
+    background: hsl(var(--secondary));
+  }
   .dark [class*="border-[#a9c4eb]"],
   .dark [class*="border-[#b8d3f1]"],
   .dark [class*="border-[#b9cff0]"],
@@ -275,6 +281,20 @@
       linear-gradient(135deg, hsl(43 100% 97% / 0.98), hsl(39 96% 85% / 0.82) 58%, hsl(42 100% 96% / 0.94)),
       repeating-linear-gradient(135deg, hsl(36 96% 50% / 0.1) 0 8px, transparent 8px 18px);
   }
+  .dark .weather-serious-card {
+    border-color: hsl(var(--warning) / 0.55);
+    background:
+      linear-gradient(135deg, hsl(36 78% 21% / 0.82), hsl(216 36% 16% / 0.94) 58%, hsl(216 36% 16% / 0.98)),
+      repeating-linear-gradient(135deg, hsl(36 96% 58% / 0.1) 0 8px, transparent 8px 18px);
+    box-shadow:
+      0 20px 44px -34px hsl(30 92% 34% / 0.9),
+      0 0 0 1px hsl(36 90% 58% / 0.16);
+  }
+  .dark .weather-serious-card:hover {
+    background:
+      linear-gradient(135deg, hsl(36 78% 24% / 0.9), hsl(216 36% 17% / 0.96) 58%, hsl(216 36% 17% / 1)),
+      repeating-linear-gradient(135deg, hsl(36 96% 58% / 0.12) 0 8px, transparent 8px 18px);
+  }
   .weather-alert-icon {
     box-shadow:
       0 10px 24px -18px hsl(31 95% 44% / 0.9),
@@ -322,6 +342,43 @@
   .risk-panel {
     @apply rounded-[1.35rem] border border-red-200/90 bg-[radial-gradient(circle_at_82%_12%,rgba(239,68,68,0.16),transparent_28%),linear-gradient(180deg,rgba(255,247,247,0.96),rgba(255,239,239,0.88))];
     box-shadow: var(--shadow-red-glow);
+  }
+  .dark .risk-panel {
+    border-color: hsl(var(--destructive) / 0.34);
+    background:
+      radial-gradient(circle at 82% 12%, hsl(var(--destructive) / 0.18), transparent 28%),
+      linear-gradient(180deg, hsl(215 36% 16% / 0.98), hsl(216 34% 14% / 0.94));
+    box-shadow: 0 24px 58px -38px hsl(0 72% 24% / 0.72);
+  }
+  .weather-impact-card {
+    position: relative;
+    overflow: hidden;
+    border-color: hsl(199 66% 76% / 0.95);
+    background:
+      radial-gradient(82% 120% at 88% 0%, hsl(202 94% 74% / 0.64), transparent 54%),
+      radial-gradient(60% 90% at 0% 100%, hsl(214 92% 72% / 0.42), transparent 52%),
+      linear-gradient(135deg, hsl(202 100% 97% / 0.98), hsl(214 94% 91% / 0.92));
+    box-shadow:
+      0 24px 54px -36px hsl(205 76% 33% / 0.58),
+      inset 0 1px 0 hsl(0 0% 100% / 0.92);
+  }
+  .weather-impact-card::after {
+    content: "";
+    position: absolute;
+    inset: auto -2rem -3.1rem auto;
+    width: 11rem;
+    height: 11rem;
+    border-radius: 9999px;
+    background:
+      radial-gradient(circle, hsl(203 93% 58% / 0.22), transparent 62%);
+  }
+  .dark .weather-impact-card {
+    border-color: hsl(199 82% 58% / 0.42);
+    background:
+      radial-gradient(82% 120% at 88% 0%, hsl(202 88% 40% / 0.32), transparent 54%),
+      radial-gradient(60% 90% at 0% 100%, hsl(214 84% 42% / 0.24), transparent 52%),
+      linear-gradient(135deg, hsl(215 36% 17% / 0.98), hsl(216 34% 14% / 0.94));
+    box-shadow: 0 24px 54px -36px hsl(216 70% 4% / 0.82);
   }
   .primary-action {
     @apply bg-[#0759ce] text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#064bb0] active:translate-y-0 active:scale-[0.98];

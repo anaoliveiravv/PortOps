@@ -30,18 +30,18 @@ export default function Fila() {
           <div className="flex items-center gap-2 text-[11px] font-mono uppercase text-foreground"><AlertCircle className="h-3.5 w-3.5" /> {language === "pt" ? "Maior espera" : language === "en" ? "Longest wait" : "最长等待"}</div>
           <div className="text-2xl font-bold font-mono mt-1.5 text-[#102a4c]">28<span className="text-sm text-muted-foreground">h</span></div>
         </SummaryMetricCard>
-        <SummaryMetricCard className="overflow-hidden border-[#d5e2f1] bg-white/80">
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1.5 rounded-l-[1.25rem] bg-[#64748b]" />
-          <div className="pointer-events-none absolute right-0 top-0 h-16 w-24 rounded-bl-full bg-slate-200/45" />
+        <SummaryMetricCard className="weather-impact-card">
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1.5 rounded-l-[1.25rem] bg-[linear-gradient(180deg,#0284c7,#0f766e)]" />
+          <div className="pointer-events-none absolute right-5 top-5 h-10 w-10 rounded-full border border-sky-200/80 bg-white/70 shadow-[0_0_0_10px_rgba(14,165,233,0.12)] dark:border-sky-400/30 dark:bg-slate-900/45" />
           <div className="relative flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5 text-xs font-mono uppercase tracking-[0.14em] text-foreground">
-              <span className="grid h-8 w-8 place-items-center rounded-full border border-slate-200 bg-white/80 text-foreground">
+              <span className="grid h-8 w-8 place-items-center rounded-full border border-sky-200 bg-white/85 text-sky-700 dark:border-sky-400/35 dark:bg-slate-900/50 dark:text-sky-200">
                 <Cloud className="h-4 w-4" />
               </span>
               {language === "pt" ? "Impacto climático" : language === "en" ? "Weather impact" : "天气影响"}
             </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white/85 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] text-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-slate-500" />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-white/85 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] text-foreground dark:border-sky-400/35 dark:bg-slate-900/50">
+              <span className="h-1.5 w-1.5 rounded-full bg-sky-500 shadow-[0_0_0_4px_rgba(14,165,233,0.16)]" />
               <Sparkles className="h-3 w-3" /> {language === "pt" ? "Atenção" : language === "en" ? "Attention" : "注意"}
             </span>
           </div>

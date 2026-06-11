@@ -588,9 +588,9 @@ export default function MapaNavios() {
   const selectedWeather = selectedShip ? WEATHER_EVENTS.slice(0, selectedShip.risk === "critical" ? 2 : 1) : [];
 
   return (
-    <div className="flex h-full bg-[#eef3f8]">
+    <div className="flex h-full bg-[#eef3f8] dark:bg-background">
       <div className="flex flex-1 flex-col">
-        <div className="mx-4 mt-4 flex items-center justify-between rounded-[1.35rem] border border-[#d5e2f1] bg-white/[0.92] px-5 py-3 shadow-[0_18px_42px_-32px_rgba(20,63,111,0.55)] backdrop-blur">
+        <div className="mx-4 mt-4 flex items-center justify-between rounded-[1.35rem] border border-[#d5e2f1] bg-white/[0.92] px-5 py-3 shadow-[0_18px_42px_-32px_rgba(20,63,111,0.55)] backdrop-blur dark:border-border dark:bg-card/95">
           <div className="flex items-center gap-3">
             <MapPinned className="h-4 w-4 text-accent" />
             <div>
@@ -622,7 +622,7 @@ export default function MapaNavios() {
             <div className="mt-1 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-warning" /> {t("map.layerWeather")}</div>
           </div>
 
-          <div className="h-full overflow-hidden rounded-[1.8rem] border border-white/70 bg-white/70 shadow-[0_22px_54px_-34px_rgba(16,45,87,0.32)]">
+          <div className="h-full overflow-hidden rounded-[1.8rem] border border-white/70 bg-white/70 shadow-[0_22px_54px_-34px_rgba(16,45,87,0.32)] dark:border-border dark:bg-card/70">
             <Map
               ref={mapRef}
               center={WORLD_CENTER}
@@ -715,7 +715,7 @@ export default function MapaNavios() {
                           isMaranhaoPort(port.id) ? "bg-warning" : "bg-primary"
                         )}
                       />
-                      <MarkerLabel position="bottom" className="mt-2 rounded-full bg-white/90 px-2 py-0.5 font-mono uppercase tracking-[0.12em] text-[9px] shadow-sm">
+          <MarkerLabel position="bottom" className="mt-2 rounded-full bg-white/90 px-2 py-0.5 font-mono uppercase tracking-[0.12em] text-[9px] shadow-sm dark:bg-card dark:text-foreground">
                         {port.name}
                       </MarkerLabel>
                     </div>
@@ -769,8 +769,8 @@ export default function MapaNavios() {
                           <MarkerLabel
                             position="top"
                             className={cn(
-                              "rounded-full bg-white/[0.92] px-2 py-1 font-mono uppercase tracking-[0.14em] text-[9px] shadow-sm",
-                              isHighlighted && "border border-primary/40 bg-white"
+                              "rounded-full bg-white/[0.92] px-2 py-1 font-mono uppercase tracking-[0.14em] text-[9px] shadow-sm dark:bg-card dark:text-foreground",
+                              isHighlighted && "border border-primary/40 bg-white dark:bg-card"
                             )}
                           >
                             {ship.name}
@@ -801,9 +801,9 @@ export default function MapaNavios() {
       </div>
 
       {selectedShip && (
-        <aside key={selectedShip.id} className="w-[400px] shrink-0 overflow-y-auto border-l border-[#d5e2f1] bg-white/95 shadow-[0_22px_58px_-36px_rgba(19,50,95,0.42)] backdrop-blur">
-          <div className="border-b border-[#d5e2f1] bg-white/95 p-5 shadow-[0_18px_34px_-32px_rgba(19,50,95,0.52)] backdrop-blur">
-            <div className="mb-3 rounded-xl border border-[#9fc7f2] bg-[#eef6ff] px-3 py-2.5">
+        <aside key={selectedShip.id} className="w-[400px] shrink-0 overflow-y-auto border-l border-[#d5e2f1] bg-white/95 shadow-[0_22px_58px_-36px_rgba(19,50,95,0.42)] backdrop-blur dark:border-border dark:bg-card/95">
+          <div className="border-b border-[#d5e2f1] bg-white/95 p-5 shadow-[0_18px_34px_-32px_rgba(19,50,95,0.52)] backdrop-blur dark:border-border dark:bg-card/95">
+            <div className="mb-3 rounded-xl border border-[#9fc7f2] bg-[#eef6ff] px-3 py-2.5 dark:border-primary/35 dark:bg-primary/10">
               <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[#1351b4]">
                 {language === "pt" ? "Navio selecionado" : language === "en" ? "Selected vessel" : "选定船舶"}
               </div>
@@ -860,7 +860,7 @@ export default function MapaNavios() {
               <button
                 type="button"
                 onClick={() => openReport(selectedShip.id)}
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#cfe0f3] bg-white px-3 py-3 text-sm font-semibold text-[#1351b4] transition-colors hover:border-[#8bb4e7] hover:bg-[#f4f8fd]"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#cfe0f3] bg-white px-3 py-3 text-sm font-semibold text-[#1351b4] transition-colors hover:border-[#8bb4e7] hover:bg-[#f4f8fd] dark:border-border dark:bg-secondary dark:text-primary dark:hover:bg-muted"
               >
                 <FileText className="h-4 w-4" />
                 {language === "pt" ? "Relatório" : language === "en" ? "Report" : "报告"}
@@ -868,17 +868,17 @@ export default function MapaNavios() {
             </div>
           </div>
 
-          <div className="grid grid-cols-4 border-b border-[#d5e2f1] text-[10px] font-mono uppercase tracking-wider">
-            <Link to={getShipBerthsHref(selectedShip.id)} className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
+          <div className="grid grid-cols-4 border-b border-[#d5e2f1] text-[10px] font-mono uppercase tracking-wider dark:border-border">
+            <Link to={getShipBerthsHref(selectedShip.id)} className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground dark:border-border dark:hover:bg-secondary">
               <Anchor className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Berço" : language === "en" ? "Berth" : "泊位"}
             </Link>
-            <Link to={getShipRisksHref(selectedShip.id)} className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
+            <Link to={getShipRisksHref(selectedShip.id)} className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground dark:border-border dark:hover:bg-secondary">
               <TriangleAlert className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Risco" : language === "en" ? "Risk" : "风险"}
             </Link>
-            <Link to="/documentos" className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
+            <Link to="/documentos" className="border-r border-[#d5e2f1] py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground dark:border-border dark:hover:bg-secondary">
               <FileText className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Docs" : language === "en" ? "Docs" : "文件"}
             </Link>
-            <Link to="/liberacoes" className="py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground">
+            <Link to="/liberacoes" className="py-3 text-center text-muted-foreground hover:bg-[#f2f7fd] hover:text-foreground dark:hover:bg-secondary">
               <ShieldCheck className="mx-auto mb-1 h-3.5 w-3.5" /> {language === "pt" ? "Órgãos" : language === "en" ? "Agencies" : "机构"}
             </Link>
           </div>
@@ -995,7 +995,7 @@ export default function MapaNavios() {
                 <div key={event.id} className="weather-serious-card relative overflow-hidden rounded-xl border border-[#e29b2f]/80 p-3">
                   <div className="pointer-events-none absolute inset-y-0 left-0 w-1.5 rounded-l-xl bg-[linear-gradient(180deg,#d97706,#b45309)]" />
                   <div className="flex items-start gap-3">
-                    <div className="weather-alert-icon weather-alert-pulse grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[#edb96a] bg-white text-lg shadow-sm">
+                    <div className="weather-alert-icon weather-alert-pulse grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[#edb96a] bg-white text-lg shadow-sm dark:bg-secondary">
                       {event.symbol}
                     </div>
                     <div className="min-w-0">
@@ -1149,7 +1149,7 @@ interface SectionProps {
 
 function Section({ title, icon: Icon, children, tone }: SectionProps) {
   return (
-    <section className="border-b border-[#d5e2f1] p-5">
+    <section className="border-b border-[#d5e2f1] p-5 dark:border-border">
       <div className="mb-3 flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
         <Icon className={cn("h-3.5 w-3.5", tone && "weather-alert-pulse", tone === "critical" && "text-destructive", tone === "high" && "text-risk-high", tone === "medium" && "text-warning")} />
         {title}

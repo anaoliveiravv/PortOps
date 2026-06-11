@@ -101,7 +101,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground">PortOps</div>
               <h1 className="text-[1rem] font-semibold tracking-[-0.01em] text-foreground">{currentLabel}</h1>
             </div>
-            <span className="hidden md:inline text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground">/ {location.pathname.replace("/", "")}</span>
             <LanguageSelector className="hidden shrink-0 md:inline-flex" />
           </div>
           <div className="flex shrink-0 items-center gap-3 text-[11px] font-mono">

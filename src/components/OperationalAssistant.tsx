@@ -37,10 +37,10 @@ const QUICK_PROMPTS = {
 } as const;
 
 const SEVERITY_STYLE: Record<NonNullable<ChatMessage["severity"]>, string> = {
-  normal: "border-[#d5e2f1] bg-white text-foreground",
-  attention: "border-orange-200 bg-orange-50/80 text-foreground",
-  moderate: "border-blue-200 bg-blue-50/80 text-foreground",
-  critical: "border-red-200 bg-red-50/85 text-foreground",
+  normal: "border-[#d5e2f1] bg-white text-foreground dark:border-border dark:bg-card",
+  attention: "border-orange-200 bg-orange-50/80 text-foreground dark:border-warning/35 dark:bg-warning/10",
+  moderate: "border-blue-200 bg-blue-50/80 text-foreground dark:border-info/35 dark:bg-info/10",
+  critical: "border-red-200 bg-red-50/85 text-foreground dark:border-destructive/35 dark:bg-destructive/10",
 };
 
 function buildWelcomeMessage(language: "pt" | "en" | "zh", focusShipId: string | null) {
@@ -165,8 +165,8 @@ export function OperationalAssistant() {
   return (
     <div className="fixed inset-x-3 bottom-3 z-[60] sm:inset-x-auto sm:bottom-6 sm:right-6">
       <div className="w-full max-w-[calc(100vw-1.5rem)] sm:w-[28rem]">
-        <div className="flex h-[min(44rem,calc(100dvh-1.5rem))] flex-col overflow-hidden rounded-[1.75rem] border border-[#cfe0f3] bg-[linear-gradient(180deg,#f8fbff_0%,#edf4fb_100%)] shadow-[0_26px_80px_-34px_rgba(16,45,87,0.48)] backdrop-blur-xl sm:h-[min(44rem,calc(100dvh-7rem))]">
-          <div className="sticky top-0 z-10 border-b border-border/70 bg-white/90 backdrop-blur-xl">
+        <div className="flex h-[min(44rem,calc(100dvh-1.5rem))] flex-col overflow-hidden rounded-[1.75rem] border border-[#cfe0f3] bg-[linear-gradient(180deg,#f8fbff_0%,#edf4fb_100%)] shadow-[0_26px_80px_-34px_rgba(16,45,87,0.48)] backdrop-blur-xl dark:border-border dark:bg-card dark:shadow-[0_26px_80px_-34px_rgba(0,0,0,0.78)] sm:h-[min(44rem,calc(100dvh-7rem))]">
+          <div className="sticky top-0 z-10 border-b border-border/70 bg-white/90 backdrop-blur-xl dark:bg-card/95">
             <div className="flex items-start justify-between gap-3 px-4 pb-3 pt-4 sm:px-5">
               <div className="flex min-w-0 items-center gap-3">
                 {mode === "report" && (
@@ -201,13 +201,13 @@ export function OperationalAssistant() {
             </div>
 
             <div className="px-4 pb-4 sm:px-5">
-              <div className="grid grid-cols-2 gap-2 rounded-full border border-border bg-white p-1">
+              <div className="grid grid-cols-2 gap-2 rounded-full border border-border bg-white p-1 dark:bg-secondary">
                 <button
                   type="button"
                   onClick={() => openAssistant(focusShipId)}
                   className={cn(
                     "inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-colors",
-                    mode === "chat" ? "bg-[#1351b4] text-white shadow-sm" : "text-muted-foreground hover:bg-secondary",
+                    mode === "chat" ? "bg-[#1351b4] text-white shadow-sm" : "text-muted-foreground hover:bg-secondary dark:hover:bg-muted",
                   )}
                 >
                   <MessageSquareMore className="h-4 w-4" />
@@ -218,7 +218,7 @@ export function OperationalAssistant() {
                   onClick={() => openReport(focusShipId)}
                   className={cn(
                     "inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-colors",
-                    mode === "report" ? "bg-[#1351b4] text-white shadow-sm" : "text-muted-foreground hover:bg-secondary",
+                    mode === "report" ? "bg-[#1351b4] text-white shadow-sm" : "text-muted-foreground hover:bg-secondary dark:hover:bg-muted",
                   )}
                 >
                   <FileText className="h-4 w-4" />
@@ -239,7 +239,7 @@ export function OperationalAssistant() {
                         key={prompt}
                         type="button"
                         onClick={() => handlePrompt(prompt)}
-                        className="rounded-full border border-border bg-white px-3 py-2 text-left text-xs text-[#183153] shadow-sm transition-colors hover:border-[#1351b4]/30 hover:bg-[#f5f9ff]"
+                        className="rounded-full border border-border bg-white px-3 py-2 text-left text-xs text-[#183153] shadow-sm transition-colors hover:border-[#1351b4]/30 hover:bg-[#f5f9ff] dark:bg-secondary dark:text-foreground dark:hover:border-primary/40 dark:hover:bg-muted"
                       >
                         {prompt}
                       </button>
@@ -254,7 +254,7 @@ export function OperationalAssistant() {
                       className={cn(
                         "rounded-[1.35rem] border px-4 py-3 text-sm leading-6 shadow-sm",
                         message.role === "user"
-                          ? "ml-8 border-[#d7e3f5] bg-[#edf4ff] text-[#183153]"
+                          ? "ml-8 border-[#d7e3f5] bg-[#edf4ff] text-[#183153] dark:border-primary/25 dark:bg-primary/10 dark:text-foreground"
                           : SEVERITY_STYLE[message.severity ?? "normal"],
                       )}
                     >
@@ -266,14 +266,14 @@ export function OperationalAssistant() {
                               <ShipLink
                                 key={`${message.id}-${item.label}-${item.shipId}`}
                                 shipId={item.shipId}
-                                className="inline-flex items-center rounded-full border border-primary/20 bg-white px-3 py-1 text-[11px] font-semibold text-primary no-underline hover:border-primary/40 hover:bg-primary/5"
+                                className="inline-flex items-center rounded-full border border-primary/20 bg-white px-3 py-1 text-[11px] font-semibold text-primary no-underline hover:border-primary/40 hover:bg-primary/5 dark:bg-secondary"
                               >
                                 {item.label}
                               </ShipLink>
                             ) : (
                               <span
                                 key={`${message.id}-${item.label}`}
-                                className="inline-flex items-center rounded-full border border-border bg-white px-3 py-1 text-[11px] font-semibold text-muted-foreground"
+                                className="inline-flex items-center rounded-full border border-border bg-white px-3 py-1 text-[11px] font-semibold text-muted-foreground dark:bg-secondary"
                               >
                                 {item.label}
                               </span>
@@ -287,11 +287,11 @@ export function OperationalAssistant() {
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="rounded-[1.5rem] border border-border bg-white p-4 shadow-[0_18px_46px_-34px_rgba(16,45,87,0.34)]">
+                <div className="rounded-[1.5rem] border border-border bg-white p-4 shadow-[0_18px_46px_-34px_rgba(16,45,87,0.34)] dark:bg-card">
                   <div className="text-[10px] font-mono uppercase tracking-[0.24em] text-muted-foreground">{t("assistant.reportSummary")}</div>
                   <div className="mt-2 text-sm leading-7 text-[#183153]">{report.summary}</div>
                   <div className="mt-4 grid grid-cols-2 gap-3">
-                    <Button onClick={handleCopyReport} variant="outline" className="rounded-full border-[#cfe0f3] bg-white">
+                    <Button onClick={handleCopyReport} variant="outline" className="rounded-full border-[#cfe0f3] bg-white dark:bg-secondary">
                       <Copy className="h-4 w-4" />
                       {copied ? "OK" : t("assistant.reportCopy")}
                     </Button>
@@ -313,8 +313,8 @@ export function OperationalAssistant() {
           </div>
 
           {mode === "chat" && (
-            <div className="border-t border-border/60 bg-white/90 px-4 py-4 backdrop-blur sm:px-5">
-              <div className="rounded-[1.5rem] border border-border bg-white p-3 shadow-[0_18px_46px_-34px_rgba(16,45,87,0.34)]">
+            <div className="border-t border-border/60 bg-white/90 px-4 py-4 backdrop-blur dark:bg-card/95 sm:px-5">
+              <div className="rounded-[1.5rem] border border-border bg-white p-3 shadow-[0_18px_46px_-34px_rgba(16,45,87,0.34)] dark:bg-secondary">
                 <Textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
@@ -325,7 +325,7 @@ export function OperationalAssistant() {
                     }
                   }}
                   placeholder={t("assistant.placeholder")}
-                  className="min-h-[84px] border-0 bg-transparent p-0 text-[0.95rem] shadow-none focus-visible:ring-0"
+                  className="min-h-[84px] border-0 bg-transparent p-0 text-[0.95rem] text-foreground shadow-none focus-visible:ring-0"
                 />
                 <div className="mt-3 flex items-center justify-between gap-3">
                   <div className="truncate text-[11px] text-muted-foreground">
@@ -347,12 +347,12 @@ export function OperationalAssistant() {
 
 function ReportList({ title, items }: { title: string; items: string[] }) {
   return (
-    <div className="rounded-[1.35rem] border border-border bg-white p-4 shadow-[0_14px_36px_-34px_rgba(16,45,87,0.28)]">
+    <div className="rounded-[1.35rem] border border-border bg-white p-4 shadow-[0_14px_36px_-34px_rgba(16,45,87,0.28)] dark:bg-card">
       <div className="text-[10px] font-mono uppercase tracking-[0.24em] text-muted-foreground">{title}</div>
       <div className="mt-3 space-y-2">
         {items.length ? (
           items.map((item) => (
-            <div key={item} className="rounded-2xl border border-[#dce5f2] bg-[#f8fbff] px-3 py-2 text-sm text-[#183153]">
+            <div key={item} className="rounded-2xl border border-[#dce5f2] bg-[#f8fbff] px-3 py-2 text-sm text-[#183153] dark:border-border dark:bg-secondary dark:text-foreground">
               {item}
             </div>
           ))

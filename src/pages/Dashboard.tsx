@@ -187,7 +187,7 @@ export default function Dashboard() {
           </div>
           <div className="mt-5 grid gap-3 md:grid-cols-3">
             {aiFleet.map((item) => (
-              <div key={item.shipId} className="group relative overflow-hidden rounded-[0.95rem] border border-red-100 bg-white/90 p-4 shadow-[0_22px_42px_-34px_rgba(176,34,34,0.5)] transition duration-300 hover:-translate-y-0.5 hover:border-red-200">
+              <div key={item.shipId} className="group relative overflow-hidden rounded-[0.95rem] border border-red-100 bg-white/90 p-4 shadow-[0_22px_42px_-34px_rgba(176,34,34,0.5)] transition duration-300 hover:-translate-y-0.5 hover:border-red-200 dark:border-destructive/25 dark:bg-secondary/80 dark:hover:border-destructive/40">
                 <div className="flex items-center gap-2 text-[0.66rem] font-semibold uppercase tracking-[0.12em] text-red-600">
                   <AlertTriangle className="h-4 w-4" /> {item.priority}
                 </div>
@@ -199,15 +199,15 @@ export default function Dashboard() {
                 <div className="mt-3 space-y-2 text-xs">
                   <div className="flex items-center justify-between text-[#53687f]">
                     <span>{language === "pt" ? "Atraso" : language === "en" ? "Delay" : "延误"}</span>
-                    <span className="rounded-lg border border-red-200 bg-red-50 px-3 py-1 font-mono font-bold text-red-600">{item.delayProbability}%</span>
+                    <span className="rounded-lg border border-red-200 bg-red-50 px-3 py-1 font-mono font-bold text-red-600 dark:border-destructive/35 dark:bg-destructive/10 dark:text-red-300">{item.delayProbability}%</span>
                   </div>
                   <div className="flex items-center justify-between text-[#53687f]">
                     <span>{language === "pt" ? "Clima" : language === "en" ? "Weather" : "天气"}</span>
-                    <span className="rounded-lg border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-600">{item.climateRisk}</span>
+                    <span className="rounded-lg border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-600 dark:border-warning/35 dark:bg-warning/10 dark:text-amber-300">{item.climateRisk}</span>
                   </div>
                   <div className="flex items-center justify-between text-[#53687f]">
                     <span>{language === "pt" ? "Liberação" : language === "en" ? "Release" : "放行"}</span>
-                    <span className="rounded-lg border border-blue-100 bg-blue-50 px-3 py-1 font-mono text-xs font-semibold text-[#102a4c]">{item.estimatedReleaseHours}</span>
+                    <span className="rounded-lg border border-blue-100 bg-blue-50 px-3 py-1 font-mono text-xs font-semibold text-[#102a4c] dark:border-info/35 dark:bg-info/10 dark:text-sky-200">{item.estimatedReleaseHours}</span>
                   </div>
                 </div>
               </div>
@@ -239,7 +239,7 @@ export default function Dashboard() {
           </Button>
           <div className="mt-4 space-y-2.5">
             {aiFleet.map((item) => (
-              <ShipLink key={item.shipId} shipId={item.shipId} className="group flex items-center gap-3 rounded-[0.8rem] border border-[#cbd9ea] bg-white/90 p-3 text-[#102a4c] no-underline shadow-[0_18px_34px_-30px_rgba(20,70,132,0.5)] transition duration-300 hover:-translate-y-0.5 hover:border-[#9fc7f2] hover:bg-white">
+              <ShipLink key={item.shipId} shipId={item.shipId} className="group flex items-center gap-3 rounded-[0.8rem] border border-[#cbd9ea] bg-white/90 p-3 text-[#102a4c] no-underline shadow-[0_18px_34px_-30px_rgba(20,70,132,0.5)] transition duration-300 hover:-translate-y-0.5 hover:border-[#9fc7f2] hover:bg-white dark:border-border dark:bg-secondary/70 dark:text-foreground dark:hover:border-primary/40 dark:hover:bg-muted">
                 <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#edf6ff] text-[#0759ce]">
                   <Ship className="h-4 w-4" strokeWidth={1.9} />
                 </div>
@@ -249,7 +249,7 @@ export default function Dashboard() {
                     {language === "pt" ? "Próxima ação" : language === "en" ? "Next action" : "下一步"}: {item.nextAction}
                   </div>
                 </div>
-                <ChevronRight className="h-5 w-5 text-[#12345a] transition-transform group-hover:translate-x-0.5" />
+                <ChevronRight className="h-5 w-5 text-[#12345a] transition-transform group-hover:translate-x-0.5 dark:text-muted-foreground" />
               </ShipLink>
             ))}
           </div>
@@ -318,7 +318,7 @@ export default function Dashboard() {
             </thead>
             <tbody>
               {recentShips.map((s) => (
-                <tr key={s.id} className="border-b border-[#dce6f2]/80 hover:bg-[#f4f8fd]">
+                <tr key={s.id} className="border-b border-[#dce6f2]/80 hover:bg-[#f4f8fd] dark:border-border dark:hover:bg-secondary/60">
                   <td className="px-4 py-2.5">
                     <div className="font-medium">
                       <ShipLink shipId={s.id} className="font-medium text-foreground no-underline hover:text-primary">
@@ -346,7 +346,7 @@ export default function Dashboard() {
           </div>
           <div className="divide-y divide-border">
             {criticalAlerts.map((a) => (
-              <div key={a.id} className={`p-3.5 hover:bg-[#f4f8fd] ${a.severity === "critical" ? "bg-red-50/70" : ""}`}>
+              <div key={a.id} className={`p-3.5 hover:bg-[#f4f8fd] dark:hover:bg-secondary/60 ${a.severity === "critical" ? "bg-red-50/70 dark:bg-destructive/10" : ""}`}>
                 <div className="flex items-center gap-2 mb-1">
                   <span className={`h-2.5 w-2.5 rounded-full ${a.severity === "critical" ? "bg-destructive shadow-[0_0_0_6px_rgba(220,38,38,0.12)]" : "bg-warning"}`} />
                   <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">{a.source}</span>
